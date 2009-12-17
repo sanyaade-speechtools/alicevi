@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="RefLib/customizer.jar"/>
+	<classpathentry kind="lib" path="RefLib/getopt-1.0.7.jar"/>
+	<classpathentry kind="lib" path="RefLib/javazoom.jar"/>
+	<classpathentry kind="lib" path="RefLib/jl1.0.jar"/>
+	<classpathentry kind="lib" path="RefLib/jmf.jar"/>
+	<classpathentry kind="lib" path="RefLib/jmf.properties"/>
+	<classpathentry kind="lib" path="RefLib/jmf.properties.orig"/>
+	<classpathentry kind="lib" path="RefLib/jogl.jar"/>
+	<classpathentry kind="lib" path="RefLib/jython.jar"/>
+	<classpathentry kind="lib" path="RefLib/mediaplayer.jar"/>
+	<classpathentry kind="lib" path="RefLib/mp3plugin.jar"/>
+	<classpathentry kind="lib" path="RefLib/multiplayer.jar"/>
+	<classpathentry kind="lib" path="RefLib/resolver.jar"/>
+	<classpathentry kind="lib" path="RefLib/sound.jar"/>
+	<classpathentry kind="lib" path="RefLib/soundbank.gm"/>
+	<classpathentry kind="lib" path="RefLib/vecmath.jar"/>
+	<classpathentry kind="lib" path="RefLib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="RefLib/xercesSamples.jar"/>
+	<classpathentry kind="lib" path="RefLib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="RefLib/xmlParserAPIs.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
