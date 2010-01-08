@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool;
 
+import java.awt.Color;
+import java.util.StringTokenizer;
+
 /**
  * @author Jason Pratt
  */
@@ -45,9 +48,19 @@ public class JAlice {
 						colorString = colorString.trim();
 						if( colorString.length() > 0 ) {
 							try{
-								java.awt.Color newColor = java.awt.Color.decode(colorString);
+								
+								//java.awt.Color newColor = java.awt.Color.decode(colorString);
+								//+++++++++++++++++++++++ my change ++++++++++++++++++++
+								StringTokenizer tok = new StringTokenizer(colorString , ",");
+								int r= Integer.parseInt(tok.nextToken());
+								int b= Integer.parseInt(tok.nextToken());
+								int g= Integer.parseInt(tok.nextToken());
+								Color newColor= new Color(r,b,g);
+								//+++++++++++++++++++++++end my change ++++++++++++++++++++
 								backgroundColor = new edu.cmu.cs.stage3.alice.scenegraph.Color(newColor).toString();
-							} catch (Throwable colorT){colorT.printStackTrace();}
+							} catch(NumberFormatException numberE){System.err.println("Color initialization string is not correct");}
+							catch (Throwable colorT){colorT.printStackTrace();}
+							
 								
 						} 
 					}
