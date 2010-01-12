@@ -9,8 +9,16 @@
 	<classpathentry kind="lib" path="RefLib/jmf.jar"/>
 	<classpathentry kind="lib" path="RefLib/jmf.properties"/>
 	<classpathentry kind="lib" path="RefLib/jmf.properties.orig"/>
-	<classpathentry kind="lib" path="RefLib/jogl.jar"/>
-	<classpathentry kind="lib" path="RefLib/jython.jar"/>
+	<classpathentry kind="lib" path="RefLib/jogl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="AliceVI/RefLib/win32"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="RefLib/jython.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="AliceVI/jython-2.1/Lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="RefLib/mediaplayer.jar"/>
 	<classpathentry kind="lib" path="RefLib/mp3plugin.jar"/>
 	<classpathentry kind="lib" path="RefLib/multiplayer.jar"/>
