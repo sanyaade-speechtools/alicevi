@@ -21,32 +21,86 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
+package  edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
+
+import java.awt.Component;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.io.IOException;
+import java.util.Vector;
+
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
+
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
+import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ResponsePrototypeReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype;
+import edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory;
+import edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory;
+import edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype;
+import edu.cmu.cs.stage3.alice.core.Behavior;
+import edu.cmu.cs.stage3.alice.core.CopyFactory;
+import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.Pose;
+import edu.cmu.cs.stage3.alice.core.Property;
+import edu.cmu.cs.stage3.alice.core.Response;
+import edu.cmu.cs.stage3.alice.core.Sound;
+import edu.cmu.cs.stage3.alice.core.TextureMap;
+import edu.cmu.cs.stage3.alice.core.Variable;
+import edu.cmu.cs.stage3.alice.core.World;
+import edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty;
+import edu.cmu.cs.stage3.alice.core.property.VehicleProperty;
+import edu.cmu.cs.stage3.alice.core.response.CompositeResponse;
+import edu.cmu.cs.stage3.alice.core.response.PoseAnimation;
+import edu.cmu.cs.stage3.alice.core.response.Print;
+import edu.cmu.cs.stage3.alice.core.response.PropertyAnimation;
+import edu.cmu.cs.stage3.alice.core.response.SoundResponse;
+import edu.cmu.cs.stage3.alice.core.response.VehiclePropertyAnimation;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
- * Title:
- * Description:
+ * Title: CompositeComponentResponsePanel
+ * Description: 
  * Copyright:    Copyright (c) 2001
  * Company:
- * @author
+ * @author 
  * @version 1.0
+ * 
+ * CompositeComponentResponsePanel is a response panel made up of different components that can have items dragged and items
+ * dropped onto it, depending on the types of objects being dragged and dropped.
  */
 
-public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel{
+@SuppressWarnings("serial")
+public class CompositeComponentResponsePanel extends  CompositeComponentElementPanel{
 
     public CompositeComponentResponsePanel(){
         super();
     }
 
-    public void set(edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty elements, CompositeResponsePanel owner, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
+    public void set(ObjectArrayProperty elements, CompositeResponsePanel owner, AuthoringTool authoringToolIn) {
         super.set(elements, owner, authoringToolIn);
     }
 
-    protected java.awt.Component makeGUI(edu.cmu.cs.stage3.alice.core.Element currentElement){
-        javax.swing.JComponent toAdd = null;
-        if (currentElement instanceof edu.cmu.cs.stage3.alice.core.Response){
-            if (currentElement instanceof edu.cmu.cs.stage3.alice.core.response.CompositeResponse){
-                toAdd = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getGUI(currentElement);
+    /**
+     * Makes the GUI of this component
+     * @param Element - the current element to add to this element panel (should be a response panel
+     * @return returns the GUI created from the current element to be added to the main application
+     */
+    protected Component makeGUI(Element currentElement){
+        JComponent toAdd = null;
+        if (currentElement instanceof Response){
+            if (currentElement instanceof CompositeResponse){
+                toAdd = GUIFactory.getGUI(currentElement);
             }
             else{
                 if (currentElement != null){
@@ -64,71 +118,74 @@ public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.aut
         }
     }
 
-    public void dragOver( java.awt.dnd.DropTargetDragEvent dtde ) {
-        java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentDragComponent();
+    /**
+     * Handles the dragging of objects onto the ResponsePanel, handling different types of objects that can
+     * be dragged over this panel in a different manner.
+     * 
+     * @param dtde - the drop target drag event, or the object the user drags onto this panel
+     */
+    public void dragOver( DropTargetDragEvent dtde ) {
         int action = dtde.getDropAction();
-        boolean isCopy = ((action & java.awt.dnd.DnDConstants.ACTION_COPY) > 0);
-        boolean isMove = ((action & java.awt.dnd.DnDConstants.ACTION_MOVE) > 0);
+        boolean isCopy = ((action & DnDConstants.ACTION_COPY) > 0);
+        boolean isMove = ((action & DnDConstants.ACTION_MOVE) > 0);
         if (!m_owner.isExpanded()){
             if (m_owner.getParent() instanceof CompositeComponentResponsePanel){
                 ((CompositeComponentResponsePanel)m_owner.getParent()).dragOver(dtde);
                 return;
             }
         }
-        if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.responseReferenceFlavor ) ) {
+        if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, ElementReferenceTransferable.responseReferenceFlavor ) ) {
             try{
-                java.awt.datatransfer.Transferable transferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentTransferable();
-                edu.cmu.cs.stage3.alice.core.Response response = (edu.cmu.cs.stage3.alice.core.Response)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.responseReferenceFlavor );
+                Transferable transferable = DnDManager.getCurrentTransferable();
+                Response response = (Response)transferable.getTransferData( ElementReferenceTransferable.responseReferenceFlavor );
                 boolean isValid = checkLoop(response);
                 if (isValid){
                     if (isMove){
-                        dtde.acceptDrag( java.awt.dnd.DnDConstants.ACTION_MOVE);
+                        dtde.acceptDrag( DnDConstants.ACTION_MOVE);
                     }
                     else if (isCopy){
-                        dtde.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY );
+                        dtde.acceptDrag( DnDConstants.ACTION_COPY );
                     }
                     insertDropPanel(dtde);
                 }
                 else{
                     dtde.rejectDrag();
                 }
-            } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
+            } catch( UnsupportedFlavorException e ) {
                 dtde.rejectDrag();
-            } catch( java.io.IOException e ) {
+            } catch( IOException e ) {
                 dtde.rejectDrag();
             } catch( Throwable t ) {
                 dtde.rejectDrag();
             }
         }
-        else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor )){
+        else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, CopyFactoryTransferable.copyFactoryFlavor )){
             try {
-                java.awt.datatransfer.Transferable transferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentTransferable();
-                edu.cmu.cs.stage3.alice.core.CopyFactory copyFactory = (edu.cmu.cs.stage3.alice.core.CopyFactory)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor );
-                Class valueClass = copyFactory.getValueClass();
-                if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(valueClass)){
-                    dtde.acceptDrag( java.awt.dnd.DnDConstants.ACTION_MOVE);  //looks nicer
+                Transferable transferable = DnDManager.getCurrentTransferable();
+                CopyFactory copyFactory = (CopyFactory)transferable.getTransferData( CopyFactoryTransferable.copyFactoryFlavor );
+                Class<?> valueClass = copyFactory.getValueClass();
+                if (Response.class.isAssignableFrom(valueClass)){
+                    dtde.acceptDrag( DnDConstants.ACTION_MOVE);  //looks nicer
                     insertDropPanel(dtde);
                 }
                 else{
                     dtde.rejectDrag();
                 }
-            } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
+            } catch( UnsupportedFlavorException e ) {
                 dtde.rejectDrag();
-            } catch( java.io.IOException e ) {
+            } catch( IOException e ) {
                 dtde.rejectDrag();
             } catch( Throwable t ) {
                 dtde.rejectDrag();
             }
-        }else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.questionReferenceFlavor )){
-            dtde.rejectDrag();
         }
-        else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor ) ) {
+        else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, ElementReferenceTransferable.elementReferenceFlavor ) ) {
             try {
-                java.awt.datatransfer.Transferable transferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentTransferable();
-                edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor );
-                if (!((element instanceof edu.cmu.cs.stage3.alice.core.Behavior) || (element instanceof edu.cmu.cs.stage3.alice.core.World) || (element instanceof edu.cmu.cs.stage3.alice.core.TextureMap))){
+                Transferable transferable = DnDManager.getCurrentTransferable();
+                Element element = (Element)transferable.getTransferData( ElementReferenceTransferable.elementReferenceFlavor );
+                if (!((element instanceof Behavior) || (element instanceof World) || (element instanceof TextureMap))){
                     if (checkLoop(element)){
-                        dtde.acceptDrag( java.awt.dnd.DnDConstants.ACTION_MOVE);  //looks nicer
+                        dtde.acceptDrag( DnDConstants.ACTION_MOVE);  //looks nicer
                         insertDropPanel(dtde);
                     }
                     else{
@@ -138,56 +195,60 @@ public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.aut
                 else{
                     dtde.rejectDrag();
                 }
-            } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
+            } catch( UnsupportedFlavorException e ) {
                 dtde.rejectDrag();
-            } catch( java.io.IOException e ) {
+            } catch( IOException e ) {
                 dtde.rejectDrag();
             } catch( Throwable t ) {
                 dtde.rejectDrag();
             }
-        }else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor )
-                  || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable.propertyReferenceFlavor )
-                  || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor )){
+        }else if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor )
+                  || AuthoringToolResources.safeIsDataFlavorSupported(dtde, PropertyReferenceTransferable.propertyReferenceFlavor )
+                  || AuthoringToolResources.safeIsDataFlavorSupported(dtde, ElementReferenceTransferable.variableReferenceFlavor )){
             if (isMove){
-                dtde.acceptDrag( java.awt.dnd.DnDConstants.ACTION_MOVE);
+                dtde.acceptDrag( DnDConstants.ACTION_MOVE);
                 insertDropPanel(dtde);
             }
             else if (isCopy){
                 dtde.rejectDrag();
             }
         }else {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReferenceFlavorForClass( edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class ));
             dtde.rejectDrag();
-            return;
         }
     }
 
-    public void drop( final java.awt.dnd.DropTargetDropEvent dtde ) {
+    /**
+     * Handles the dropping of objects onto the ResponsePanel, handling different types of objects that can
+     * be dropped onto this panel in a different manner.
+     * 
+     * @param dtde - the drop target drop event, or the object the user drops onto this panel
+     */
+    public void drop( final DropTargetDropEvent dtde ) {
         HACK_started = false;
         boolean successful = true;
-        // java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentDragComponent();
+        // Component sourceComponent = DnDManager.getCurrentDragComponent();
         int action = dtde.getDropAction();
-        boolean isCopy = ((action & java.awt.dnd.DnDConstants.ACTION_COPY) > 0 );
-        boolean isMove = ((action & java.awt.dnd.DnDConstants.ACTION_MOVE) > 0);
+        boolean isCopy = ((action & DnDConstants.ACTION_COPY) > 0 );
+        boolean isMove = ((action & DnDConstants.ACTION_MOVE) > 0);
         if (!m_owner.isExpanded()){
-            if (m_owner.getParent() instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel){
-                ((edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel)m_owner.getParent()).drop(dtde);
+            if (m_owner.getParent() instanceof  CompositeComponentElementPanel){
+                (( CompositeComponentElementPanel)m_owner.getParent()).drop(dtde);
                 return;
             }
         }
-        java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+        Transferable transferable = dtde.getTransferable();
 
 
         //  System.out.println("checking to see what kind of drop: "+System.currentTimeMillis());
-        if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor ) ) {
+        if( AuthoringToolResources.safeIsDataFlavorSupported(transferable, CopyFactoryTransferable.copyFactoryFlavor ) ) {
             try {
-                edu.cmu.cs.stage3.alice.core.CopyFactory copyFactory = (edu.cmu.cs.stage3.alice.core.CopyFactory)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor );
-                Class valueClass = copyFactory.getValueClass();
-                if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(valueClass)){
-                    dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_COPY);
+                CopyFactory copyFactory = (CopyFactory)transferable.getTransferData( CopyFactoryTransferable.copyFactoryFlavor );
+                Class<?> valueClass = copyFactory.getValueClass();
+                if (Response.class.isAssignableFrom(valueClass)){
+                    dtde.acceptDrop( DnDConstants.ACTION_COPY);
                     successful = true;
-					//edu.cmu.cs.stage3.alice.core.Response response = (edu.cmu.cs.stage3.alice.core.Response)copyFactory.manufactureCopy(m_owner.getElement().getRoot());
-					edu.cmu.cs.stage3.alice.core.Response response = (edu.cmu.cs.stage3.alice.core.Response)copyFactory.manufactureCopy(m_owner.getElement().getRoot(), null, null, m_owner.getElement() );
+					//Response response = (Response)copyFactory.manufactureCopy(m_owner.getElement().getRoot());
+					Response response = (Response)copyFactory.manufactureCopy(m_owner.getElement().getRoot(), null, null, m_owner.getElement() );
                     if (response != null){
                         performDrop(response, dtde);
                     }
@@ -196,51 +257,51 @@ public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.aut
                     successful = false;
                     dtde.rejectDrop();
                 }
-            } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
+            } catch( UnsupportedFlavorException e ) {
+                AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
                 successful = false;
-            } catch( java.io.IOException e ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
+            } catch( IOException e ) {
+                AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
                 successful = false;
             } catch( Throwable t ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed.", t );
+                AuthoringTool.showErrorDialog( "The drop failed.", t );
                 successful = false;
             }
-        }else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.responseReferenceFlavor ) ) {
+        }else if( AuthoringToolResources.safeIsDataFlavorSupported(transferable, ElementReferenceTransferable.responseReferenceFlavor ) ) {
             try {
                 //		System.out.println("getting response: "+System.currentTimeMillis());
-                edu.cmu.cs.stage3.alice.core.Response response = (edu.cmu.cs.stage3.alice.core.Response)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.responseReferenceFlavor );
-                if (response instanceof edu.cmu.cs.stage3.alice.core.response.CompositeResponse){
+                Response response = (Response)transferable.getTransferData( ElementReferenceTransferable.responseReferenceFlavor );
+                if (response instanceof CompositeResponse){
                     //		System.out.println("checking valid drop: "+System.currentTimeMillis());
-                    if (!isCopy && !isValidDrop( s_currentComponentPanel.getElement(), (edu.cmu.cs.stage3.alice.core.response.CompositeResponse)response)){
+                    if (!isCopy && !isValidDrop( s_currentComponentPanel.getElement(), (CompositeResponse)response)){
                         //	System.err.println("Can't drop on self");
                         successful = false;
                     }
                 }
                 if (successful){
                     if (isMove){
-                        dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_MOVE );
+                        dtde.acceptDrop( DnDConstants.ACTION_MOVE );
                     }
                     else if (isCopy){
-                        dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_COPY);
+                        dtde.acceptDrop( DnDConstants.ACTION_COPY);
                     }
                     performDrop(response, dtde);
                     successful = true;
                 }
-            } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
+            } catch( UnsupportedFlavorException e ) {
+                AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
                 successful = false;
-            } catch( java.io.IOException e ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
+            } catch( IOException e ) {
+                AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
                 successful = false;
             } catch( Throwable t ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed.", t );
+                AuthoringTool.showErrorDialog( "The drop failed.", t );
                 successful = false;
             }
         }
-        else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor ) ) {
+        else if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor ) ) {
             if (isMove){
-                dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_MOVE );
+                dtde.acceptDrop( DnDConstants.ACTION_MOVE );
                 successful = true;
             }
             else if (isCopy){
@@ -249,58 +310,58 @@ public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.aut
             }
             if (successful){
                 try {
-                    edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype responsePrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor );
+                    ResponsePrototype responsePrototype = (ResponsePrototype)transferable.getTransferData( ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor );
                     if ((responsePrototype.getDesiredProperties() == null || responsePrototype.getDesiredProperties().length < 1) &&
-                        !edu.cmu.cs.stage3.alice.core.response.Print.class.isAssignableFrom(responsePrototype.getResponseClass())){
+                        !Print.class.isAssignableFrom(responsePrototype.getResponseClass())){
                         performDrop(responsePrototype.createNewResponse(), dtde);
                     } else if (responsePrototype.getDesiredProperties().length > 3){ //Bypass the popup menu and just put in defaults if it wants more than 3 parameters
 						performDrop(responsePrototype.createNewResponse(), dtde);
                     }
                     else{
-                        edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory() {
+                        PopupItemFactory factory = new PopupItemFactory() {
                             public Object createItem( final Object object ) {
                                 return new Runnable() {
                                     public void run() {
-                                        if (object instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype){
-                                            performDrop(((edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype)object).createNewResponse(), dtde);
+                                        if (object instanceof ResponsePrototype){
+                                            performDrop(((ResponsePrototype)object).createNewResponse(), dtde);
                                         }
-                                        else if (object instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype){
-                                            edu.cmu.cs.stage3.alice.core.Element newResponse = ((edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype)object).createNewElement();
-                                            if (newResponse instanceof edu.cmu.cs.stage3.alice.core.Response){
-                                                performDrop((edu.cmu.cs.stage3.alice.core.Response)newResponse, dtde);
+                                        else if (object instanceof ElementPrototype){
+                                            Element newResponse = ((ElementPrototype)object).createNewElement();
+                                            if (newResponse instanceof Response){
+                                                performDrop((Response)newResponse, dtde);
                                             }
                                         }
                                     }
                                 };
                             }
                         };
-                        java.util.Vector structure = null;
-                        if (edu.cmu.cs.stage3.alice.core.response.Print.class.isAssignableFrom(responsePrototype.getResponseClass())){
-                            structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makeResponsePrintStructure(factory, componentElements.getOwner());
+                        Vector<?> structure = null;
+                        if (Print.class.isAssignableFrom(responsePrototype.getResponseClass())){
+                            structure = PopupMenuUtilities.makeResponsePrintStructure(factory, componentElements.getOwner());
                         }
                         else{
-                            structure= edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makePrototypeStructure( responsePrototype, factory, componentElements.getOwner() );
+                            structure= PopupMenuUtilities.makePrototypeStructure( responsePrototype, factory, componentElements.getOwner() );
                         }
-                        javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makePopupMenu( structure );
+                        JPopupMenu popup = PopupMenuUtilities.makePopupMenu( structure );
                         popup.addPopupMenuListener(this);
                         inserting = true;
                         popup.show( dtde.getDropTargetContext().getComponent(), (int)dtde.getLocation().getX(), (int)dtde.getLocation().getY() );
-                        edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.ensurePopupIsOnScreen( popup );
+                        PopupMenuUtilities.ensurePopupIsOnScreen( popup );
                     }
-                } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
+                } catch( UnsupportedFlavorException e ) {
+                    AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
                     successful = false;
-                } catch( java.io.IOException e ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
+                } catch( IOException e ) {
+                    AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
                     successful = false;
                 } catch( Throwable t ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed.", t );
+                    AuthoringTool.showErrorDialog( "The drop failed.", t );
                     successful = false;
                 }
             }
-        }else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable.propertyReferenceFlavor ) ) {
+        }else if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, PropertyReferenceTransferable.propertyReferenceFlavor ) ) {
             if (isMove){
-                dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_MOVE );
+                dtde.acceptDrop( DnDConstants.ACTION_MOVE );
                 successful = true;
             }
             else if (isCopy){
@@ -309,32 +370,31 @@ public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.aut
             }
             if (successful){
                 try {
-                    edu.cmu.cs.stage3.util.StringObjectPair[] known;
-                    edu.cmu.cs.stage3.alice.core.response.PropertyAnimation animation;
-                    Class animationClass;
-                    edu.cmu.cs.stage3.alice.core.Property property = (edu.cmu.cs.stage3.alice.core.Property)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable.propertyReferenceFlavor );
-                    if (property instanceof edu.cmu.cs.stage3.alice.core.property.VehicleProperty){
+                    StringObjectPair[] known;
+                    Class<?> animationClass;
+                    Property property = (Property)transferable.getTransferData( PropertyReferenceTransferable.propertyReferenceFlavor );
+                    if (property instanceof VehicleProperty){
                         //System.out.println("new vehicle animation");
-                        edu.cmu.cs.stage3.util.StringObjectPair[] newKnown = {new edu.cmu.cs.stage3.util.StringObjectPair("element", property.getOwner()), new edu.cmu.cs.stage3.util.StringObjectPair("propertyName", property.getName()), new edu.cmu.cs.stage3.util.StringObjectPair("duration", new Double(0))};
+                        StringObjectPair[] newKnown = {new StringObjectPair("element", property.getOwner()), new StringObjectPair("propertyName", property.getName()), new StringObjectPair("duration", new Double(0))};
                         known = newKnown;
-                        animationClass = edu.cmu.cs.stage3.alice.core.response.VehiclePropertyAnimation.class;
+                        animationClass = VehiclePropertyAnimation.class;
                     }
                     else{
-                        edu.cmu.cs.stage3.util.StringObjectPair[] newKnown = {new edu.cmu.cs.stage3.util.StringObjectPair("element", property.getOwner()), new edu.cmu.cs.stage3.util.StringObjectPair("propertyName", property.getName())};
+                        StringObjectPair[] newKnown = {new StringObjectPair("element", property.getOwner()), new StringObjectPair("propertyName", property.getName())};
                         known = newKnown;
-                        animationClass = edu.cmu.cs.stage3.alice.core.response.PropertyAnimation.class;
+                        animationClass = PropertyAnimation.class;
                     }
-                    edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory() {
+                    PopupItemFactory factory = new PopupItemFactory() {
                         public Object createItem( final Object object ) {
                             return new Runnable() {
                                 public void run() {
-                                    if (object instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype){
-                                        performDrop(((edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype)object).createNewResponse(), dtde);
+                                    if (object instanceof ResponsePrototype){
+                                        performDrop(((ResponsePrototype)object).createNewResponse(), dtde);
                                     }
-                                    else if (object instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype){
-                                        edu.cmu.cs.stage3.alice.core.Element newResponse = ((edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype)object).createNewElement();
-                                        if (newResponse instanceof edu.cmu.cs.stage3.alice.core.Response){
-                                            performDrop((edu.cmu.cs.stage3.alice.core.Response)newResponse, dtde);
+                                    else if (object instanceof ElementPrototype){
+                                        Element newResponse = ((ElementPrototype)object).createNewElement();
+                                        if (newResponse instanceof Response){
+                                            performDrop((Response)newResponse, dtde);
                                         }
                                     }
                                 }
@@ -343,27 +403,27 @@ public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.aut
                     };
                     String[] desired = {"value"};
                     //   System.out.println("class: "+ animationClass +", known: "+known+", desired: "+desired);
-                    edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype rp = new edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype(animationClass, known, desired);
-                    java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makePrototypeStructure( rp, factory, componentElements.getOwner()  );
-                    javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makePopupMenu( structure );
+                    ResponsePrototype rp = new ResponsePrototype(animationClass, known, desired);
+                    Vector<?> structure = PopupMenuUtilities.makePrototypeStructure( rp, factory, componentElements.getOwner()  );
+                    javax.swing.JPopupMenu popup = PopupMenuUtilities.makePopupMenu( structure );
                     popup.addPopupMenuListener(this);
                     inserting = true;
                     popup.show(dtde.getDropTargetContext().getComponent(), (int)dtde.getLocation().getX(), (int)dtde.getLocation().getY() );
-                    edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.ensurePopupIsOnScreen( popup );
-                } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
+                    PopupMenuUtilities.ensurePopupIsOnScreen( popup );
+                } catch( UnsupportedFlavorException e ) {
+                    AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
                     successful = false;
-                } catch( java.io.IOException e ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
+                } catch( IOException e ) {
+                    AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
                     successful = false;
                 } catch( Throwable t ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed.", t );
+                    AuthoringTool.showErrorDialog( "The drop failed.", t );
                     successful = false;
                 }
             }
-        }else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor ) ) {
+        }else if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, ElementReferenceTransferable.variableReferenceFlavor ) ) {
             if (isMove){
-                dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_MOVE );
+                dtde.acceptDrop( DnDConstants.ACTION_MOVE );
                 successful = true;
             }
             else if (isCopy){
@@ -372,63 +432,58 @@ public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.aut
             }
             if (successful){
                 try {
-                    edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor );
+                    Variable variable = (Variable)transferable.getTransferData( ElementReferenceTransferable.variableReferenceFlavor );
                     if (!checkLoop(variable)){
                         dtde.rejectDrop();
                         successful = false;
                     }
                     else{
-                        edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory() {
+                        PopupItemFactory factory = new PopupItemFactory() {
                             public Object createItem( final Object object ) {
                                 return new Runnable() {
                                     public void run() {
-                                        if (object instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype){
-                                            performDrop(((edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype)object).createNewResponse(), dtde);
+                                        if (object instanceof ResponsePrototype){
+                                            performDrop(((ResponsePrototype)object).createNewResponse(), dtde);
                                         }
-                                        else if (object instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype){
-                                            edu.cmu.cs.stage3.alice.core.Element newResponse = ((edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype)object).createNewElement();
-                                            if (newResponse instanceof edu.cmu.cs.stage3.alice.core.Response){
-                                                performDrop((edu.cmu.cs.stage3.alice.core.Response)newResponse, dtde);
+                                        else if (object instanceof ElementPrototype){
+                                            Element newResponse = ((ElementPrototype)object).createNewElement();
+                                            if (newResponse instanceof Response){
+                                                performDrop((Response)newResponse, dtde);
                                             }
                                         }
                                     }
                                 };
                             }
                         };
-                        java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makeExpressionResponseStructure( variable, factory, componentElements.getOwner()  );
-                        javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makePopupMenu( structure );
+                        Vector<?> structure = PopupMenuUtilities.makeExpressionResponseStructure( variable, factory, componentElements.getOwner()  );
+                        javax.swing.JPopupMenu popup = PopupMenuUtilities.makePopupMenu( structure );
                         popup.addPopupMenuListener(this);
                         inserting = true;
                         popup.show(dtde.getDropTargetContext().getComponent(), (int)dtde.getLocation().getX(), (int)dtde.getLocation().getY() );
-                        edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.ensurePopupIsOnScreen( popup );
+                        PopupMenuUtilities.ensurePopupIsOnScreen( popup );
                     }
-                } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
+                } catch( UnsupportedFlavorException e ) {
+                    AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
                     successful = false;
-                } catch( java.io.IOException e ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
+                } catch( IOException e ) {
+                    AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
                     successful = false;
                 } catch( Throwable t ) {
-                    edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed.", t );
+                    AuthoringTool.showErrorDialog( "The drop failed.", t );
                     successful = false;
                 }
             }
         }
-        else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.expressionReferenceFlavor ) ) {
-            //Don't handle expressions besides variables (which are handled above)
-
-            dtde.rejectDrop();
-            successful = false;
-        }else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor ) ) {
+        else if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, ElementReferenceTransferable.elementReferenceFlavor ) ) {
 
             try {
-                final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element)transferable.getTransferData( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor );
-                if ((element instanceof edu.cmu.cs.stage3.alice.core.Behavior) || (element instanceof edu.cmu.cs.stage3.alice.core.World) || (element instanceof edu.cmu.cs.stage3.alice.core.TextureMap)){
+                final Element element = (Element)transferable.getTransferData( ElementReferenceTransferable.elementReferenceFlavor );
+                if ((element instanceof Behavior) || (element instanceof World) || (element instanceof TextureMap)){
                     dtde.rejectDrop();
                     successful = false;
                 }
                 if (isMove){
-                    dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_MOVE );
+                    dtde.acceptDrop( DnDConstants.ACTION_MOVE );
                     successful = true;
                 }
                 else if (isCopy){
@@ -436,53 +491,53 @@ public class CompositeComponentResponsePanel extends edu.cmu.cs.stage3.alice.aut
                     successful = false;
                 }
                 if (successful){
-                    if (element instanceof edu.cmu.cs.stage3.alice.core.Sound){
-                        edu.cmu.cs.stage3.alice.core.response.SoundResponse r = new edu.cmu.cs.stage3.alice.core.response.SoundResponse();
+                    if (element instanceof Sound){
+                        SoundResponse r = new SoundResponse();
                         r.sound.set(element);
                         r.subject.set(element.getParent());
                         //r.addSoundListener(new movieMaker.SoundHandler(authoringTool.getSoundStorage()));
                         performDrop(r, dtde);
                     }
-                    else if (element instanceof edu.cmu.cs.stage3.alice.core.Pose){
-                        edu.cmu.cs.stage3.alice.core.response.PoseAnimation r = new edu.cmu.cs.stage3.alice.core.response.PoseAnimation();
+                    else if (element instanceof Pose){
+                        PoseAnimation r = new PoseAnimation();
                         r.pose.set(element);
                         r.subject.set(element.getParent());
                         performDrop(r, dtde);
                     }
                     else{
-                        final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory() {
+                        final PopupItemFactory factory = new PopupItemFactory() {
                             public Object createItem( final Object object ) {
                                 return new Runnable() {
                                     public void run() {
-                                        if (object instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype){
-                                            performDrop(((edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype)object).createNewResponse(), dtde);
+                                        if (object instanceof ResponsePrototype){
+                                            performDrop(((ResponsePrototype)object).createNewResponse(), dtde);
                                         }
-                                        else if (object instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype){
-                                            edu.cmu.cs.stage3.alice.core.Element newResponse = ((edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype)object).createNewElement();
-                                            if (newResponse instanceof edu.cmu.cs.stage3.alice.core.Response){
-                                                performDrop((edu.cmu.cs.stage3.alice.core.Response)newResponse, dtde);
+                                        else if (object instanceof ElementPrototype){
+                                            Element newResponse = ((ElementPrototype)object).createNewElement();
+                                            if (newResponse instanceof Response){
+                                                performDrop((Response)newResponse, dtde);
                                             }
                                         }
                                     }
                                 };
                             }
                         };
-                        java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makeResponseStructure( element, factory, componentElements.getOwner()  );
-                        javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makePopupMenu( structure );
+                        Vector<?> structure = PopupMenuUtilities.makeResponseStructure( element, factory, componentElements.getOwner()  );
+                        javax.swing.JPopupMenu popup = PopupMenuUtilities.makePopupMenu( structure );
                         popup.addPopupMenuListener(this);
                         inserting = true;
                         popup.show(dtde.getDropTargetContext().getComponent(), (int)dtde.getLocation().getX(), (int)dtde.getLocation().getY() );
-                        edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.ensurePopupIsOnScreen( popup );
+                        PopupMenuUtilities.ensurePopupIsOnScreen( popup );
                     }
                 }
-            } catch( java.awt.datatransfer.UnsupportedFlavorException e ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
+            } catch( UnsupportedFlavorException e ) {
+                AuthoringTool.showErrorDialog( "The drop failed because of a bad flavor.", e );
                 successful = false;
-            } catch( java.io.IOException e ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
+            } catch( IOException e ) {
+                AuthoringTool.showErrorDialog( "The drop failed because of an IO error.", e );
                 successful = false;
             } catch( Throwable t ) {
-                edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "The drop failed.", t );
+                AuthoringTool.showErrorDialog( "The drop failed.", t );
                 successful = false;
             }
         }else{

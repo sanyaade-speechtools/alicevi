@@ -23,7 +23,18 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
+import java.util.Vector;
+
+import javax.swing.Timer;
+
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
+import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager;
+import edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener;
+import edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel;
 import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent;
+import edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty;
 
 /**
  * Title:
@@ -32,13 +43,19 @@ import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent;
  * Company:
  * @author
  * @version 1.0
+ * 
+ * Abstract class that contains methods for other panels
  */
 
-public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener,  javax.swing.event.PopupMenuListener{
+@SuppressWarnings("serial")
+public abstract class CompositeComponentElementPanel extends GroupingPanel implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener,  javax.swing.event.PopupMenuListener{
 
+	//added by Alberto Pareja-Lecaros
+	private int lineThickness;
+	
     protected final boolean USE_DEPTH = false;
 
-    protected static java.util.Vector timers = new java.util.Vector();
+    protected static Vector<Timer> timers = new Vector<Timer>();
     protected static boolean shouldReact = true;
 
     public static final int LEFT_INDENT = 15;
@@ -49,7 +66,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
     public static final int SCROLL_DELTA = 1;
     public static final int SCROLL_START = 3;
     public static final int MAX_SCROLL = 10;
-    public edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty componentElements;
+    public ObjectArrayProperty componentElements;
     public CompositeComponentOwner m_owner;
 
     protected boolean HACK_started = false;
@@ -66,7 +83,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
     protected java.awt.Insets insets;
     protected int dropPanelPosition = -2;
 
-    protected static java.awt.Color dndFeedBackColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("dndHighlight2");
+    protected static java.awt.Color dndFeedBackColor = AuthoringToolResources.getColor("dndHighlight2");
 
     protected static CompositeComponentElementPanel s_currentComponentPanel;
     protected static java.awt.Component s_componentPanelMoved;
@@ -80,11 +97,11 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
     protected java.awt.event.ContainerAdapter containerAdapter;
 
     //HACK: is there a better way to do this?
-    protected javax.swing.Timer HACK_timer;
-    protected javax.swing.Timer lingerTimer;
-    protected javax.swing.Timer insertTimer;
+    protected Timer HACK_timer;
+    protected Timer lingerTimer;
+    protected Timer insertTimer;
 
-    protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
+    protected AuthoringTool authoringTool;
 
     public CompositeComponentElementPanel(){
         insets = new java.awt.Insets(3,2,0,2);
@@ -103,6 +120,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         });
         HACK_timer.setRepeats(false);
         s_currentComponentPanel = this;
+        lineThickness = 5;
     }
 
     protected boolean isInverted(){
@@ -132,7 +150,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         }
     }
 
-    public void set(edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty elements, CompositeComponentOwner owner, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
+    public void set(ObjectArrayProperty elements, CompositeComponentOwner owner, AuthoringTool authoringToolIn) {
         clean();
         authoringTool = authoringToolIn;
         componentElements = elements;
@@ -142,7 +160,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         startListening();
     }
 
-    public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
+    public void setAuthoringTool(AuthoringTool authoringToolIn) {
         authoringTool = authoringToolIn;
     }
 
@@ -185,7 +203,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
     protected static void stopAllTimers(){
         for (int i=0; i<timers.size(); i++){
-            javax.swing.Timer t = (javax.swing.Timer)timers.elementAt(i);
+            Timer t = (Timer)timers.elementAt(i);
             t.stop();
         }
         timers.removeAllElements();
@@ -239,29 +257,12 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
     public void objectArrayPropertyChanging( edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent propertyEvent ) {
     	invalidEvent = false;
-    	if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_INSERTED){
-            if (componentElements.get(propertyEvent.getNewIndex()) == propertyEvent.getItem()){
-                //          System.err.println("the response is already at the location we want to insert to");
-                invalidEvent = true;
-            }
+    	
+    	if ( (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_INSERTED && componentElements.get(propertyEvent.getNewIndex()) == propertyEvent.getItem()) ||
+    			propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_SHIFTED || (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_REMOVED && 
+    					componentElements.get(propertyEvent.getOldIndex()) != propertyEvent.getItem())){
+            invalidEvent = true;
         }
-        if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_SHIFTED){
-            if (componentElements.get(propertyEvent.getNewIndex()) == propertyEvent.getItem()){
-                //            System.err.println("the response is already at the location we want to insert to for shifting");
-                invalidEvent = true;
-            }
-            if (componentElements.get(propertyEvent.getOldIndex()) != propertyEvent.getItem()){
-                //            System.err.println("the response is not at its old location for shifting");
-                invalidEvent = true;
-            }
-        }
-        if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_REMOVED){
-            if (componentElements.get(propertyEvent.getOldIndex()) != propertyEvent.getItem()){
-                //            System.err.println("the response is not at its old location for deletion");
-                invalidEvent = true;
-            }
-        }
-
     }
 
     protected int getElementComponentCount(){
@@ -279,19 +280,14 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         edu.cmu.cs.stage3.alice.core.Element elements[] = (edu.cmu.cs.stage3.alice.core.Element[])componentElements.get();
         int elementCount = getElementComponentCount();
         boolean aOkay = (elements.length == elementCount);
-        //       System.out.println("elements: "+elements.length+", components: "+elementCount);
         if (aOkay){
             //Loops through the components and makes sure that component[i] == componentElement[i]
             for (int i=0; i<elements.length; i++){
                 if (c[i] instanceof CompositeElementPanel){
                     if (i < elements.length){
                         if (((CompositeElementPanel)c[i]).getElement() != elements[i]){
-                            //                         System.out.println("index "+i+": gui: "+((CompositeElementPanel)c[i]).getElement()+" != component: "+elements[i]);
                             aOkay = false;
                             break;
-                        }
-                        else{
-                            //                          System.out.println("index "+i+": gui: "+((CompositeElementPanel)c[i]).getElement()+" == component: "+elements[i]);
                         }
                     }
                     else{
@@ -302,12 +298,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
                 if (c[i] instanceof ComponentElementPanel){
                     if (i < elements.length){
                         if (((ComponentElementPanel)c[i]).getElement() != elements[i]){
-                            //                          System.out.println("index "+i+": gui: "+((ComponentElementPanel)c[i]).getElement()+" != component: "+elements[i]);
                             aOkay = false;
                             break;
-                        }
-                        else{
-                            //                        System.out.println("index "+i+": gui: "+((ComponentElementPanel)c[i]).getElement()+" == component: "+elements[i]);
                         }
                     }
                     else{
@@ -317,7 +309,6 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
                 }
             }
         }
-        //     System.out.println("checked gui: "+aOkay);
         return aOkay;
     }
 
@@ -325,10 +316,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         if (shouldReact && !invalidEvent){
             boolean successful = true;
             edu.cmu.cs.stage3.alice.core.Element eventElement = (edu.cmu.cs.stage3.alice.core.Element)propertyEvent.getItem();
-      //               System.out.print("item "+eventElement+" ");
             int index = propertyEvent.getNewIndex();
             if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_INSERTED){
-     //                    System.out.println("inserted");
                 java.awt.Component toInsert = s_componentPanelMoved;
                 s_componentPanelMoved = null;
                 boolean isCorrectPanel = false;
@@ -357,27 +346,24 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
                 }
             }
             if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_REMOVED){
-  //                            System.out.println("removed");
                 s_componentPanelMoved = getComponent(eventElement);
                 if (s_componentPanelMoved != null){
-                    this.removeContainerListener( edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener() ); // prevent the object being removed from being cleaned
+                    this.removeContainerListener( GUIElementContainerListener.getStaticListener() ); // prevent the object being removed from being cleaned
                     this.remove(s_componentPanelMoved);
-                    this.addContainerListener( edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener() );
+                    this.addContainerListener( GUIElementContainerListener.getStaticListener() );
                 }
                 else{
                     successful = false;
                 }
             }
             if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_SHIFTED){
-       //                     System.out.println("shifted");
                 s_componentPanelMoved = null;
                 java.awt.Component c = getComponent(eventElement);
                 if (c != null){
-                    this.removeContainerListener( edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener() ); // prevent the object being removed from being cleaned
+                    this.removeContainerListener( GUIElementContainerListener.getStaticListener() ); // prevent the object being removed from being cleaned
                     this.remove(c);
-     //                              System.out.println("adding at "+index);
                     addElementPanel(c, index);
-                    this.addContainerListener( edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener() ); // prevent the object being removed from being cleaned
+                    this.addContainerListener( GUIElementContainerListener.getStaticListener() ); // prevent the object being removed from being cleaned
                 }
                 else{
                     successful = false;
@@ -385,16 +371,13 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
             }
             successful = (successful && checkGUI());
             if (successful){
-  //                           System.out.println("successful");
                 this.revalidate();
                 this.repaint();
             }
             else{
-      //                        System.out.println("failed");
                 clean();
                 updateGUI();
                 wakeUp();
-   //                          System.out.println("system reset: "+checkGUI());
             }
         }
     }
@@ -522,7 +505,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
             }
         }
         stopAllTimers(); //TIMER HACK
-		edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor);
+		AuthoringToolResources.safeIsDataFlavorSupported(dtde, ElementReferenceTransferable.variableReferenceFlavor);
         dtde.acceptDrag(dtde.getDropAction());
     }
 
@@ -549,7 +532,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         return componentElements.size();
     }
 
-    public edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty getComponentProperty(){
+    public ObjectArrayProperty getComponentProperty(){
         return componentElements;
     }
 
@@ -580,11 +563,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
                 g.setColor( color );
                 g.fillRect( rect.x, rect.y, rect.width, rect.height );
                 g.dispose();
-            } else {
-                //     System.err.println( "WARNING: feedback color is null" );
-            }
-        } else {
-            //    System.err.println( "WARNING: feedback graphics is null" );
+            } 
         }
     }
 
@@ -615,7 +594,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         if (location == -1 || location >= toPaint.getComponentCount()){
             int lastSpot = toPaint.getComponentCount() - 1;
             for (int i = lastSpot; i>=0; i--){
-                if (toPaint.getComponent(i) instanceof edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel){
+                if (toPaint.getComponent(i) instanceof GroupingPanel){
                     lastSpot = i;
                     break;
                 }
@@ -632,7 +611,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
             lineLocation = bounds.y -2;
         }
         java.awt.Rectangle toPaintBounds = toPaint.getBounds();
-        drawFeedback( toPaint, new java.awt.Rectangle( 2, lineLocation, toPaintBounds.width-4, 2 ) );
+        drawFeedback( toPaint, new java.awt.Rectangle( 2, lineLocation, toPaintBounds.width-4, lineThickness ) );
     }
 
     public void paint(java.awt.Graphics g){
@@ -653,8 +632,6 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         int minValue = topLevelScrollPane.getVerticalScrollBar().getMinimum();
         int amountToScroll = SCROLL_AMOUNT;
         if (hoverPoint.y < SCROLL_SIZE){
-            //  System.out.println(currentValue+", "+maxValue+", "+minValue);
-            //  int amountToScroll = (hoverPoint.y*hoverPoint.y);
             if ( currentValue > minValue){
                 if ((currentValue-amountToScroll) >= minValue){
                     currentValue -= amountToScroll;
@@ -670,8 +647,6 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
             }
         }
         else if (hoverPoint.y > (scrollSpace.getHeight()-SCROLL_SIZE)){
-            // System.out.println(currentValue+", "+maxValue+", "+minValue);
-            //  int amountToScroll = ((int)scrollSpace.getHeight()-hoverPoint.y)*((int)scrollSpace.getHeight()-hoverPoint.y);
             if ( currentValue < maxValue){
                 if ((currentValue+amountToScroll) <= maxValue){
                     currentValue += amountToScroll;
@@ -705,9 +680,12 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
     //componentSizesAndPositions vector has already been initialized to current conditions
     //mouse is over a location and this figures out where the drop should occur
     //s_currentComponentPanel is the CompositeComponentPanel of the current DropPanel
+    /**
+     * This inserts whatever object is being dragged.
+     */
     protected void insertDropPanel(java.awt.dnd.DropTargetDragEvent dtde){
         java.awt.Component dropComponent = dtde.getDropTargetContext().getComponent();
-        java.awt.datatransfer.Transferable currentTransferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentTransferable();
+        java.awt.datatransfer.Transferable currentTransferable = DnDManager.getCurrentTransferable();
         edu.cmu.cs.stage3.alice.core.Element currentElement = null;
         java.awt.Point mainSpacePoint;
 
@@ -731,12 +709,11 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         if (componentsIsEmpty()){
             drawFeedback(null,null);
             this.getDropPanel().setHighlight(true);
-          //  this.repaint();
             return;
         }
         if (currentTransferable != null){
             try{
-                currentElement = (edu.cmu.cs.stage3.alice.core.Element)currentTransferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
+                currentElement = (edu.cmu.cs.stage3.alice.core.Element)currentTransferable.getTransferData(ElementReferenceTransferable.elementReferenceFlavor);
             }catch (Exception e){
             }
         }
@@ -748,7 +725,6 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         int position = getInsertLocation(panelSpacePoint);
         if (checkDropLocation(position, currentElement)){
             insertLocation = position;
-          //  this.repaint();
             this.paintLine(this, insertLocation);
         }
 
@@ -758,7 +734,6 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
     //There is an insertPanel somewhere in this responsePanel
     public void removeDropPanelFromCurrentComponent(){
         shouldDrawLine = false;
-       // this.repaint();
         drawFeedback( null, null );
         dropPanelLocation = -2;
         if (s_currentComponentPanel != null){
@@ -770,8 +745,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         element.removeFromParent();
     }
 
-    protected void addToElement(edu.cmu.cs.stage3.alice.core.Element toAdd, edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty toAddTo, int location){
-        String newName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameForNewChild(toAdd.name.getStringValue(), toAddTo.getOwner());
+    protected void addToElement(edu.cmu.cs.stage3.alice.core.Element toAdd, ObjectArrayProperty toAddTo, int location){
+        String newName = AuthoringToolResources.getNameForNewChild(toAdd.name.getStringValue(), toAddTo.getOwner());
         toAdd.name.set(newName);
         toAdd.setParent(toAddTo.getOwner());
         toAddTo.add(location, toAdd);
@@ -874,10 +849,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
         }
         inserting = false;
         boolean isCopy = false;
-        java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentDragComponent();
         removeDropPanelFromCurrentComponent();
         if (((dtde.getDropAction()& java.awt.dnd.DnDConstants.ACTION_COPY) > 0)){
-			//toDrop = (edu.cmu.cs.stage3.alice.core.Element)toDrop.createCopyNamed(null, null, dropPanelLocationTemp, null, null);
 			toDrop = toDrop.HACK_createCopy(null, null, dropPanelLocationTemp, null, componentElements.getOwner() );
             isCopy = true;
         }
@@ -887,7 +860,6 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
             int oldIndex = componentElements.indexOf(toDrop);
             if (dropPanelLocationTemp <= -1 || dropPanelLocationTemp >= getLastElementLocation()){
-               //               System.out.println("changing index from "+dropPanelLocationTemp+" to "+(componentElements.size()-1));
                 if (componentElements.size() == 0){
                     dropPanelLocationTemp = 0;
                 }
@@ -897,17 +869,12 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
             }
             else{
                 if (dropPanelLocationTemp > oldIndex){
-                //                       System.out.println("dropping index from "+dropPanelLocationTemp+" to "+(dropPanelLocationTemp-1));
                     dropPanelLocationTemp--;
                 }
             }
             int dif = Math.abs(oldIndex - dropPanelLocationTemp);
             if (dif > 0){
-            //    System.out.println("shift from "+oldIndex+" to "+dropPanelLocationTemp);
                 componentElements.shift(oldIndex, dropPanelLocationTemp);
-            }
-            else{
-                //               System.out.println("wanted to shift from "+oldIndex+" to "+dropPanelLocationTemp+", but I decided against it");
             }
             alreadyDone = true;
         }
