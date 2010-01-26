@@ -1,3 +1,6 @@
+package edu.cmu.cs.stage3.alice.authoringtool;
+
+
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
  * 
@@ -20,63 +23,69 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Map;
 
-package edu.cmu.cs.stage3.alice.authoringtool;
+import edu.cmu.cs.stage3.alice.core.Element;
 
-public abstract class AbstractImporter implements edu.cmu.cs.stage3.alice.authoringtool.Importer {
+public abstract class AbstractImporter implements Importer {
 	private Object location = null;
 	protected String plainName = null;
 
-	public abstract java.util.Map getExtensionMap();
+	public abstract Map<?, ?> getExtensionMap();
 
-	public edu.cmu.cs.stage3.alice.core.Element load( String filename ) throws java.io.IOException {
-		location = new java.io.File( filename ).getParentFile();
-		String fullName = new java.io.File( filename ).getName();
+	public Element load( String filename ) throws IOException {
+		location = new File( filename ).getParentFile();
+		String fullName = new File( filename ).getName();
 		plainName = fullName.substring( 0, fullName.indexOf( '.' ) );
-		if( edu.cmu.cs.stage3.alice.core.Element.isPotentialNameValid( plainName ) ) {
+		if( Element.isPotentialNameValid( plainName ) ) {
 			//pass
 		} else {
-			plainName = edu.cmu.cs.stage3.alice.core.Element.generateValidName( plainName );
+			plainName = Element.generateValidName( plainName );
 		}
-		java.io.FileInputStream fis = new java.io.FileInputStream( filename );
-		edu.cmu.cs.stage3.alice.core.Element castMember = load( fis, getExtension( filename ) );
+		FileInputStream fis = new FileInputStream( filename );
+		Element castMember = load( fis, getExtension( filename ) );
 		fis.close();
 		plainName = null;
 		return castMember;
 	}
 
-	public edu.cmu.cs.stage3.alice.core.Element load( java.io.File file ) throws java.io.IOException {
+	public Element load( File file ) throws IOException {
 		location = file.getParentFile();
 		String fullName = file.getName();
 		plainName = fullName.substring( 0, fullName.indexOf( '.' ) );
-		if( edu.cmu.cs.stage3.alice.core.Element.isPotentialNameValid( plainName ) ) {
+		if( Element.isPotentialNameValid( plainName ) ) {
 			//pass
 		} else {
-			plainName = edu.cmu.cs.stage3.alice.core.Element.generateValidName( plainName );
+			plainName = Element.generateValidName( plainName );
 		}
-		java.io.FileInputStream fis = new java.io.FileInputStream( file );
-		edu.cmu.cs.stage3.alice.core.Element castMember = load( fis, getExtension( file.getName() ) );
+		FileInputStream fis = new FileInputStream( file );
+		Element castMember = load( fis, getExtension( file.getName() ) );
 		fis.close();
 		plainName = null;
 		return castMember;
 	}
 
-	public edu.cmu.cs.stage3.alice.core.Element load( java.net.URL url ) throws java.io.IOException {
+	public Element load( URL url ) throws IOException {
 		String externalForm = url.toExternalForm();
-		location = new java.net.URL( externalForm.substring( 0, externalForm.lastIndexOf( '/' ) + 1 ) );
+		location = new URL( externalForm.substring( 0, externalForm.lastIndexOf( '/' ) + 1 ) );
 		String fullName = externalForm.substring( externalForm.lastIndexOf( '/' ) + 1 );
 		plainName = fullName.substring( 0, fullName.lastIndexOf( '.' ) );
-		if( edu.cmu.cs.stage3.alice.core.Element.isPotentialNameValid( plainName ) ) {
+		if( Element.isPotentialNameValid( plainName ) ) {
 			//pass
 		} else {
-			plainName = edu.cmu.cs.stage3.alice.core.Element.generateValidName( plainName );
+			plainName = Element.generateValidName( plainName );
 		}
-		edu.cmu.cs.stage3.alice.core.Element castMember = load( url.openStream(), getExtension( url.getFile() ) );
+		Element castMember = load( url.openStream(), getExtension( url.getFile() ) );
 		plainName = null;
 		return castMember;
 	}
 
-	protected abstract edu.cmu.cs.stage3.alice.core.Element load( java.io.InputStream istream, String ext ) throws java.io.IOException;
+	protected abstract Element load( InputStream istream, String ext ) throws IOException;
 
 	public Object getLocation() {
 		return location;
