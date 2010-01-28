@@ -153,6 +153,7 @@ public abstract class Element {
 			propertyListener.changed( propertyEvent );
 		}
 	}
+
 	protected void onPropertyChange( Property property ) {
 		if( isReleased() ) {
 			warnln( "WARNING: scenegraph property change " + property + " on already released " + this + "." );

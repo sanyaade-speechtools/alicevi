@@ -27,55 +27,67 @@ public class DefaultRenderTargetFactory implements RenderTargetFactory {
 
 	public static Class[] getPotentialRendererClasses() {
 		java.util.Vector vector = new java.util.Vector();
-		
-		if ( System.getProperty("os.name").startsWith("Win") ){
-		try {
-			if( edu.cmu.cs.stage3.alice.scenegraph.renderer.util.DirectXVersion.getVersion() >= 7.0 ) {
-				vector.addElement( edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer.Renderer.class );
+
+		if (System.getProperty("os.name").startsWith("Win")) {
+			try {
+				System.out.println("DirectX");
+				if (edu.cmu.cs.stage3.alice.scenegraph.renderer.util.DirectXVersion
+						.getVersion() >= 7.0) {
+					vector
+							.addElement(edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer.Renderer.class);
+				}
+			} catch (Throwable t) {
+				// pass
 			}
-		} catch( Throwable t ) {
-			//pass
-		}
 		}
 
 		try {
-			vector.addElement( edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer.Renderer.class );
-		} catch( Throwable t ) {
-			//pass
+			System.out.println("JOGL");
+			vector
+					.addElement(edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer.Renderer.class);
+		} catch (Throwable t) {
+			// pass
 		}
 
 		try {
-			vector.addElement( edu.cmu.cs.stage3.alice.scenegraph.renderer.nullrenderer.Renderer.class );
-		} catch( Throwable t ) {
-			//pass
+			System.out.println("NULL?");
+			vector
+					.addElement(edu.cmu.cs.stage3.alice.scenegraph.renderer.nullrenderer.Renderer.class);
+		} catch (Throwable t) {
+			// pass
 		}
-		Class[] array = new Class[ vector.size() ];
-		vector.copyInto( array );
+		Class[] array = new Class[vector.size()];
+		vector.copyInto(array);
 		return array;
 	}
+
 	private Class m_rendererClass;
 	private Renderer m_renderer;
+
 	public DefaultRenderTargetFactory() {
-		this( null );
+		this(null);
 	}
-	public DefaultRenderTargetFactory( Class rendererClass ) {
-		if( rendererClass == null ) {
-			rendererClass = getPotentialRendererClasses()[ 0 ];		
+
+	public DefaultRenderTargetFactory(Class rendererClass) {
+		if (rendererClass == null) {
+			rendererClass = getPotentialRendererClasses()[0];
 		}
 		m_rendererClass = rendererClass;
 	}
+
 	public boolean isSoftwareEmulationForced() {
 		return getRenderer().isSoftwareEmulationForced();
 	}
-	public void setIsSoftwareEmulationForced( boolean isSoftwareEmulationForced ) {
-		getRenderer().setIsSoftwareEmulationForced( isSoftwareEmulationForced );
+
+	public void setIsSoftwareEmulationForced(boolean isSoftwareEmulationForced) {
+		getRenderer().setIsSoftwareEmulationForced(isSoftwareEmulationForced);
 	}
 
 	private Renderer getRenderer() {
-		if( m_renderer == null ) {
+		if (m_renderer == null) {
 			try {
-				m_renderer = (Renderer)m_rendererClass.newInstance();
-			} catch( Throwable t ) {
+				m_renderer = (Renderer) m_rendererClass.newInstance();
+			} catch (Throwable t) {
 				t.printStackTrace();
 			}
 		}
@@ -85,18 +97,22 @@ public class DefaultRenderTargetFactory implements RenderTargetFactory {
 	public OffscreenRenderTarget createOffscreenRenderTarget() {
 		return getRenderer().createOffscreenRenderTarget();
 	}
+
 	public OnscreenRenderTarget createOnscreenRenderTarget() {
 		return getRenderer().createOnscreenRenderTarget();
 	}
 
-	public void releaseOffscreenRenderTarget( OffscreenRenderTarget offscreenRenderTarget ) {
+	public void releaseOffscreenRenderTarget(
+			OffscreenRenderTarget offscreenRenderTarget) {
 		offscreenRenderTarget.release();
 	}
-	public void releaseOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
+
+	public void releaseOnscreenRenderTarget(
+			OnscreenRenderTarget onscreenRenderTarget) {
 		onscreenRenderTarget.release();
 	}
-	
+
 	public void release() {
-		//todo
+		// todo
 	}
 }

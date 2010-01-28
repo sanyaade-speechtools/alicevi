@@ -26,17 +26,18 @@ package edu.cmu.cs.stage3.alice.authoringtool;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import edu.cmu.cs.stage3.alice.core.*;
 
 /**
  * @author Jason Pratt
  */
 public class WorldTreeComponent extends javax.swing.JPanel {
-	protected edu.cmu.cs.stage3.alice.core.World world;
-	protected edu.cmu.cs.stage3.alice.core.Element bogusRoot = new edu.cmu.cs.stage3.alice.core.Transformable();
+	protected World world;
+	protected Element bogusRoot = new Transformable();
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.WorldTreeModel worldTreeModel = new edu.cmu.cs.stage3.alice.authoringtool.util.WorldTreeModel();
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.ElementTreeCellRenderer cellRenderer = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementTreeCellRenderer();
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.ElementTreeCellEditor cellEditor = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementTreeCellEditor();
-	protected edu.cmu.cs.stage3.alice.core.Element selectedElement;
+	protected Element selectedElement;
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringtoolConfig;
 	protected java.awt.dnd.DragSource dragSource = new java.awt.dnd.DragSource();
 	protected java.util.HashSet elementSelectionListeners = new java.util.HashSet();
@@ -90,7 +91,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 	private void selectionInit() {
 		authoringTool.addElementSelectionListener(
 			new edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener() {
-				public void elementSelected( edu.cmu.cs.stage3.alice.core.Element element ) {
+				public void elementSelected( Element element ) {
 					WorldTreeComponent.this.setSelectedElement( element );
 				}
 			}
@@ -101,11 +102,11 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 		authoringTool.addAuthoringToolStateListener( worldTreeModel );
 	}
 
-	public edu.cmu.cs.stage3.alice.core.World getWorld() {
+	public World getWorld() {
 		return world;
 	}
 
-	public void setWorld( edu.cmu.cs.stage3.alice.core.World world ) {
+	public void setWorld( World world ) {
 		this.world = world;
 		if( world == null ) {
 			worldTreeModel.setRoot( bogusRoot );
@@ -120,11 +121,11 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 		repaint();
 	}
 
-	public void setCurrentScope( edu.cmu.cs.stage3.alice.core.Element element ) {
+	public void setCurrentScope( Element element ) {
 		worldTreeModel.setCurrentScope( element );
 	}
 
-	public void setSelectedElement( edu.cmu.cs.stage3.alice.core.Element element ) {
+	public void setSelectedElement( Element element ) {
 		if( element != selectedElement ) {
 			selectedElement = element;
 			if( element == null ) {
@@ -149,7 +150,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 		}
 	}
 
-	public edu.cmu.cs.stage3.alice.core.Element getSelectedElement() {
+	public Element getSelectedElement() {
 		return selectedElement;
 	}
 
@@ -158,8 +159,8 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			javax.swing.tree.TreePath path = ev.getNewLeadSelectionPath();
 			if( path != null ) {
 				Object o = path.getLastPathComponent();
-				if( o instanceof edu.cmu.cs.stage3.alice.core.Element ) {
-					selectedElement = (edu.cmu.cs.stage3.alice.core.Element)o;
+				if( o instanceof Element ) {
+					selectedElement = (Element)o;
 					if( selectedElement == worldTreeModel.HACK_getOriginalRoot() ) {
 						//pass
 					} else {
@@ -167,7 +168,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 					}
 				}
 			} else {
-				WorldTreeComponent.this.setSelectedElement( (edu.cmu.cs.stage3.alice.core.Element)WorldTreeComponent.this.worldTreeModel.getRoot() );
+				WorldTreeComponent.this.setSelectedElement( (Element)WorldTreeComponent.this.worldTreeModel.getRoot() );
 			}
 		}
 	};
@@ -205,8 +206,8 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			javax.swing.tree.TreePath path = tree.getPathForLocation( (int)p.getX(), (int)p.getY() );
 			if( path != null ) {
 				Object element = path.getLastPathComponent();
-				if( element instanceof edu.cmu.cs.stage3.alice.core.Element ) {
-					if( treeModel.isElementInScope( (edu.cmu.cs.stage3.alice.core.Element)element ) ) {
+				if( element instanceof Element ) {
+					if( treeModel.isElementInScope( (Element)element ) ) {
 						java.awt.datatransfer.Transferable transferable = edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory.createTransferable( element );
 						dragSource.startDrag( dge, java.awt.dnd.DragSource.DefaultMoveDrop, transferable, edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getInternalListener() );
 						edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.fireDragStarted( transferable, WorldTreeComponent.this );
@@ -218,7 +219,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 
 	public class WorldTreeDropTargetListener implements java.awt.dnd.DropTargetListener {
 		protected boolean checkDrag( java.awt.dnd.DropTargetDragEvent dtde ) {
-			if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, AuthoringToolResources.getReferenceFlavorForClass( edu.cmu.cs.stage3.alice.core.Model.class ) ) ) {
+			if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, AuthoringToolResources.getReferenceFlavorForClass( Model.class ) ) ) {
 				dtde.acceptDrag( java.awt.dnd.DnDConstants.ACTION_MOVE );
 				return true;
 			}
@@ -238,13 +239,13 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 				worldTree.setCursorLocation( dtde.getLocation() );
 
 				javax.swing.tree.TreePath parentPath = worldTree.getParentPath();
-				edu.cmu.cs.stage3.alice.core.Element parent = (edu.cmu.cs.stage3.alice.core.Element)parentPath.getLastPathComponent();
+				Element parent = (Element)parentPath.getLastPathComponent();
 
 				java.awt.datatransfer.Transferable transferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentTransferable();
-				edu.cmu.cs.stage3.alice.core.Element child = null;
-				if( (transferable != null) && AuthoringToolResources.safeIsDataFlavorSupported(transferable, AuthoringToolResources.getReferenceFlavorForClass( edu.cmu.cs.stage3.alice.core.Model.class ) ) ) {
+				Element child = null;
+				if( (transferable != null) && AuthoringToolResources.safeIsDataFlavorSupported(transferable, AuthoringToolResources.getReferenceFlavorForClass( Model.class ) ) ) {
 					try {
-						child = (edu.cmu.cs.stage3.alice.core.Element)transferable.getTransferData( AuthoringToolResources.getReferenceFlavorForClass( edu.cmu.cs.stage3.alice.core.Model.class ) );
+						child = (Element)transferable.getTransferData( AuthoringToolResources.getReferenceFlavorForClass( Model.class ) );
 					} catch( Exception e ) {
 						AuthoringTool.showErrorDialog( "Error encountered extracting drop transferable.", e );
 					}
@@ -282,12 +283,12 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 
 			try {
 				Object o = null;
-				if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, AuthoringToolResources.getReferenceFlavorForClass( edu.cmu.cs.stage3.alice.core.Model.class ) ) ) {
+				if( AuthoringToolResources.safeIsDataFlavorSupported(dtde, AuthoringToolResources.getReferenceFlavorForClass( Model.class ) ) ) {
 					java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-					final edu.cmu.cs.stage3.alice.core.Model model = (edu.cmu.cs.stage3.alice.core.Model)transferable.getTransferData( AuthoringToolResources.getReferenceFlavorForClass( edu.cmu.cs.stage3.alice.core.Model.class ) );
+					final Model model = (Model)transferable.getTransferData( AuthoringToolResources.getReferenceFlavorForClass( Model.class ) );
 
 					javax.swing.tree.TreePath parentPath = worldTree.getParentPath();
-					final edu.cmu.cs.stage3.alice.core.Element parent = (edu.cmu.cs.stage3.alice.core.Element)parentPath.getLastPathComponent();
+					final Element parent = (Element)parentPath.getLastPathComponent();
 
 					if( isAcceptableDrop( parent, model ) ) {
 						dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_MOVE );
@@ -324,22 +325,22 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			dtde.dropComplete( succeeded );
 		}
 
-		private boolean isAcceptableDrop( edu.cmu.cs.stage3.alice.core.Element parent, edu.cmu.cs.stage3.alice.core.Element child ) {
-			if( parent instanceof edu.cmu.cs.stage3.alice.core.Group ) {
-				edu.cmu.cs.stage3.alice.core.Group group = (edu.cmu.cs.stage3.alice.core.Group)parent;
+		private boolean isAcceptableDrop( Element parent, Element child ) {
+			if( parent instanceof Group ) {
+				Group group = (Group)parent;
 				Class childValueClass = child.getClass();
-				if( child instanceof edu.cmu.cs.stage3.alice.core.Expression ) {
-					childValueClass = ((edu.cmu.cs.stage3.alice.core.Expression)child).getValueClass();
+				if( child instanceof Expression ) {
+					childValueClass = ((Expression)child).getValueClass();
 				}
 				if( ! group.valueClass.getClassValue().isAssignableFrom( childValueClass ) ) {
 					return false;
 				}
 			}
 
-			if( (parent instanceof edu.cmu.cs.stage3.alice.core.Group) || (parent instanceof edu.cmu.cs.stage3.alice.core.World) ) {
-				if( child.getParent() instanceof edu.cmu.cs.stage3.alice.core.World ) {
+			if( (parent instanceof Group) || (parent instanceof World) ) {
+				if( child.getParent() instanceof World ) {
 					return true;
-				} else if( child.getParent() instanceof edu.cmu.cs.stage3.alice.core.Group ) {
+				} else if( child.getParent() instanceof Group ) {
 					return true;
 				} else if( child.getParent() == null ) {
 					return true;
@@ -349,16 +350,16 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			return false;
 		}
 
-		private void insertChild( edu.cmu.cs.stage3.alice.core.Element parent, edu.cmu.cs.stage3.alice.core.Element child, javax.swing.tree.TreePath[] parentToPredecessor ) {
+		private void insertChild( Element parent, Element child, javax.swing.tree.TreePath[] parentToPredecessor ) {
 			int index;
 			javax.swing.tree.TreePath parentPath = parentToPredecessor[0];
 			javax.swing.tree.TreePath predecessorPath = parentToPredecessor[parentToPredecessor.length-1];
-			edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty oap = null;
+			property.ObjectArrayProperty oap = null;
 
-			if( parent instanceof edu.cmu.cs.stage3.alice.core.World ) {
-				oap = ((edu.cmu.cs.stage3.alice.core.World)parent).sandboxes;
-			} else if( parent instanceof edu.cmu.cs.stage3.alice.core.Group ) {
-				oap = ((edu.cmu.cs.stage3.alice.core.Group)parent).values;
+			if( parent instanceof World ) {
+				oap = ((World)parent).sandboxes;
+			} else if( parent instanceof Group ) {
+				oap = ((Group)parent).values;
 			}
 
 			if( predecessorPath == parentPath ) {
@@ -368,7 +369,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 				while( (i >= 0) && (parentToPredecessor[i] != null) && (! parentToPredecessor[i].getParentPath().equals( parentPath )) ) {
 					i--;
 				}
-				edu.cmu.cs.stage3.alice.core.Element predecessor = (edu.cmu.cs.stage3.alice.core.Element)parentToPredecessor[i].getLastPathComponent();
+				Element predecessor = (Element)parentToPredecessor[i].getLastPathComponent();
 				index = 1 + oap.indexOf( predecessor );
 			}
 
@@ -437,7 +438,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 					javax.swing.tree.TreePath path = getClosestPathForLocation( tree, ev.getX(), ev.getY() );
 
 					if( path != null ) {
-						edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element)path.getLastPathComponent();
+						Element element = (Element)path.getLastPathComponent();
 						boolean elementInScope = ((edu.cmu.cs.stage3.alice.authoringtool.util.WorldTreeModel)tree.getModel()).isElementInScope( element );
 
 						if( elementInScope ) {
@@ -495,8 +496,8 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			javax.swing.tree.TreePath path = tree.getPathForLocation( ev.getX(), ev.getY() );
 			if( path != null ) {
 				Object node = path.getLastPathComponent();
-				if( node instanceof edu.cmu.cs.stage3.alice.core.Element ) {
-					javax.swing.JPopupMenu popup = createPopup( (edu.cmu.cs.stage3.alice.core.Element)node, path );
+				if( node instanceof Element ) {
+					javax.swing.JPopupMenu popup = createPopup( (Element)node, path );
 					if( popup != null ) {
 						popup.show( ev.getComponent(), ev.getX(), ev.getY() );
 						edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.ensurePopupIsOnScreen( popup );
@@ -507,7 +508,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			}
 		}
 
-		private javax.swing.JPopupMenu createPopup( final edu.cmu.cs.stage3.alice.core.Element element, javax.swing.tree.TreePath path ) {
+		private javax.swing.JPopupMenu createPopup( final Element element, javax.swing.tree.TreePath path ) {
 			java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.getDefaultStructure( element, worldTreeModel.isElementInScope( element ), authoringTool, worldTree, path );
 			return edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.makeElementPopupMenu( element, structure );
 		}
@@ -517,10 +518,10 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 				defaultStructure = new java.util.Vector();
 				defaultStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( "create new group", new Runnable() {
 					public void run() {
-						edu.cmu.cs.stage3.alice.core.Group newGroup = new edu.cmu.cs.stage3.alice.core.Group();
+						Group newGroup = new Group();
 						String name = AuthoringToolResources.getNameForNewChild( "Group", world );
 						newGroup.name.set( name );
-						newGroup.valueClass.set( edu.cmu.cs.stage3.alice.core.Model.class );
+						newGroup.valueClass.set( Model.class );
 						world.addChild( newGroup );
 						world.groups.add( newGroup );
 					}
