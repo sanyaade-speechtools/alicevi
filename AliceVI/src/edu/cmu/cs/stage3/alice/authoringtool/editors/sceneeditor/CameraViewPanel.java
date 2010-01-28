@@ -1865,7 +1865,8 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 				quadViewButton_actionPerformed(e);
 			}
 		});
-		mouseModePanel.setLayout(gridBagLayout6);
+		
+		mouseModePanel.setLayout(new GridLayout(0,3));
 		mouseModePanel.setOpaque(false);
 		mouseModePanel.setBorder(mouseInfoBorder);
 		aspectRatioComboBox.setMinimumSize(new Dimension(80, 20));
