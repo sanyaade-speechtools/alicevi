@@ -23,13 +23,60 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import java.awt.*;
-import javax.swing.border.*;
-import java.awt.event.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
+import edu.cmu.cs.stage3.alice.authoringtool.JAlice;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
+import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent;
+import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener;
+import edu.cmu.cs.stage3.io.FileUtilities;
+import edu.cmu.cs.stage3.swing.ContentPane;
+import edu.cmu.cs.stage3.swing.DialogManager;
 
 /**
  * @author Jason Pratt, brought over to the dark side by Dave Culyba
@@ -39,94 +86,95 @@ import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
  * Sanity? We're so far beyond the sanity barrier it's crazy.
  */
 
-public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
-	protected java.util.HashMap checkBoxToConfigKeyMap = new java.util.HashMap();
-	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
+@SuppressWarnings("serial")
+public class PreferencesContentPane extends ContentPane {
+	protected HashMap<Object, String> checkBoxToConfigKeyMap = new HashMap<Object, String>();
+	protected AuthoringTool authoringTool;
 	private Package authoringToolPackage = Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool" );
-	protected javax.swing.JFileChooser browseFileChooser = new javax.swing.JFileChooser();
-	protected java.util.HashMap rendererStringMap = new java.util.HashMap();
+	protected JFileChooser browseFileChooser = new JFileChooser();
+	protected HashMap<Object, String> rendererStringMap = new HashMap<Object, String>();
 	protected boolean restartRequired = false;
 	protected boolean reloadRequired = false;
 	protected boolean shouldListenToRenderBoundsChanges = true;
 	protected boolean changedCaptureDirectory = false;
-	protected java.awt.Frame owner;
-	private java.util.Vector m_okActionListeners = new java.util.Vector();
+	protected Frame owner;
+	private Vector<ActionListener> m_okActionListeners = new Vector<ActionListener>();
 	private final String FOREVER_INTERVAL_STRING = "Forever";
 	private final String INFINITE_BACKUPS_STRING = "Infinite";
 
-	public final javax.swing.AbstractAction okayAction = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent ev ) {
+	public final AbstractAction okayAction = new AbstractAction() {
+		public void actionPerformed( ActionEvent ev ) {
 			if( PreferencesContentPane.this.validateInput() ) {
 				fireOKActionListeners();
 			}
 		}
 	};
 
-	public final javax.swing.AbstractAction cancelAction = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent ev ) {
+	public final AbstractAction cancelAction = new AbstractAction() {
+		public void actionPerformed( ActionEvent ev ) {
 		}
 	};
 	
-	public final javax.swing.event.DocumentListener captureDirectoryChangeListener = new javax.swing.event.DocumentListener() {
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+	public final DocumentListener captureDirectoryChangeListener = new DocumentListener() {
+		public void changedUpdate(DocumentEvent e) {
 			changedCaptureDirectory = true;
 		}
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(DocumentEvent e) {
 			changedCaptureDirectory = true;
 		}
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(DocumentEvent e) {
 			changedCaptureDirectory = true;
 		}
 	};
 	
-	public final javax.swing.event.DocumentListener renderDialogBoundsChecker = new javax.swing.event.DocumentListener() {
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+	public final DocumentListener renderDialogBoundsChecker = new DocumentListener() {
+		public void changedUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderBounds();
 			}
 		}
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderBounds();
 			}
 		}
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderBounds();
 			}
 		}
 	};
 	
-	public final javax.swing.event.DocumentListener renderDialogWidthChecker = new javax.swing.event.DocumentListener() {
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+	public final DocumentListener renderDialogWidthChecker = new DocumentListener() {
+		public void changedUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderWidth();
 			}
 		}
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderWidth();
 			}
 		}
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderWidth();
 			}
 		}
 	};
 	
-	public final javax.swing.event.DocumentListener renderDialogHeightChecker = new javax.swing.event.DocumentListener() {
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+	public final DocumentListener renderDialogHeightChecker = new DocumentListener() {
+		public void changedUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderHeight();
 			}
 		}
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderHeight();
 			}
 		}
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges){
 				checkAndUpdateRenderHeight();
 			}
@@ -145,7 +193,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	}
 	
 	private void scaleFont(Component currentComponent){
-		currentComponent.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 12));
+		currentComponent.setFont(new Font("SansSerif", Font.BOLD, 12));
 		if (currentComponent instanceof Container){
 			for (int i=0; i<((Container)currentComponent).getComponentCount(); i++){
 				scaleFont(((Container)currentComponent).getComponent(i));
@@ -153,7 +201,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		}	
 	}
 	
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool){
+	public void setAuthoringTool(AuthoringTool authoringTool){
 		this.authoringTool = authoringTool;
 	}
 	
@@ -161,33 +209,33 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		return "Preferences";
 	}
 
-	public void preDialogShow( javax.swing.JDialog dialog ) {
+	public void preDialogShow( JDialog dialog ) {
 		super.preDialogShow( dialog );
 		updateGUI();
 		changedCaptureDirectory = false;
 	}
 
-	public void postDialogShow( javax.swing.JDialog dialog ) {
+	public void postDialogShow( JDialog dialog ) {
 		super.postDialogShow( dialog );
 	}	
 
-	public void addOKActionListener( java.awt.event.ActionListener l ) {
+	public void addOKActionListener( ActionListener l ) {
 		m_okActionListeners.addElement( l );
 	}
-	public void removeOKActionListener( java.awt.event.ActionListener l ) {
+	public void removeOKActionListener( ActionListener l ) {
 		m_okActionListeners.removeElement( l );
 	}
-	public void addCancelActionListener( java.awt.event.ActionListener l ) {
+	public void addCancelActionListener(ActionListener l ) {
 		cancelButton.addActionListener( l );
 	}
-	public void removeCancelActionListener( java.awt.event.ActionListener l ) {
+	public void removeCancelActionListener( ActionListener l ) {
 		cancelButton.removeActionListener( l );
 	}
 
 	private void fireOKActionListeners() {
-		java.awt.event.ActionEvent e = new java.awt.event.ActionEvent( this, java.awt.event.ActionEvent.ACTION_PERFORMED, "OK" );
+		ActionEvent e = new ActionEvent( this, ActionEvent.ACTION_PERFORMED, "OK" );
 		for( int i=0; i<m_okActionListeners.size(); i++ ) {
-			java.awt.event.ActionListener l = (java.awt.event.ActionListener)m_okActionListeners.elementAt( i );
+			ActionListener l = (ActionListener)m_okActionListeners.elementAt( i );
 			l.actionPerformed( e );
 		}
 	}
@@ -195,11 +243,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	public void finalizeSelections(){
 		setInput();
 		if( restartRequired ) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You will have to restart Alice in order for these settings to take effect.", "Restart Required", JOptionPane.INFORMATION_MESSAGE );
+			DialogManager.showMessageDialog("You will have to restart Alice in order for these settings to take effect.", "Restart Required", JOptionPane.INFORMATION_MESSAGE );
 			restartRequired = false;
 		} 
 		 else if( reloadRequired ) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You will have to reload the current world in order for these settings to take effect.", "Reload Required", JOptionPane.INFORMATION_MESSAGE );
+			DialogManager.showMessageDialog("You will have to reload the current world in order for these settings to take effect.", "Reload Required", JOptionPane.INFORMATION_MESSAGE );
 			reloadRequired = false;
 		} 
 		if (configTabbedPane != null && generalPanel != null){
@@ -208,11 +256,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	}
 
 	private void actionInit() {
-		okayAction.putValue( javax.swing.Action.NAME, "OK" );
-		okayAction.putValue( javax.swing.Action.SHORT_DESCRIPTION, "Accept preference changes" );
+		okayAction.putValue( Action.NAME, "OK" );
+		okayAction.putValue( Action.SHORT_DESCRIPTION, "Accept preference changes" );
 
-		cancelAction.putValue( javax.swing.Action.NAME, "Cancel" );
-		cancelAction.putValue( javax.swing.Action.SHORT_DESCRIPTION, "Close dialog without accepting changes" );
+		cancelAction.putValue( Action.NAME, "Cancel" );
+		cancelAction.putValue( Action.SHORT_DESCRIPTION, "Close dialog without accepting changes" );
 
 		okayButton.setAction( okayAction );
 		cancelButton.setAction( cancelAction );
@@ -220,7 +268,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	private void guiInit() {
 		
-		this.setPreferredSize(new java.awt.Dimension( 600, 600 ));
+		this.setPreferredSize(new Dimension( 600, 600 ));
 		numDigitsComboBox.addItem( "1" );
 		numDigitsComboBox.addItem( "2" );
 		numDigitsComboBox.addItem( "3" );
@@ -230,37 +278,13 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 		codecComboBox.addItem( "jpeg" );
 		codecComboBox.addItem( "png" );
-//		codecComboBox.addItem( "bmp" );
-//		codecComboBox.addItem( "tiff" );
-/*
-		printingScaleComboBox.setRenderer( new javax.swing.ListCellRenderer() {
-			javax.swing.JLabel label = new javax.swing.JLabel();
 
-			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isselected, boolean cellHasFocus ) {
-				label.setText( Integer.toString( (int)(((Double)value).doubleValue()*100.0) ) + "%" );
-				return label;
-			}
-		} );
-		printingScaleComboBox.addItem( new Double( .3 ) );
-		printingScaleComboBox.addItem( new Double( .5 ) );
-		printingScaleComboBox.addItem( new Double( .7 ) );
-		printingScaleComboBox.addItem( new Double( .8 ) );
-		printingScaleComboBox.addItem( new Double( .9 ) );
-		printingScaleComboBox.addItem( new Double( 1.0 ) );
-		printingScaleComboBox.addItem( new Double( 1.1 ) );
-		printingScaleComboBox.addItem( new Double( 1.2 ) );
-		printingScaleComboBox.addItem( new Double( 1.5 ) );
-		printingScaleComboBox.addItem( new Double( 1.8 ) );
-		printingScaleComboBox.addItem( new Double( 2.0 ) );
-		printingScaleComboBox.addItem( new Double( 2.5 ) );
-		printingScaleComboBox.addItem( new Double( 3.0 ) );
-		printingScaleComboBox.addItem( new Double( 4.0 ) );
-*/
 		rendererList.setModel( new ConfigListModel( authoringToolPackage, "rendering.orderedRendererList" ) );
 		rendererList.setSelectedIndex( 0 );
 
-		java.io.File resourceDirectory = new java.io.File( edu.cmu.cs.stage3.alice.authoringtool.JAlice.getAliceHomeDirectory(), "resources" ).getAbsoluteFile();
-		java.io.File[] resourceFiles = resourceDirectory.listFiles( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.resourceFileFilter );
+		//fill the style combobox with the file names from resources folder
+		File resourceDirectory = new File( JAlice.getAliceHomeDirectory(), "resources" ).getAbsoluteFile();
+		File[] resourceFiles = resourceDirectory.listFiles( AuthoringToolResources.resourceFileFilter );
 		for( int i = 0; i < resourceFiles.length; i++ ) {
 			resourceFileComboBox.addItem( resourceFiles[i].getName() );
 		}
@@ -308,9 +332,10 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		browseFileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
 
 		Configuration.addConfigurationListener(
-			new edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener() {
-				public void changing( edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev ) {}
-				public void changed( edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev ) {
+			new ConfigurationListener() {
+				public void changing( ConfigurationEvent ev ) {}
+				
+				public void changed( ConfigurationEvent ev ) {
 					if( ev.getKeyName().endsWith( "rendering.orderedRendererList" ) ) {
 						restartRequired = true;
 					} else if( ev.getKeyName().endsWith( "rendering.forceSoftwareRendering" ) ) {
@@ -334,23 +359,23 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		int w = 0, h = 0;
 		boolean isOK = true;
 		try{
-			w = java.lang.Integer.parseInt( boundsWidthTextField.getText() );
+			w = Integer.parseInt( boundsWidthTextField.getText() );
 			if (w > 0){
 				boundsWidthTextField.setForeground(java.awt.Color.black);
 			} else{
 				boundsWidthTextField.setForeground(java.awt.Color.red);
 				isOK = false;
 			}
-		}catch (java.lang.NumberFormatException e ){
+		}catch (NumberFormatException e ){
 			boundsWidthTextField.setForeground(java.awt.Color.red);
 			isOK = false;
 		}
 		try{
-			h = java.lang.Integer.parseInt( boundsHeightTextField.getText() );
+			h = Integer.parseInt( boundsHeightTextField.getText() );
 			if (h <= 0){
 				isOK = false;
 			}
-		}catch (java.lang.NumberFormatException e ){
+		}catch (NumberFormatException e ){
 			isOK = false;
 		}
 		if (constrainRenderDialogAspectCheckBox.isSelected() && isOK && authoringTool != null){
@@ -372,21 +397,21 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		try{
 			h = java.lang.Integer.parseInt( boundsHeightTextField.getText() );
 			if (h > 0){
-				boundsHeightTextField.setForeground(java.awt.Color.black);
+				boundsHeightTextField.setForeground(Color.black);
 			} else{
-				boundsHeightTextField.setForeground(java.awt.Color.red);
+				boundsHeightTextField.setForeground(Color.red);
 				isOK = false;
 			}
-		}catch (java.lang.NumberFormatException e ){
-			boundsHeightTextField.setForeground(java.awt.Color.red);
+		}catch (NumberFormatException e ){
+			boundsHeightTextField.setForeground(Color.red);
 			isOK = false;
 		}
 		try{
-			w = java.lang.Integer.parseInt( boundsWidthTextField.getText() );
+			w = Integer.parseInt( boundsWidthTextField.getText() );
 			if (w <= 0){
 				isOK = false;
 			}
-		}catch (java.lang.NumberFormatException e ){
+		}catch (NumberFormatException e ){
 			isOK = false;
 		}
 		if (constrainRenderDialogAspectCheckBox.isSelected() && isOK && authoringTool != null){
@@ -406,51 +431,51 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		int x = 0,y = 0,w = 0,h = 0;
 		boolean isOK = true;
 		try{
-			x = java.lang.Integer.parseInt( boundsXTextField.getText() );
+			x = Integer.parseInt( boundsXTextField.getText() );
 			if (x >= 0){
-				boundsXTextField.setForeground(java.awt.Color.black);
+				boundsXTextField.setForeground(Color.black);
 			} else{
-				boundsXTextField.setForeground(java.awt.Color.red);
+				boundsXTextField.setForeground(Color.red);
 				isOK = false;
 			}
-		}catch (java.lang.NumberFormatException e ){
-			boundsXTextField.setForeground(java.awt.Color.red);
+		}catch (NumberFormatException e ){
+			boundsXTextField.setForeground(Color.red);
 			isOK = false;
 		}
 		try{
-			y = java.lang.Integer.parseInt( boundsYTextField.getText() );
+			y = Integer.parseInt( boundsYTextField.getText() );
 			if (y >= 0){
-				boundsYTextField.setForeground(java.awt.Color.black);
+				boundsYTextField.setForeground(Color.black);
 			} else{
-				boundsYTextField.setForeground(java.awt.Color.red);
+				boundsYTextField.setForeground(Color.red);
 				isOK = false;
 			}
-		}catch (java.lang.NumberFormatException e ){
-			boundsYTextField.setForeground(java.awt.Color.red);
+		}catch (NumberFormatException e ){
+			boundsYTextField.setForeground(Color.red);
 			isOK = false;
 		}
 		try{
-			w = java.lang.Integer.parseInt( boundsWidthTextField.getText() );
+			w = Integer.parseInt( boundsWidthTextField.getText() );
 			if (w > 0){
-				boundsWidthTextField.setForeground(java.awt.Color.black);
+				boundsWidthTextField.setForeground(Color.black);
 			} else{
-				boundsWidthTextField.setForeground(java.awt.Color.red);
+				boundsWidthTextField.setForeground(Color.red);
 				isOK = false;
 			}
-		}catch (java.lang.NumberFormatException e ){
-			boundsWidthTextField.setForeground(java.awt.Color.red);
+		}catch (NumberFormatException e ){
+			boundsWidthTextField.setForeground(Color.red);
 			isOK = false;
 		}
 		try{
-			h = java.lang.Integer.parseInt( boundsHeightTextField.getText() );
+			h = Integer.parseInt( boundsHeightTextField.getText() );
 			if (h > 0){
-				boundsHeightTextField.setForeground(java.awt.Color.black);
+				boundsHeightTextField.setForeground(Color.black);
 			} else{
-				boundsHeightTextField.setForeground(java.awt.Color.red);
+				boundsHeightTextField.setForeground(Color.red);
 				isOK = false;
 			}
-		}catch (java.lang.NumberFormatException e ){
-			boundsHeightTextField.setForeground(java.awt.Color.red);
+		}catch (NumberFormatException e ){
+			boundsHeightTextField.setForeground(Color.red);
 			isOK = false;
 		}
 		if (constrainRenderDialogAspectCheckBox.isSelected() && isOK && authoringTool != null){
@@ -478,82 +503,71 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	protected boolean validateInput() {
 		try {
-			int i = java.lang.Integer.parseInt( maxRecentWorldsTextField.getText() );
+			int i = Integer.parseInt( maxRecentWorldsTextField.getText() );
 			if( (i < 0) || (i > 30) ) {
-				throw new java.lang.NumberFormatException();
+				throw new NumberFormatException();
 			}
-		} catch( java.lang.NumberFormatException e ) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "the maximum number of recent worlds must be between 0 and 30" , "Invalid Clipboard Number", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+		} catch( NumberFormatException e ) {
+			DialogManager.showMessageDialog( "the maximum number of recent worlds must be between 0 and 30" , "Invalid Clipboard Number", JOptionPane.INFORMATION_MESSAGE );
 			return false;
 		}
 
 		try {
-			int i = java.lang.Integer.parseInt( numClipboardsTextField.getText() );
+			int i = Integer.parseInt( numClipboardsTextField.getText() );
 			if( (i < 0) || (i > 30) ) {
-				throw new java.lang.NumberFormatException();
+				throw new NumberFormatException();
 			}
-		} catch( java.lang.NumberFormatException e ) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "the number of clipboards must be between 0 and 30", "Invalid Clipboard Number", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+		} catch( NumberFormatException e ) {
+			DialogManager.showMessageDialog( "the number of clipboards must be between 0 and 30", "Invalid Clipboard Number", JOptionPane.INFORMATION_MESSAGE );
 			return false;
 		}
 
 		try {
-			int x = java.lang.Integer.parseInt( boundsXTextField.getText() );
-			int y = java.lang.Integer.parseInt( boundsYTextField.getText() );
-			int w = java.lang.Integer.parseInt( boundsWidthTextField.getText() );
-			int h = java.lang.Integer.parseInt( boundsHeightTextField.getText() );
+			int x = Integer.parseInt( boundsXTextField.getText() );
+			int y = Integer.parseInt( boundsYTextField.getText() );
+			int w = Integer.parseInt( boundsWidthTextField.getText() );
+			int h = Integer.parseInt( boundsHeightTextField.getText() );
 			if( !isValidRenderBounds(x,y,w,h) ) {
-				throw new java.lang.NumberFormatException();
+				throw new NumberFormatException();
 			}
-		} catch( java.lang.NumberFormatException e ) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("all of the render window bounds values must be integers greater than 0", "Bad Render Bounds", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+		} catch( NumberFormatException e ) {
+			DialogManager.showMessageDialog("all of the render window bounds values must be integers greater than 0", "Bad Render Bounds", JOptionPane.INFORMATION_MESSAGE );
 			return false;
 		}
 
 		// bad directories are just given warnings
-		java.io.File worldDirectoryFile = new java.io.File( worldDirectoryTextField.getText() );
+		File worldDirectoryFile = new File( worldDirectoryTextField.getText() );
 		if( (!worldDirectoryFile.exists()) || (!worldDirectoryFile.isDirectory()) || (!worldDirectoryFile.canRead()) ) {
-			int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(worldDirectoryFile.getAbsolutePath() + " is not valid.  The worlds directory must be a directory that exists and can be read.  Would you like to fix this now?", "Bad Directory", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE );
-			if( result != javax.swing.JOptionPane.NO_OPTION ) {
+			int result = DialogManager.showConfirmDialog(worldDirectoryFile.getAbsolutePath() + " is not valid.  The worlds directory must be a directory that exists and can be read.  Would you like to fix this now?", "Bad Directory", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE );
+			if( result != JOptionPane.NO_OPTION ) {
 				return false;
 			}
-//			return false;
+
 		}
 
-		java.io.File importDirectoryFile = new java.io.File( importDirectoryTextField.getText() );
+		File importDirectoryFile = new java.io.File( importDirectoryTextField.getText() );
 		if( (!importDirectoryFile.exists()) || (!importDirectoryFile.isDirectory()) || (!importDirectoryFile.canRead()) ) {
-			int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog( importDirectoryFile.getAbsolutePath() + " is not valid.  The import directory must be a directory that exists and can be read.  Would you like to fix this now?", "Bad Directory", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE );
-			if( result != javax.swing.JOptionPane.NO_OPTION ) {
+			int result = DialogManager.showConfirmDialog( importDirectoryFile.getAbsolutePath() + " is not valid.  The import directory must be a directory that exists and can be read.  Would you like to fix this now?", "Bad Directory", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE );
+			if( result != JOptionPane.NO_OPTION ) {
 				return false;
 			}
-//			return false;
 		}
 
-//		java.io.File galleryDirectoryFile = new java.io.File( galleryDirectoryTextField.getText() );
-//		if( (!galleryDirectoryFile.exists()) || (!galleryDirectoryFile.isDirectory()) || (!galleryDirectoryFile.canRead()) ) {
-//			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( this, "The gallery directory must be a directory that exists and can be read." );
-//			return false;
-//		}
 
-//		java.io.File characterDirectoryFile = new java.io.File( characterDirectoryTextField.getText() );
-//		if( (!characterDirectoryFile.exists()) || (!characterDirectoryFile.isDirectory()) || (!characterDirectoryFile.canRead()) ) {
-//			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( this, "The character directory must be a directory that exists and can be read." );
-//			return false;
-//		}
 		if (changedCaptureDirectory){
-			java.io.File captureDirectoryFile = new java.io.File( captureDirectoryTextField.getText() );
-			int directoryCheck = edu.cmu.cs.stage3.io.FileUtilities.isWritableDirectory(captureDirectoryFile);
-			if (directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_IS_NOT_WRITABLE){
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "The capture directory specified can not be written to. Please choose another directory.", "Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+			File captureDirectoryFile = new File( captureDirectoryTextField.getText() );
+			int directoryCheck = FileUtilities.isWritableDirectory(captureDirectoryFile);
+			if (directoryCheck == FileUtilities.DIRECTORY_IS_NOT_WRITABLE){
+				DialogManager.showMessageDialog( "The capture directory specified can not be written to. Please choose another directory.", "Bad Directory", JOptionPane.INFORMATION_MESSAGE);
 				return false;
-			} else if(directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_DOES_NOT_EXIST || directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.BAD_DIRECTORY_INPUT){
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "The capture directory must be a directory that exists.", "Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			} else if(directoryCheck == FileUtilities.DIRECTORY_DOES_NOT_EXIST || directoryCheck == FileUtilities.BAD_DIRECTORY_INPUT){
+				DialogManager.showMessageDialog( "The capture directory must be a directory that exists.", "Bad Directory", JOptionPane.INFORMATION_MESSAGE );
 				return false;
 			}
 		}
 
 		if( baseNameTextField.getText().trim().equals( "" ) ) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "The capture base name must not be empty.", "Bad Base Name", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			DialogManager.showMessageDialog( "The capture base name must not be empty.", "Bad Base Name", JOptionPane.INFORMATION_MESSAGE );
 			return false;
 		}
 
@@ -566,7 +580,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 					message.append( " " );
 					message.append( badChars[j] );
 				}
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( message.toString(), "Bad Filename", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				DialogManager.showMessageDialog( message.toString(), "Bad Filename", JOptionPane.INFORMATION_MESSAGE );
 				return false;
 			}
 		}
@@ -574,9 +588,10 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		String saveIntervalString = (String)saveIntervalComboBox.getSelectedItem();
 		if (!saveIntervalString.equalsIgnoreCase(FOREVER_INTERVAL_STRING)){
 			try{
-				int saveInterval = Integer.parseInt(saveIntervalString);
+				Integer.parseInt(saveIntervalString); //make sure that 'saveIntervalString' is a number
+				
 			} catch (Throwable t){
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "You must enter a valid number for the time to wait before prompting to save.", "Bad Prompt To Save Interval", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				DialogManager.showMessageDialog( "You must enter a valid number for the time to wait before prompting to save.", "Bad Prompt To Save Interval", JOptionPane.INFORMATION_MESSAGE );
 				return false;
 			}
 		}
@@ -584,17 +599,20 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		String backupCountString = (String)backupCountComboBox.getSelectedItem();
 		if (!backupCountString.equalsIgnoreCase(INFINITE_BACKUPS_STRING)){
 			try{
-				int saveInterval = Integer.parseInt(backupCountString);
+				Integer.parseInt(backupCountString);//make sure that 'backupCountString' is a number
 			} catch (Throwable t){
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "You must enter a valid number for the number of backups you want Alice to save.", "Bad Backup Count Value", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				DialogManager.showMessageDialog( "You must enter a valid number for the number of backups you want Alice to save.", "Bad Backup Count Value", JOptionPane.INFORMATION_MESSAGE );
 				return false;
 			}
 		}
+		
+		
+		
 		String fontSizeString = (String)fontSizeComboBox.getSelectedItem();
 		try{
-			int fontSize = Integer.parseInt(fontSizeString);
+			Integer.parseInt(fontSizeString);//make sure that 'fontSizeString' is a number
 		} catch (Throwable t){
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "You must enter a valid number for the font size.", "Bad Backup Font Size", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			DialogManager.showMessageDialog( "You must enter a valid number for the font size.", "Bad Backup Font Size", JOptionPane.INFORMATION_MESSAGE );
 			return false;
 		}
 
@@ -604,11 +622,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	protected void setInput() {
 		boolean oldContrast = Configuration.getValue( authoringToolPackage, "enableHighContrastMode" ).equalsIgnoreCase( "true" );
-		for( java.util.Iterator iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext(); ) {
-			javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox)iter.next();
+		for( java.util.Iterator<Object> iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext(); ) {
+			JCheckBox checkBox = (JCheckBox)iter.next();
 			String currentValue = Configuration.getValue( authoringToolPackage, (String)checkBoxToConfigKeyMap.get( checkBox ) );
 			if( currentValue == null ) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "Warning: no value found for preference: " + checkBoxToConfigKeyMap.get( checkBox ), null );
+				AuthoringTool.showErrorDialog( "Warning: no value found for preference: " + checkBoxToConfigKeyMap.get( checkBox ), null );
 				currentValue = "false";
 				Configuration.setValue( authoringToolPackage, (String)checkBoxToConfigKeyMap.get( checkBox ), currentValue );
 			}
@@ -633,12 +651,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		if( ! Configuration.getValue( authoringToolPackage, "directories.importDirectory" ).equals( worldDirectoryTextField.getText() ) ) {
 			Configuration.setValue( authoringToolPackage, "directories.importDirectory", worldDirectoryTextField.getText() );
 		}
-//		if( ! Configuration.getValue( authoringToolPackage, "directories.galleryDirectory" ).equals( galleryDirectoryTextField.getText() ) ) {
-//			Configuration.setValue( authoringToolPackage, "directories.galleryDirectory", galleryDirectoryTextField.getText() );
-//		}
-//		if( ! Configuration.getValue( authoringToolPackage, "directories.charactersDirectory" ).equals( characterDirectoryTextField.getText() ) ) {
-//			Configuration.setValue( authoringToolPackage, "directories.charactersDirectory", characterDirectoryTextField.getText() );
-//		}
+
+		
 		if( ! Configuration.getValue( authoringToolPackage, "screenCapture.directory" ).equals( captureDirectoryTextField.getText() ) ) {
 			Configuration.setValue( authoringToolPackage, "screenCapture.directory", captureDirectoryTextField.getText() );
 		}
@@ -654,9 +668,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		if( ! Configuration.getValue( authoringToolPackage, "resourceFile" ).equals( (String)resourceFileComboBox.getSelectedItem() ) ) {
 			Configuration.setValue( authoringToolPackage, "resourceFile", (String)resourceFileComboBox.getSelectedItem() );
 		}
-//		if( ! Configuration.getValue( authoringToolPackage, "printing.scaleFactor" ).equals( printingScaleComboBox.getSelectedItem().toString() ) ) {
-//			Configuration.setValue( authoringToolPackage, "printing.scaleFactor", printingScaleComboBox.getSelectedItem().toString() );
-//		}
+
+		
 		
 		String saveIntervalString = (String)saveIntervalComboBox.getSelectedItem();
 		if (saveIntervalString.equalsIgnoreCase(FOREVER_INTERVAL_STRING)){
@@ -673,32 +686,28 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		}
 		
 		
-		int oldFontSize = ((java.awt.Font)javax.swing.UIManager.get("Label.font")).getSize();
+		int oldFontSize = ((Font)UIManager.get("Label.font")).getSize();
 		String fontSizeString = (String)fontSizeComboBox.getSelectedItem();
 		Configuration.setValue( authoringToolPackage, "fontSize", fontSizeString );
 		int newFontSize = Integer.valueOf(fontSizeString).intValue();
 		if (oldContrast != enableHighContrastCheckBox.isSelected() || oldFontSize != newFontSize){
 			restartRequired = true;
 		}
-//		java.awt.Color backgroundColor = backgroundColorButton.getBackground();
-//		String backgroundColorString = new edu.cmu.cs.stage3.alice.scenegraph.Color( backgroundColor ).toString();
-//		if( ! Configuration.getValue( authoringToolPackage, "backgroundColor" ).equals( backgroundColorString ) ) {
-//			Configuration.setValue( authoringToolPackage, "backgroundColor", backgroundColorString );
-//		}
+
 
 		
 		//TODO: currently the rendererList updates its data immediately...
 
 		try {
 			Configuration.storeConfig();
-		} catch( java.io.IOException e ) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "Error storing preferences.", e );
+		} catch( IOException e ) {
+			AuthoringTool.showErrorDialog( "Error storing preferences.", e );
 		}
 	}
 
 	protected void updateGUI() {
-		for( java.util.Iterator iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext(); ) {
-			javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox)iter.next();
+		for( java.util.Iterator<Object> iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext(); ) {
+			JCheckBox checkBox = (JCheckBox)iter.next();
 			boolean value;
 			try {
 				value = Configuration.getValue( authoringToolPackage, (String)checkBoxToConfigKeyMap.get( checkBox ) ).equalsIgnoreCase( "true" );
@@ -718,11 +727,10 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		maxRecentWorldsTextField.setText( Configuration.getValue( authoringToolPackage, "recentWorlds.maxWorlds" ) );
 		numClipboardsTextField.setText( Configuration.getValue( authoringToolPackage, "numberOfClipboards" ) );
 
-//		String backgroundColorString = Configuration.getValue( authoringToolPackage, "backgroundColor" );
-//		backgroundColorButton.setBackground( edu.cmu.cs.stage3.alice.scenegraph.Color.valueOf( backgroundColorString ).createAWTColor() );
+
 
 		String boundsString = Configuration.getValue( authoringToolPackage, "rendering.renderWindowBounds" );
-		java.util.StringTokenizer st = new java.util.StringTokenizer( boundsString, " \t," );
+		StringTokenizer st = new StringTokenizer( boundsString, " \t," );
 		if( st.countTokens() == 4 ) {
 			boundsXTextField.setText( st.nextToken() );
 			boundsYTextField.setText( st.nextToken() );
@@ -734,10 +742,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		worldDirectoryTextField.setText( worldDirectory );
 		String importDirectory = Configuration.getValue( authoringToolPackage, "directories.importDirectory" );
 		importDirectoryTextField.setText( importDirectory );
-//		String galleryDirectory = Configuration.getValue( authoringToolPackage, "directories.galleryDirectory" );
-//		galleryDirectoryTextField.setText( galleryDirectory );
-//		String characterDirectory = Configuration.getValue( authoringToolPackage, "directories.charactersDirectory" );
-//		characterDirectoryTextField.setText( characterDirectory );
+
 		String captureDirectory = Configuration.getValue( authoringToolPackage, "screenCapture.directory" );
 		captureDirectoryTextField.setText( captureDirectory );
 
@@ -745,24 +750,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		numDigitsComboBox.setSelectedItem( Configuration.getValue( authoringToolPackage, "screenCapture.numDigits" ) );
 		codecComboBox.setSelectedItem( Configuration.getValue( authoringToolPackage, "screenCapture.codec" ) );
 		resourceFileComboBox.setSelectedItem( Configuration.getValue( authoringToolPackage, "resourceFile" ) );
-//		printingScaleComboBox.setSelectedItem( Double.valueOf( Configuration.getValue( authoringToolPackage, "printing.scaleFactor" ) ) );
 
-		//TODO: currently the rendererList updates its data immediately...
-		/*
-		((javax.swing.DefaultListModel)rendererList.getModel()).clear();
-		String[] rendererStrings = Configuration.getValueList( authoringToolPackage, "rendering.orderedRendererList" );
-		for( int i = 0; i < rendererStrings.length; i++ ) {
-			String s = rendererStrings[i];
-			String repr = AuthoringToolResources.getReprForValue( s );
-			rendererStringMap.put( repr, s );
-			((javax.swing.DefaultListModel)rendererList.getModel()).addElement( repr );
-		}
-		if( selectedRenderer != null ) {
-			rendererList.setSelectedValue( selectedRenderer, true );
-		} else {
-			rendererList.setSelectedIndex( 0 );
-		}
-		*/
+		
 	}
 
 	public void setVisible( boolean b ) {
@@ -772,10 +761,10 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		super.setVisible( b );
 	}
 
-	protected class ConfigListModel implements javax.swing.ListModel, edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener {
+	protected class ConfigListModel implements ListModel, ConfigurationListener {
 		protected Package configPackage;
 		protected String configKey;
-		protected java.util.Set listenerSet = new java.util.HashSet();
+		protected java.util.Set<ListDataListener> listenerSet = new java.util.HashSet<ListDataListener>();
 
 		public ConfigListModel( Package configPackage, String configKey ) {
 			this.configPackage = configPackage;
@@ -783,11 +772,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			Configuration.addConfigurationListener( this );
 		}
 
-		public void addListDataListener( javax.swing.event.ListDataListener listener ) {
+		public void addListDataListener( ListDataListener listener ) {
 			listenerSet.add( listener );
 		}
 
-		public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
+		public void removeListDataListener( ListDataListener listener ) {
 			listenerSet.remove( listener );
 		}
 
@@ -797,7 +786,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 		public Object getElementAt( int index ) {
 			String item = Configuration.getValueList( configPackage, configKey )[index];
-			return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue( item );
+			return AuthoringToolResources.getReprForValue( item );
 		}
 
 		public void moveIndexHigher( int index ) {
@@ -824,8 +813,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			}
 		}
 
-		public void changing( edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev ) {}
-		public void changed( edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev ) {
+		public void changing( ConfigurationEvent ev ) {}
+		public void changed( ConfigurationEvent ev ) {
 			if( ev.getKeyName().endsWith( "rendering.orderedRendererList" ) ) {
 				int upperRange = 0;
 				if( ev.getOldValueList() != null ) {
@@ -834,9 +823,9 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				if( ev.getNewValueList() != null ) {
 					upperRange = Math.max( upperRange, ev.getNewValueList().length );
 				}
-				javax.swing.event.ListDataEvent listDataEvent = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, 0, upperRange );
-				for( java.util.Iterator iter = listenerSet.iterator(); iter.hasNext(); ) {
-					((javax.swing.event.ListDataListener)iter.next()).contentsChanged( listDataEvent );
+				ListDataEvent listDataEvent = new ListDataEvent( this, ListDataEvent.CONTENTS_CHANGED, 0, upperRange );
+				for( Iterator<ListDataListener> iter = listenerSet.iterator(); iter.hasNext(); ) {
+					iter.next().contentsChanged( listDataEvent );
 				}
 			}
 		}
@@ -869,12 +858,12 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		addComboBoxValueValue(interval, saveIntervalOptions);
 	}
 	
-	private void addComboBoxValueValue(int toAdd, java.util.Vector toAddTo){
+	private void addComboBoxValueValue(int toAdd, Vector<String> toAddTo){
 		if (toAdd > 0){
 			boolean isThere = false;
 			int location = toAddTo.size()-1;
 			for (int i=0; i<toAddTo.size(); i++){
-				int currentValue = getValueForString((String)toAddTo.get(i));
+				int currentValue = getValueForString( toAddTo.get(i) );
 				if (toAdd == currentValue){
 					isThere = true;
 				} else if (toAdd < currentValue && location > i){
@@ -960,26 +949,20 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	// Callbacks
 	/////////////////
 
-//	void renderWindowMatchesSceneEditorCheckBox_actionPerformed(ActionEvent e) {
-//		boundsXTextField.setEnabled( ! renderWindowMatchesSceneEditorCheckBox.isSelected() );
-//		boundsYTextField.setEnabled( ! renderWindowMatchesSceneEditorCheckBox.isSelected() );
-//		boundsWidthTextField.setEnabled( ! renderWindowMatchesSceneEditorCheckBox.isSelected() );
-//		boundsHeightTextField.setEnabled( ! renderWindowMatchesSceneEditorCheckBox.isSelected() );
-//	}
 
 	void worldDirectoryBrowseButton_actionPerformed( ActionEvent ev ) {
-		java.io.File parent = new java.io.File( Configuration.getValue( authoringToolPackage, "directories.worldsDirectory" ) ).getParentFile();
+		File parent = new java.io.File( Configuration.getValue( authoringToolPackage, "directories.worldsDirectory" ) ).getParentFile();
 		browseFileChooser.setCurrentDirectory( parent );
 		int returnVal = browseFileChooser.showOpenDialog( this );
 
 		if( returnVal == JFileChooser.APPROVE_OPTION ) {
-			java.io.File file = browseFileChooser.getSelectedFile();
+			File file = browseFileChooser.getSelectedFile();
 			worldDirectoryTextField.setText( file.getAbsolutePath() );
 		}
 	}
 
 	void importDirectoryBrowseButton_actionPerformed( ActionEvent ev ) {
-		java.io.File parent = new java.io.File( Configuration.getValue( authoringToolPackage, "directories.importDirectory" ) ).getParentFile();
+		File parent = new File( Configuration.getValue( authoringToolPackage, "directories.importDirectory" ) ).getParentFile();
 		browseFileChooser.setCurrentDirectory( parent );
 		int returnVal = browseFileChooser.showOpenDialog( this );
 
@@ -993,22 +976,22 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		boolean done = false;
 		String finalFilePath = captureDirectoryTextField.getText();
 		while (!done){
-			java.io.File parent = new java.io.File( finalFilePath );
+			File parent = new File( finalFilePath );
 			if (!parent.exists()){
-				parent =  new java.io.File( Configuration.getValue( authoringToolPackage, "screenCapture.directory" ));
+				parent =  new File( Configuration.getValue( authoringToolPackage, "screenCapture.directory" ));
 			}
 			browseFileChooser.setCurrentDirectory( parent );
 			int returnVal = browseFileChooser.showOpenDialog( this );
 	
 			if( returnVal == JFileChooser.APPROVE_OPTION ) {
 				java.io.File captureDirectoryFile = browseFileChooser.getSelectedFile();
-				int directoryCheck = edu.cmu.cs.stage3.io.FileUtilities.isWritableDirectory(captureDirectoryFile);
-				if (directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_IS_NOT_WRITABLE){
+				int directoryCheck = FileUtilities.isWritableDirectory(captureDirectoryFile);
+				if (directoryCheck == FileUtilities.DIRECTORY_IS_NOT_WRITABLE){
 					done = false;
-					edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "The capture directory specified can not be written to. Please choose another directory.", "Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-				} else if(directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_DOES_NOT_EXIST || directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.BAD_DIRECTORY_INPUT){
+					DialogManager.showMessageDialog( "The capture directory specified can not be written to. Please choose another directory.", "Bad Directory", JOptionPane.INFORMATION_MESSAGE);
+				} else if(directoryCheck == FileUtilities.DIRECTORY_DOES_NOT_EXIST || directoryCheck == FileUtilities.BAD_DIRECTORY_INPUT){
 					done = false;
-					edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "The capture directory must be a directory that exists.", "Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+					DialogManager.showMessageDialog( "The capture directory must be a directory that exists.", "Bad Directory", JOptionPane.INFORMATION_MESSAGE );
 				} else {
 					finalFilePath = captureDirectoryFile.getAbsolutePath();
 					done = true;
@@ -1021,16 +1004,6 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		captureDirectoryTextField.setText( finalFilePath );
 	}
 
-//	void galleryDirectoryBrowseButton_actionPerformed( ActionEvent ev ) {
-//		java.io.File parent = new java.io.File( Configuration.getValue( authoringToolPackage, "directories.galleryDirectory" ) ).getParentFile();
-//		browseFileChooser.setCurrentDirectory( parent );
-//		int returnVal = browseFileChooser.showOpenDialog( this );
-//
-//		if( returnVal == JFileChooser.APPROVE_OPTION ) {
-//			java.io.File file = browseFileChooser.getSelectedFile();
-//			galleryDirectoryTextField.setText( file.getAbsolutePath() );
-//		}
-//	}
 
 
 	void rendererMoveUpButton_actionPerformed( ActionEvent ev ) {
@@ -1046,19 +1019,14 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	}
 
 
-//	void backgroundColorButton_actionPerformed(ActionEvent e) {
-//		 java.awt.Color color = javax.swing.JColorChooser.showDialog( this, "Background Color", backgroundColorButton.getBackground() );
-//		 if( color != null ) {
-//			backgroundColorButton.setBackground( color );
-//		 }
-//	}
+
 
 	///////////////////////
 	// Autogenerated GUI
 	///////////////////////
 
 	JTabbedPane configTabbedPane = new JTabbedPane();
-	JPanel generalPanel = new JPanel();
+	
 	JPanel seldomUsedPanel = new JPanel();
 	JPanel renderingPanel = new JPanel();
 	JPanel directoriesPanel = new JPanel();
@@ -1075,13 +1043,13 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	Component component1;
 	BorderLayout borderLayout7 = new BorderLayout();
 	Box directoriesBox;
-	JPanel inputDirectoriesPanel = new JPanel();
+	
 	GridBagLayout gridBagLayout1 = new GridBagLayout();
-	JLabel worldDirectoryLabel = new JLabel();
+	
 	JLabel importDirectoryLabel = new JLabel();
-	JTextField worldDirectoryTextField = new JTextField();
+	
 	JTextField importDirectoryTextField = new JTextField();
-	JButton worldDirectoryBrowseButton = new JButton();
+	
 	JButton importDirectoryBrowseButton = new JButton();
 	Component component7;
 	Box aseImporterBox;
@@ -1092,9 +1060,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	JCheckBox colorToWhiteWhenTexturedCheckBox = new JCheckBox();
 	JButton cancelButton = new JButton();
 	Component component8;
-//	JLabel characterDirectoryLabel = new JLabel();
-//	JTextField characterDirectoryTextField = new JTextField();
-//	JButton characterDirectoryBrowseButton = new JButton();
+
 	JPanel screenGrabPanel = new JPanel();
 	GridBagLayout gridBagLayout2 = new GridBagLayout();
 	JLabel captureDirectory = new JLabel();
@@ -1113,7 +1079,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	JCheckBox forceSoftwareRenderingCheckBox = new JCheckBox();
 	JCheckBox showFPSCheckBox = new JCheckBox();
 	JCheckBox deleteFiles = new JCheckBox(); // Aik Min added this.
-//	JCheckBox renderWindowMatchesSceneEditorCheckBox = new JCheckBox();
+
 	JLabel boundsXLabel = new JLabel();
 	JTextField boundsXTextField = new JTextField();
 	JLabel boundsWidthLabel = new JLabel();
@@ -1132,60 +1098,100 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	JButton rendererMoveDownButton = new JButton();
 	GridBagLayout gridBagLayout4 = new GridBagLayout();
 	JCheckBox infiniteBackupsCheckBox = new JCheckBox();
-	Component component5;
-	JPanel numClipboardsPanel = new JPanel();
-	JTextField numClipboardsTextField = new JTextField();
+	
+	
+	
 	BorderLayout borderLayout8 = new BorderLayout();
-//	JCheckBox scriptTypeInEnabledCheckBox = new JCheckBox();
-//	JCheckBox reloadWorldScriptCheckBox = new JCheckBox();
+
 	BorderLayout borderLayout2 = new BorderLayout();
-	JPanel maxRecentWorldsPanel = new JPanel();
+	
 	JCheckBox runtimeScratchPadEnabledCheckBox = new JCheckBox();
-	JTextField maxRecentWorldsTextField = new JTextField();
-	JLabel maxRecentWorldsLabel = new JLabel();
-	JLabel numClipboardsLabel = new JLabel();
-	JCheckBox showWorldStatsCheckBox = new JCheckBox();
+	
 	JCheckBox enableScriptingCheckBox = new JCheckBox();
-	JCheckBox pickUpTilesCheckBox = new JCheckBox();
-	JCheckBox useAlphaTilesCheckBox = new JCheckBox();
-//	JPanel backgroundColorPanel = new JPanel();
-//	BorderLayout borderLayout1 = new BorderLayout();
-//	JButton backgroundColorButton = new JButton();
-//	JLabel backgroundColorLabel = new JLabel();
+	
+
 	Border border1;
 	JCheckBox saveAsSingleFileCheckBox = new JCheckBox();
-	JCheckBox clearStdOutOnRunCheckBox = new JCheckBox();
-	JPanel resourcesPanel = new JPanel();
-	JLabel resourcesLabel = new JLabel();
-	JComboBox resourceFileComboBox = new JComboBox();
+	
+	
+	
+	
 	GridBagLayout gridBagLayout5 = new GridBagLayout();
 	JCheckBox watcherPanelEnabledCheckBox = new JCheckBox();
+	
+	
+	// General tab components//////////////////////
+	JPanel maxRecentWorldsPanel = new JPanel();
+	JPanel generalPanel = new JPanel();
+	JPanel resourcesPanel = new JPanel();
+	JPanel inputDirectoriesPanel = new JPanel();
+	JPanel fontSizePanel = new JPanel();
+	
+	JPanel viStyleFontPanel = new ViStyleFontPanel();//newly added panel to read/write to an XML file
+	
+	JLabel maxRecentWorldsLabel = new JLabel();
+	JTextField maxRecentWorldsTextField = new JTextField();
+	
+	JLabel resourcesLabel = new JLabel();
+	JComboBox resourceFileComboBox = new JComboBox();
+	
+	JLabel worldDirectoryLabel = new JLabel();
+	JTextField worldDirectoryTextField = new JTextField();
+	JButton worldDirectoryBrowseButton = new JButton();
+	
+	JComboBox fontSizeComboBox = new JComboBox();
+	JLabel fontSizeLabel = new JLabel();
+	
+	Component component5;
+	//+++++++ end general tab components +++++++++++
+	
+	
+	
+	
+	
+	///// seldom used tab components
 	JCheckBox showStartUpDialogCheckBox = new JCheckBox();
-	JCheckBox enableHighContrastCheckBox = new JCheckBox();
 	JCheckBox showWebWarningCheckBox = new JCheckBox();
+	private JCheckBox loadSavedTabsCheckBox = new JCheckBox();
+	JCheckBox pickUpTilesCheckBox = new JCheckBox();
+	JCheckBox useAlphaTilesCheckBox = new JCheckBox();
+	private JCheckBox saveThumbnailWithWorldCheckBox = new JCheckBox();
+	JCheckBox showWorldStatsCheckBox = new JCheckBox();
+	JCheckBox clearStdOutOnRunCheckBox = new JCheckBox();
+	JCheckBox enableHighContrastCheckBox = new JCheckBox();
+	JPanel numClipboardsPanel = new JPanel();
+	private JPanel saveIntervalPanel = new JPanel();
+	private JPanel backupCountPanel = new JPanel();
+	JTextField numClipboardsTextField = new JTextField();
+	JLabel numClipboardsLabel = new JLabel();
+	///++++++ end  seldom used tab components ++++++++++
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	JCheckBox constrainRenderDialogAspectCheckBox = new JCheckBox();
 	JCheckBox ensureRenderDialogIsOnScreenCheckBox = new JCheckBox();
-	private JCheckBox loadSavedTabsCheckBox = new JCheckBox();
-	private JCheckBox saveThumbnailWithWorldCheckBox = new JCheckBox();
+	
+	
 	private JCheckBox screenCaptureInformUserCheckBox = new JCheckBox();
-//	private JCheckBox printingFillBackgroundCheckBox = new JCheckBox();
-//	private JPanel printingScalePanel = new JPanel();
-	private GridBagLayout gridBagLayout6 = new GridBagLayout();
-//	private JComboBox printingScaleComboBox = new JComboBox();
-//	private JLabel printingScaleLabel = new JLabel();
+
 	private JComboBox saveIntervalComboBox = new JComboBox();
 	private JLabel saveIntervalLabelEnd = new JLabel();
-	private JPanel saveIntervalPanel = new JPanel();
-	private java.util.Vector saveIntervalOptions = new java.util.Vector();
+	
+	private java.util.Vector<String> saveIntervalOptions = new java.util.Vector<String>();
 
 	private JComboBox backupCountComboBox = new JComboBox();
 	private JLabel backupCountLabel = new JLabel();
-	private JPanel backupCountPanel = new JPanel();
-	private java.util.Vector backupCountOptions = new java.util.Vector();
-	private JComboBox fontSizeComboBox = new JComboBox();
-	private JLabel fontSizeLabel = new JLabel();
-	private JPanel fontSizePanel = new JPanel();
-	private java.util.Vector fontSizeOptions = new java.util.Vector();
+	
+	private java.util.Vector<String> backupCountOptions = new java.util.Vector<String>();
+	
+	
+	private java.util.Vector<String> fontSizeOptions = new java.util.Vector<String>();
 
 	private void jbInit() {
 		etchedBorder = BorderFactory.createEtchedBorder();
@@ -1199,10 +1205,128 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		component8 = Box.createHorizontalStrut(8);
 		component9 = Box.createGlue();
 		component6 = Box.createGlue();
-		component5 = Box.createGlue();
+		
+		
 		border1 = BorderFactory.createEmptyBorder(0,6,0,0);
+		
+		
+		
+		
+		
+		//// init General tab //////////////////////////////////////////
+		component5 = Box.createGlue();
 		generalPanel.setBorder(emptyBorder);
 		generalPanel.setLayout(gridBagLayout4);
+		inputDirectoriesPanel.setLayout(gridBagLayout1);
+		worldDirectoryLabel.setText("save and load from:");
+		worldDirectoryBrowseButton.setText("Browse...");
+		worldDirectoryBrowseButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				worldDirectoryBrowseButton_actionPerformed(e);
+			}
+		});
+		maxRecentWorldsPanel.setLayout(borderLayout8);
+		maxRecentWorldsPanel.setAlignmentX((float) 0.0);
+		maxRecentWorldsPanel.setMaximumSize(new Dimension(2147483647, 25));
+		maxRecentWorldsPanel.setMinimumSize(new Dimension(0, 0));
+		
+		maxRecentWorldsTextField.setMaximumSize(new Dimension(4, 21));
+		maxRecentWorldsTextField.setColumns(4);
+		
+		//General tab components
+		maxRecentWorldsLabel.setText("maximum number of worlds kept in the recent worlds menu");
+		maxRecentWorldsLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		//+++++++ end General tab components+++++++
+		resourcesLabel.setText("display my program:");
+		resourcesPanel.setLayout(gridBagLayout5);
+		fontSizeLabel.setText(" general font size (default value is 12)");
+		fontSizeComboBox.setEditable(true);
+		fontSizeComboBox.setPreferredSize(new java.awt.Dimension(55, 25));
+		fontSizeComboBox.setMaximumRowCount(9);
+		fontSizePanel.setOpaque(false);
+		fontSizePanel.setBorder(null);
+		fontSizePanel.add(fontSizeComboBox);
+		fontSizePanel.add(fontSizeLabel);
+		inputDirectoriesPanel.add(worldDirectoryLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
+
+			inputDirectoriesPanel.add(worldDirectoryTextField, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+				,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
+
+			inputDirectoriesPanel.add(worldDirectoryBrowseButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+				,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
+			
+			
+		resourceFileComboBox.setRenderer(new javax.swing.ListCellRenderer(){
+			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
+				javax.swing.JLabel toReturn = new javax.swing.JLabel("No Name");
+				toReturn.setOpaque(true);
+
+
+				String name = value.toString();
+				if (name.equals("Alice Style.py")){
+					name = "Alice Style";
+				} else if (name.equals("Java Style.py")){
+					name = "Java Style in Color";
+				} else if (name.equals("Java Text Style.py")){
+					name = "Java Style in Black & White";
+				} else{
+					int dotIndex = name.lastIndexOf(".");
+					if (dotIndex > -1){
+						name = name.substring(0, dotIndex);
+					}
+				}
+				toReturn.setText(name);
+				if (isSelected) {
+					toReturn.setBackground(list.getSelectionBackground());
+					toReturn.setForeground(list.getSelectionForeground());
+				} else {
+					toReturn.setBackground(list.getBackground());
+					toReturn.setForeground(list.getForeground());
+				}
+
+				return toReturn;
+			}
+		});
+		
+		resourcesPanel.add(resourceFileComboBox,   new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			resourcesPanel.add(resourcesLabel,        new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+				,GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 2, 6), 0, 0));
+		
+		maxRecentWorldsPanel.add(maxRecentWorldsTextField, BorderLayout.WEST);
+		maxRecentWorldsPanel.add(maxRecentWorldsLabel, BorderLayout.CENTER);
+		
+		
+		generalPanel.add(maxRecentWorldsPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 4, 0), 0, 0));
+
+		generalPanel.add(resourcesPanel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0
+			,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(inputDirectoriesPanel, new GridBagConstraints(0, 4, 1, 1, 1.0, 0.0
+			,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 0, 0), 0, 0));
+		generalPanel.add(fontSizePanel, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(component5, new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0
+			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		
+		generalPanel.add(viStyleFontPanel, new GridBagConstraints(0, 7, 1, 1, 1.0, 1.0
+				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		
+	  //// end init General tab +++++++++++++++++++++++++++
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		seldomUsedPanel.setBorder(emptyBorder);
 		seldomUsedPanel.setLayout(new GridBagLayout());
 		renderingPanel.setLayout(gridBagLayout3);
@@ -1216,15 +1340,9 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		okayButton.setText("Okay");
 		buttonPanel.setLayout(borderLayout7);
 		buttonPanel.setBorder(emptyBorder);
-		inputDirectoriesPanel.setLayout(gridBagLayout1);
-		worldDirectoryLabel.setText("save and load from:");
+		
 		importDirectoryLabel.setText("import directory:");
-		worldDirectoryBrowseButton.setText("Browse...");
-		worldDirectoryBrowseButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				worldDirectoryBrowseButton_actionPerformed(e);
-			}
-		});
+		
 		importDirectoryBrowseButton.setText("Browse...");
 		importDirectoryBrowseButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1237,8 +1355,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		groupMultipleRootObjectsCheckBox.setText("group multiple root objects");
 		colorToWhiteWhenTexturedCheckBox.setText("set ambient and diffuse color to white if object is textured");
 		cancelButton.setText("Cancel");
-//		characterDirectoryLabel.setText("object directory:");
-//		characterDirectoryBrowseButton.setText("Browse...");
+
 		screenGrabPanel.setLayout(gridBagLayout2);
 		captureDirectory.setText("directory to capture to:");
 		browseButton.setText("Browse...");
@@ -1258,12 +1375,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		forceSoftwareRenderingCheckBox.setText("force software rendering (slower and safer)");
 		showFPSCheckBox.setText("show frames per second");
 		deleteFiles.setText("delete frames folder after exporting video"); // Aik Min added this.
-//		renderWindowMatchesSceneEditorCheckBox.setText("render window matches scene editor");
-//		renderWindowMatchesSceneEditorCheckBox.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				renderWindowMatchesSceneEditorCheckBox_actionPerformed(e);
-//			}
-//		});
+
 		boundsXLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		boundsXLabel.setText("horizontal position:");
 		boundsXLabel.setBounds(new Rectangle(16, 28, 113, 17));
@@ -1312,50 +1424,35 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			}
 		});
 		infiniteBackupsCheckBox.setText("save infinite number of backup scripts");
-		numClipboardsPanel.setLayout(borderLayout2);
-		numClipboardsTextField.setColumns(4);
-//		scriptTypeInEnabledCheckBox.setText("show script type-in for scene layout");
-//		reloadWorldScriptCheckBox.setText("reload world script on run");
-		maxRecentWorldsPanel.setLayout(borderLayout8);
-		maxRecentWorldsPanel.setAlignmentX((float) 0.0);
-		maxRecentWorldsPanel.setMaximumSize(new Dimension(2147483647, 25));
-		maxRecentWorldsPanel.setMinimumSize(new Dimension(0, 0));
+		
+		
+		
+		
+		
+		
+		
+		
 		runtimeScratchPadEnabledCheckBox.setText("show scratch pad when world runs");
-		maxRecentWorldsTextField.setMaximumSize(new Dimension(4, 21));
-		maxRecentWorldsTextField.setColumns(4);
-		maxRecentWorldsLabel.setText("maximum number of worlds kept in the recent worlds menu");
-		maxRecentWorldsLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+
+		
+		
+		
+		
+		
 		borderLayout8.setHgap(8);
-		numClipboardsLabel.setText("number of clipboards");
-		numClipboardsLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
 		borderLayout2.setHgap(8);
-		showWorldStatsCheckBox.setText("show world statistics");
+		
 		enableScriptingCheckBox.setToolTipText("");
 		enableScriptingCheckBox.setActionCommand("enable jython scripting");
 		enableScriptingCheckBox.setText("enable jython scripting");
-		pickUpTilesCheckBox.setText("pick up tiles while dragging and dropping (reduces performance)");
-		useAlphaTilesCheckBox.setText("use alpha blending in picked up tiles (really reduces performance)");
-//		backgroundColorPanel.setLayout(borderLayout1);
-//		backgroundColorButton.setMaximumSize(new Dimension(34, 21));
-//		backgroundColorButton.setMinimumSize(new Dimension(34, 21));
-//		backgroundColorButton.setPreferredSize(new Dimension(34, 21));
-//		backgroundColorButton.setMnemonic('0');
-//		backgroundColorButton.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				backgroundColorButton_actionPerformed(e);
-//			}
-//		});
-//		backgroundColorLabel.setBorder(border1);
-//		backgroundColorLabel.setText("background color");
-//		backgroundColorLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+
 		saveAsSingleFileCheckBox.setText("always save worlds as single files");
-		clearStdOutOnRunCheckBox.setText("clear text output on play");
-		resourcesLabel.setText("display my program:");
-		resourcesPanel.setLayout(gridBagLayout5);
+		
+		
 		watcherPanelEnabledCheckBox.setText("show variable watcher when world runs");
-		showStartUpDialogCheckBox.setText("show startup dialog when Alice launches");
-		enableHighContrastCheckBox.setText("enable high contrast mode for projectors");
-		showWebWarningCheckBox.setText("show warning when browsing the web gallery");
+		
 		constrainRenderDialogAspectCheckBox.setText("constrain render window\'s aspect ratio");
 		constrainRenderDialogAspectCheckBox.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent ae){
@@ -1363,44 +1460,34 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			}
 		});
 		ensureRenderDialogIsOnScreenCheckBox.setText("make sure the render window is always on the screen");
-		loadSavedTabsCheckBox.setText("open tabs that were previously open on world load");
-		saveThumbnailWithWorldCheckBox.setText("save thumbnail with world");
+		
 		screenCaptureInformUserCheckBox.setText("show information dialog when capture is made");
 		captureDirectoryTextField.getDocument().addDocumentListener(captureDirectoryChangeListener);
-//		printingFillBackgroundCheckBox.setText("fill backgrounds when printing (uncheck to save ink)");
-//		printingScalePanel.setLayout(gridBagLayout6);
-//		printingScaleLabel.setText("printing scale");
+
 		saveIntervalLabelEnd.setText(" number of minutes to wait before displaying save reminder");
 		saveIntervalComboBox.setEditable(true);
 		saveIntervalComboBox.setPreferredSize(new java.awt.Dimension(75, 25));
-		saveIntervalPanel.setOpaque(false);
-		saveIntervalPanel.setBorder(null);
-		saveIntervalPanel.add(saveIntervalComboBox);
-		saveIntervalPanel.add(saveIntervalLabelEnd);
+		
 		
 		backupCountLabel.setText(" number of backups of each world to save");
 		backupCountComboBox.setEditable(true);
 		backupCountComboBox.setPreferredSize(new java.awt.Dimension(75, 25));
 		backupCountComboBox.setMaximumRowCount(9);
-		backupCountPanel.setOpaque(false);
-		backupCountPanel.setBorder(null);
-		backupCountPanel.add(backupCountComboBox);
-		backupCountPanel.add(backupCountLabel);
 		
-		fontSizeLabel.setText(" general font size (default value is 12)");
-		fontSizeComboBox.setEditable(true);
-		fontSizeComboBox.setPreferredSize(new java.awt.Dimension(55, 25));
-		fontSizeComboBox.setMaximumRowCount(9);
-		fontSizePanel.setOpaque(false);
-		fontSizePanel.setBorder(null);
-		fontSizePanel.add(fontSizeComboBox);
-		fontSizePanel.add(fontSizeLabel);
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		this.add(configTabbedPane, BorderLayout.CENTER);
 		
 		configTabbedPane.add(generalPanel, "General");
 		configTabbedPane.add(renderingPanel, "Rendering");
-		//configTabbedPane.add(directoriesPanel, "Directories");
+
 		configTabbedPane.add(screenGrabPanel, "Screen Grab");
 //		TODO: config for bvw
 //			  configTabbedPane.add(aseImporterPanel, "ASE Importer");
@@ -1414,10 +1501,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		renderingPanel.add(deleteFiles,  new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
 			
-//		renderingPanel.add(useBorderlessWindowCheckBox,  new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
-//		renderingPanel.add(renderWindowMatchesSceneEditorCheckBox, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
+
 		renderingPanel.add(renderWindowBoundsPanel,  new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0
 			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(8, 4, 8, 0), 0, 0));
 		renderWindowBoundsPanel.add(boundsWidthLabel, null);
@@ -1444,24 +1528,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		renderingPanel.add(component6,  new GridBagConstraints(0, 10, 2, 1, 0.0, 1.0
 			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
-		inputDirectoriesPanel.add(worldDirectoryLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-			,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-//		inputDirectoriesPanel.add(importDirectoryLabel,   new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-		inputDirectoriesPanel.add(worldDirectoryTextField, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
-			,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
-//		inputDirectoriesPanel.add(importDirectoryTextField,   new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0
-//			,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
-		inputDirectoriesPanel.add(worldDirectoryBrowseButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
-			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-//		inputDirectoriesPanel.add(importDirectoryBrowseButton,   new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-//		inputDirectoriesPanel.add(characterDirectoryLabel,   new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-//		inputDirectoriesPanel.add(characterDirectoryTextField,   new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0
-//			,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
-//		inputDirectoriesPanel.add(characterDirectoryBrowseButton,   new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
+		
+
 		directoriesBox.add(component7, null);
 		
 		screenGrabPanel.add(captureDirectory,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
@@ -1503,115 +1571,73 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		buttonBox.add(cancelButton, null);
 		buttonBox.add(component2, null);
 		
-//		backgroundColorPanel.add(backgroundColorButton,  BorderLayout.WEST);
-//		backgroundColorPanel.add(backgroundColorLabel,  BorderLayout.CENTER);
-		resourceFileComboBox.setRenderer(new javax.swing.ListCellRenderer(){
-			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
-				javax.swing.JLabel toReturn = new javax.swing.JLabel("No Name");
-				toReturn.setOpaque(true);
-//				toReturn.setHorizontalAlignment(javax.swing.JLabel.CENTER);
-//				toReturn.setVerticalAlignment(javax.swing.JLabel.CENTER);
 
-				String name = value.toString();
-				if (name.equals("Alice Style.py")){
-					name = "Alice Style";
-				} else if (name.equals("Java Style.py")){
-					name = "Java Style in Color";
-				} else if (name.equals("Java Text Style.py")){
-					name = "Java Style in Black & White";
-				} else{
-					int dotIndex = name.lastIndexOf(".");
-					if (dotIndex > -1){
-						name = name.substring(0, dotIndex);
-					}
-				}
-				toReturn.setText(name);
-				if (isSelected) {
-					toReturn.setBackground(list.getSelectionBackground());
-					toReturn.setForeground(list.getSelectionForeground());
-				} else {
-					toReturn.setBackground(list.getBackground());
-					toReturn.setForeground(list.getForeground());
-				}
+		
+		
 
-				return toReturn;
-			}
-		});
-		resourcesPanel.add(resourceFileComboBox,   new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		resourcesPanel.add(resourcesLabel,        new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-			,GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 2, 6), 0, 0));
-
-		maxRecentWorldsPanel.add(maxRecentWorldsTextField, BorderLayout.WEST);
-		maxRecentWorldsPanel.add(maxRecentWorldsLabel, BorderLayout.CENTER);
+		
+		
+		
+		
+		
+		
+		
+		/////////////////////////// init seldom used tab
+		numClipboardsPanel.setLayout(borderLayout2);
+		showWorldStatsCheckBox.setText("show world statistics");
+		pickUpTilesCheckBox.setText("pick up tiles while dragging and dropping (reduces performance)");
+		useAlphaTilesCheckBox.setText("use alpha blending in picked up tiles (really reduces performance)");
+		clearStdOutOnRunCheckBox.setText("clear text output on play");
+		showStartUpDialogCheckBox.setText("show startup dialog when Alice launches");
+		enableHighContrastCheckBox.setText("enable high contrast mode for projectors");
+		showWebWarningCheckBox.setText("show warning when browsing the web gallery");
+		loadSavedTabsCheckBox.setText("open tabs that were previously open on world load");
+		saveThumbnailWithWorldCheckBox.setText("save thumbnail with world");
+		saveIntervalPanel.setOpaque(false);
+		saveIntervalPanel.setBorder(null);
+		saveIntervalPanel.add(saveIntervalComboBox);
+		saveIntervalPanel.add(saveIntervalLabelEnd);
+		backupCountPanel.setOpaque(false);
+		backupCountPanel.setBorder(null);
+		backupCountPanel.add(backupCountComboBox);
+		backupCountPanel.add(backupCountLabel);
+		numClipboardsTextField.setColumns(4);
+		numClipboardsLabel.setText("number of clipboards");
+		numClipboardsLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
 		
 		numClipboardsPanel.add(numClipboardsTextField, BorderLayout.WEST);
 		numClipboardsPanel.add(numClipboardsLabel, BorderLayout.CENTER);
-			
-
-//		generalPanel.add(scriptTypeInEnabledCheckBox,          new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		generalPanel.add(maxRecentWorldsPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 4, 0), 0, 0));
-//		generalPanel.add(backgroundColorPanel, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0
-//				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 4, 0), 0, 0));
-		generalPanel.add(resourcesPanel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0
-			,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		generalPanel.add(inputDirectoriesPanel, new GridBagConstraints(0, 4, 1, 1, 1.0, 0.0
-			,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 0, 0), 0, 0));
-		generalPanel.add(fontSizePanel, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		generalPanel.add(component5, new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0
-			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-//		generalPanel.add(watcherPanelEnabledCheckBox,    new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));	
-		
-//		printingScalePanel.add(printingScaleComboBox,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-//		printingScalePanel.add(printingScaleLabel,     new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
-//			,GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 6, 0, 0), 0, 0));		
-		
-		seldomUsedPanel.add(showStartUpDialogCheckBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(showWebWarningCheckBox, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(loadSavedTabsCheckBox, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(pickUpTilesCheckBox, new GridBagConstraints(0,3, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(useAlphaTilesCheckBox, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(saveThumbnailWithWorldCheckBox, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(showWorldStatsCheckBox, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-//		seldomUsedPanel.add(saveAsSingleFileCheckBox,           new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(clearStdOutOnRunCheckBox, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(enableHighContrastCheckBox, new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(numClipboardsPanel, new GridBagConstraints(0, 9, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 4, 0), 0, 0));
-		seldomUsedPanel.add(saveIntervalPanel, new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(backupCountPanel, new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0
-			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-//		seldomUsedPanel.add(enableScriptingCheckBox, new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-//		seldomUsedPanel.add(runtimeScratchPadEnabledCheckBox, new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-//		seldomUsedPanel.add(reloadWorldScriptCheckBox,         new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-//		seldomUsedPanel.add(infiniteBackupsCheckBox, new GridBagConstraints(0, 12, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-//		seldomUsedPanel.add(printingFillBackgroundCheckBox, new GridBagConstraints(0, 13, 1, 1, 0.0, 0.0
-//			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-//		seldomUsedPanel.add(printingScalePanel, new GridBagConstraints(0, 14, 1, 1, 1.0, 0.0
-//			,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		
-		
-		seldomUsedPanel.add(javax.swing.Box.createVerticalGlue(), new GridBagConstraints(0, 15, 1, 1, 1.0, 1.0
-			,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+	
+		{//seldome used tab GUI 
+			Insets allZerooInsets = new Insets(0,0,0,0);
+			seldomUsedPanel.add(showStartUpDialogCheckBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE,allZerooInsets, 0, 0));
+			seldomUsedPanel.add(showWebWarningCheckBox, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(loadSavedTabsCheckBox, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(pickUpTilesCheckBox, new GridBagConstraints(0,3, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(useAlphaTilesCheckBox, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(saveThumbnailWithWorldCheckBox, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(showWorldStatsCheckBox, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, allZerooInsets, 0, 0));
+	
+			seldomUsedPanel.add(clearStdOutOnRunCheckBox, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(enableHighContrastCheckBox, new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(numClipboardsPanel, new GridBagConstraints(0, 9, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 4, 0), 0, 0));
+			seldomUsedPanel.add(saveIntervalPanel, new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(backupCountPanel, new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, allZerooInsets, 0, 0));
+			seldomUsedPanel.add(javax.swing.Box.createVerticalGlue(), new GridBagConstraints(0, 15, 1, 1, 1.0, 1.0
+				,GridBagConstraints.CENTER, GridBagConstraints.BOTH, allZerooInsets, 0, 0));
+		}
 	}
 }
