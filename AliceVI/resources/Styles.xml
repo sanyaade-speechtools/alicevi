@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><customStyles>
+	<style>
+		<name>style1</name>
+		<font>
+			<size>12</size>
+			<color>ff,00,ff</color>
+		</font>
+	</style>
+	<style>
+		<name>myStyle</name>
+		<font>
+			<size>18</size>
+			<color>00,ff,00</color>
+		</font>
+	</style>
+	<style>
+		<name>hugeOne</name>
+		<font>
+			<size>24</size>
+			<color>00,00,00</color>
+		</font>
+	</style>
+	<style>
+		<name>sdfgs</name>
+		<font>
+			<size>8</size>
+			<color>ff,ff,ff</color>
+		</font>
+	</style>
+	<style>
+		<name>testStyle1</name>
+		<font>
+			<size>8</size>
+			<color>11,11,11</color>
+		</font>
+	</style>
+<style><name>changed</name><font><size>12</size><color>33,33,33</color></font></style><style><name>dtyhdfghdfghdgh</name><font><size>24</size><color>ff,ff,ff</color></font></style><style><name>we5ytyh</name><font><size>24</size><color>ff,ff,ff</color></font></style><style><name>blueOne</name><font><size>14</size><color>ff,ff,ff</color></font></style><style><name>Blue18</name><font><size>18</size><color>ff,ff,ff</color></font></style><style><name>wrtqwertqw</name><font><size>22</size><color>ff,ff,ff</color></font></style><style><name>asdfgsd</name><font><size>12</size><color>ff,ff,ff</color></font></style></customStyles>
