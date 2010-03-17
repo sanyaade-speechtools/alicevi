@@ -33,6 +33,7 @@ class LineArrayProxy extends VertexGeometryProxy {
 		    setIsGeometryChanged( true );
         }
         if( isGeometryChanged() ) {
+        	//context.gl.glLineWidth(10f); //TODO line width setting
             context.gl.glNewList( id.intValue(), GL.GL_COMPILE_AND_EXECUTE );
             context.gl.glBegin( GL.GL_LINES );
             for( int i=0; i<getNumVertices(); i+=2 ) {
