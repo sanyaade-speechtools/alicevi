@@ -1,1 +1,3 @@
 LineArrayProxy.java - line width OpenGL at line 36
+
+Python loading - AuthoringToolResource::loadResourcesPy() - line 255
