@@ -27,7 +27,13 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.io.FileFilter;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.KeyEvent;
+import java.io.*;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,7 +44,12 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
+import org.python.core.Py;
+import org.python.core.PySystemState;
+import org.python.core.__builtin__;
+
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
+import edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer;
 import edu.cmu.cs.stage3.alice.core.Behavior;
 import edu.cmu.cs.stage3.alice.core.Billboard;
 import edu.cmu.cs.stage3.alice.core.Camera;
@@ -141,55 +152,55 @@ public class AuthoringToolResources {
 		public HashMap<Integer, String> keyCodesToStrings = new HashMap<Integer, String>();
 		public boolean experimentalFeaturesEnabled;
 		public HashMap<Object, Object> miscMap = new HashMap<Object, Object>();
-		public java.net.URL mainWebGalleryURL = null;
-		public java.io.File mainDiskGalleryDirectory = null;
-		public java.io.File mainCDGalleryDirectory = null;
+		public URL mainWebGalleryURL = null;
+		public File mainDiskGalleryDirectory = null;
+		public File mainCDGalleryDirectory = null;
 		}
 	protected static Resources resources;
 	
 	
 
-	protected static java.io.File resourcesDirectory;
-	protected static java.io.File resourcesCacheFile;
-	protected static java.io.File resourcesPyFile;
-	protected static java.io.FilenameFilter pyFilenameFilter = new java.io.FilenameFilter() {
-		public boolean accept( java.io.File dir, String name ) {
-			return name.toLowerCase().endsWith( ".py" );
+	protected static File resourcesDirectory;
+	protected static File resourcesCacheFile;
+	protected static File resourcesPyFile;
+	
+	
+	//filter the content of the resource directory 
+	protected static FilenameFilter pyFilenameFilter = new FilenameFilter() {//used to filter the file list
+		public boolean accept( File dir, String name ) {//returns true iff the file name ends with '.pu'. it basically retrieve
+			return name.toLowerCase().endsWith( ".py" );//python files from the given directory 
 		}
 	};
-
+	
+	
 	static {
-		resourcesDirectory = new java.io.File( JAlice.getAliceHomeDirectory(), "resources" ).getAbsoluteFile();
-		resourcesCacheFile = new java.io.File( resourcesDirectory, "resourcesCache.bin" ).getAbsoluteFile();
-		resourcesPyFile = new java.io.File( resourcesDirectory, authoringToolConfig.getValue( "resourceFile" ) ).getAbsoluteFile();
-		if (!resourcesPyFile.canRead()){
-			resourcesPyFile = new java.io.File(resourcesDirectory, "Alice Style.py").getAbsoluteFile();
+		//get the full bath of the 'resource' file which contains all the style files
+		resourcesDirectory = new File( JAlice.getAliceHomeDirectory(), "resources" ).getAbsoluteFile();
+		
+		//get the chache file full bath. its location i sresoucesCache.bin
+		resourcesCacheFile = new File( resourcesDirectory, "resourcesCache.bin" ).getAbsoluteFile();
+		
+		//get the properties retrieved from python files. if not found, load properties from 'Alice Style.py'
+		resourcesPyFile = new File( resourcesDirectory, authoringToolConfig.getValue( "resourceFile" ) ).getAbsoluteFile();
+		if (!resourcesPyFile.canRead()){//if the resource file cannot be read, load 'Alice Style.py' as the default style
+			resourcesPyFile = new File(resourcesDirectory, "Alice Style.py").getAbsoluteFile();
 		}
+		
+		//initialize Python stuff , URL, and key-board mapping
 		loadResourcesPy();
-//
-//		if( isResourcesCacheCurrent() ) {
-//			try {
-//				loadResourcesCache();
-//			} catch( Throwable t ) {
-//				AuthoringTool.showErrorDialog( "Unable to load resources cache.  Reloading resources from " + resourcesPyFile.getAbsolutePath(), t );
-//				try {
-//					loadResourcesPy();
-//				} catch( Throwable t2 ) {
-//					AuthoringTool.showErrorDialog( "Unable to load resources from " + resourcesPyFile.getAbsolutePath(), t2 );
-//				}
-//				deleteResourcesCache();
-//			}
-//		} else {
-//			try {
-//				loadResourcesPy();
-//			} catch( Throwable t ) {
-//				AuthoringTool.showErrorDialog( "Unable to load resources from " + resourcesPyFile.getAbsolutePath(), t );
-//			}
-//			saveResourcesCache();
-//		}
+
 	}
 
-	public static boolean safeIsDataFlavorSupported(java.awt.dnd.DropTargetDragEvent dtde, DataFlavor flavor){
+	
+	
+	/////////////////////////////////////////// DataFlavorSupport
+	/**
+	 * ???
+	 * @param dtde
+	 * @param flavor
+	 * @return
+	 */
+	public static boolean safeIsDataFlavorSupported(DropTargetDragEvent dtde, DataFlavor flavor){
 		try{
 			boolean toReturn = dtde.isDataFlavorSupported(flavor);
 			return toReturn;
@@ -198,7 +209,12 @@ public class AuthoringToolResources {
 		}
 	}
 	
-	public static DataFlavor[] safeGetCurrentDataFlavors(java.awt.dnd.DropTargetDropEvent dtde){
+	/**
+	 * ???????
+	 * @param dtde
+	 * @return
+	 */
+	public static DataFlavor[] safeGetCurrentDataFlavors(DropTargetDropEvent dtde){
 		try{
 			return dtde.getCurrentDataFlavors();
 		} catch (Throwable t){
@@ -206,7 +222,12 @@ public class AuthoringToolResources {
 		}
 	}
 	
-	public static DataFlavor[] safeGetCurrentDataFlavors(java.awt.dnd.DropTargetDragEvent dtde){
+	/**
+	 * ????
+	 * @param dtde
+	 * @return
+	 */
+	public static DataFlavor[] safeGetCurrentDataFlavors(DropTargetDragEvent dtde){
 		try{
 			return dtde.getCurrentDataFlavors();
 		} catch (Throwable t){
@@ -214,7 +235,13 @@ public class AuthoringToolResources {
 		}
 	}
 	
-	public static boolean safeIsDataFlavorSupported(java.awt.dnd.DropTargetDropEvent dtde, DataFlavor flavor){
+	/**
+	 * ??
+	 * @param dtde
+	 * @param flavor
+	 * @return
+	 */
+	public static boolean safeIsDataFlavorSupported(DropTargetDropEvent dtde, DataFlavor flavor){
 		try{
 			boolean toReturn = dtde.isDataFlavorSupported(flavor);
 			return toReturn;
@@ -223,6 +250,12 @@ public class AuthoringToolResources {
 		}
 	}
 	
+	/**
+	 * ???
+	 * @param transferable
+	 * @param flavor
+	 * @return
+	 */
 	public static boolean safeIsDataFlavorSupported(Transferable transferable, DataFlavor flavor){
 		try{
 			boolean toReturn = transferable.isDataFlavorSupported(flavor);
@@ -231,7 +264,12 @@ public class AuthoringToolResources {
 			return false;
 		}
 	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 
+	/**
+	 * returns true if the resources are cached
+	 */
 	public static boolean isResourcesCacheCurrent() {
 		long cacheTime = resourcesCacheFile.exists() ? resourcesCacheFile.lastModified() : 0L;
 		long mostCurrentPy = getMostCurrentPyTime( resourcesDirectory, 0L );
@@ -239,7 +277,13 @@ public class AuthoringToolResources {
 		return (cacheTime > mostCurrentPy);
 	}
 
-	private static long getMostCurrentPyTime( java.io.File directory, long mostCurrentPy ) {
+	/**
+	 * get time of the last modified file in the given directory (TBV)
+	 * @param directory
+	 * @param mostCurrentPy
+	 * @return
+	 */
+	private static long getMostCurrentPyTime( File directory, long mostCurrentPy ) {
 		java.io.File[] files = directory.listFiles();
 		for( int i = 0; i < files.length; i++ ) {
 			if( pyFilenameFilter.accept( directory, files[i].getName() ) ) {
@@ -248,28 +292,46 @@ public class AuthoringToolResources {
 				mostCurrentPy = Math.max( mostCurrentPy, getMostCurrentPyTime( files[i], mostCurrentPy ) );
 			}
 		}
-
 		return mostCurrentPy;
 	}
 
+	/**
+	 * loads all properties from Python files located in the 'resources' folder into the local variables.
+	 * It calls ResourceTransfer.py file which calls the static methods in AuthoringToolResources class 
+	 * to load the properties
+	 * 
+	 * intializes the key-event  String mapping. 
+	 * i.e Key-event_0_VI is mapped to "0" <-- human readable
+	 * 
+	 * tries to find alice gallery URL from specific file and initializes the URL variable
+	 */
 	public static void loadResourcesPy() {
 		resources = new Resources();
-		org.python.core.PySystemState.initialize();
-		org.python.core.PySystemState pySystemState = org.python.core.Py.getSystemState();
-		org.python.core.__builtin__.execfile( resourcesPyFile.getAbsolutePath(), pySystemState.builtins, pySystemState.builtins );
-		AuthoringToolResources.initKeyCodesToStrings();
+		PySystemState.initialize();
+		PySystemState pySystemState = Py.getSystemState();
+		__builtin__.execfile( resourcesPyFile.getAbsolutePath(), pySystemState.builtins, pySystemState.builtins );
+		
+		AuthoringToolResources.initKeyCodesToStrings();//maps key event int value with its String value. 
 		initWebGalleryURL();
 	}
-
+	
+	
+	/**
+	 * get cached information from 'resourcesCache.bin' file
+	 * @throws Exception
+	 */
 	public static void loadResourcesCache() throws Exception {
-		java.io.ObjectInputStream ois = new java.io.ObjectInputStream( new java.io.BufferedInputStream( new java.io.FileInputStream( resourcesCacheFile ) ) );
+		ObjectInputStream ois = new ObjectInputStream( new BufferedInputStream( new FileInputStream( resourcesCacheFile ) ) );
 		resources = (Resources)ois.readObject();
 		ois.close();
 	}
 
+	/**
+	 * save the resources back to the cache file 'resourcesCache.bin'
+	 */
 	public static void saveResourcesCache() {
 		try {
-			java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream( new java.io.BufferedOutputStream( new java.io.FileOutputStream( resourcesCacheFile ) ) );
+			ObjectOutputStream oos = new ObjectOutputStream( new BufferedOutputStream( new FileOutputStream( resourcesCacheFile ) ) );
 			oos.writeObject( resources );
 			oos.flush();
 			oos.close();
@@ -278,6 +340,9 @@ public class AuthoringToolResources {
 		}
 	}
 
+	/**
+	 * clear the cache file 'resourcesCache.bin'
+	 */
 	public static void deleteResourcesCache() {
 		try {
 			resourcesCacheFile.delete();
@@ -286,12 +351,17 @@ public class AuthoringToolResources {
 		}
 	}
 
+	/**
+	 * Iterate through the given list to make sure that all the properties are of type StringObjectPair. 
+	 * Each string-object pair should be used to create a valid object. 
+	 * @param propertyStructure
+	 */
 	public static void setPropertyStructure( Vector<?> propertyStructure ) {
 		if( propertyStructure != null ) {
 			for( Iterator<?> iter = propertyStructure.iterator(); iter.hasNext(); ) {
 				Object o = iter.next();
-				if( o instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-					String className = ((edu.cmu.cs.stage3.util.StringObjectPair)o).getString();
+				if( o instanceof StringObjectPair ) {
+					String className = ((StringObjectPair)o).getString();
 					try {
 						Class.forName( className );
 					} catch( java.lang.ClassNotFoundException e ) {
@@ -305,13 +375,20 @@ public class AuthoringToolResources {
 
 		AuthoringToolResources.resources.propertyStructure = propertyStructure;
 	}
-
+	
+	
+	
+	/**
+	 * return a vector containing  the properties structure for the given class .
+	 * @param elementClass
+	 * @return
+	 */
 	public static Vector<StringObjectPair> getPropertyStructure( Class<?> elementClass ) {
 		if( AuthoringToolResources.resources.propertyStructure != null ) {
 			for( Iterator<?> iter = AuthoringToolResources.resources.propertyStructure.iterator(); iter.hasNext(); ) {
 				Object o = iter.next();
-				if( o instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-					String className = ((edu.cmu.cs.stage3.util.StringObjectPair)o).getString();
+				if( o instanceof StringObjectPair ) {
+					String className = ((StringObjectPair)o).getString();
 					try {
 						Class<?> c = Class.forName( className );
 						if( c.isAssignableFrom( elementClass ) ) {
@@ -328,17 +405,24 @@ public class AuthoringToolResources {
 		return null;
 	}
 
-	public static Vector getPropertyStructure( Element element, boolean includeLeftovers ) {
-		Vector structure = getPropertyStructure( element.getClass() );
+	/**
+	 * return a vector containing  the properties structure for the given class (overloaded method).
+	 * @param element
+	 * @param includeLeftovers. if true, include the leftover.
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static Vector<StringObjectPair> getPropertyStructure( Element element, boolean includeLeftovers ) {
+		Vector<StringObjectPair> structure = getPropertyStructure( element.getClass() );
 
 		if( includeLeftovers && (structure != null) ) {
-			Vector usedProperties = new Vector();
-			for( Iterator iter = structure.iterator(); iter.hasNext(); ) {
-				edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair)iter.next();
-				Vector propertyNames = (Vector)sop.getObject();
+			Vector<Property> usedProperties = new Vector<Property>();
+			for( Iterator<StringObjectPair> iter = structure.iterator(); iter.hasNext(); ) {
+				StringObjectPair sop = iter.next();
+				Vector<String> propertyNames = (Vector<String>) sop.getObject();
 				if( propertyNames != null ) {
-					for( Iterator jter = propertyNames.iterator(); jter.hasNext(); ) {
-						String name = (String)jter.next();
+					for( Iterator<String> jter = propertyNames.iterator(); jter.hasNext(); ) {
+						String name = jter.next();
 						Property property = element.getPropertyNamed( name );
 						if( property != null ) {
 							usedProperties.add( property );
@@ -347,7 +431,7 @@ public class AuthoringToolResources {
 				}
 			}
 
-			Vector leftovers = new Vector();
+			Vector<String> leftovers = new Vector<String>();
 			Property[] properties = element.getProperties();
 			for( int i = 0; i < properties.length; i++ ) {
 				if( ! usedProperties.contains( properties[i] ) ) {
@@ -356,7 +440,7 @@ public class AuthoringToolResources {
 			}
 
 			if( leftovers.size() > 0 ) {
-				structure.add( new edu.cmu.cs.stage3.util.StringObjectPair( "leftovers", leftovers ) );
+				structure.add( new StringObjectPair( "leftovers", leftovers ) );
 			}
 		}
 
@@ -364,25 +448,30 @@ public class AuthoringToolResources {
 	}
 
 
-	public static void setOneShotStructure( Vector oneShotStructure ) {
-		// validate structure
+	/**
+	 * make sure that all the object in 'oneShoutStructure' are valid and sets oneShotStructure property
+	 * @param oneShotStructure 
+	 */
+	public static void setOneShotStructure( Vector<Object> oneShotStructure ) {
+		// validate structure 
 		if( oneShotStructure != null ) {
-			for( Iterator iter = oneShotStructure.iterator(); iter.hasNext(); ) {
+			for( Iterator<Object> iter = oneShotStructure.iterator(); iter.hasNext(); ) {
+				
 				Object classChunk = iter.next();
-				if( classChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-					String className = ((edu.cmu.cs.stage3.util.StringObjectPair)classChunk).getString();
-					Object groups = ((edu.cmu.cs.stage3.util.StringObjectPair)classChunk).getObject();
-//					try {
-//						Class c = Class.forName( className );
-						if( groups instanceof Vector ) {
-							for( Iterator jter = ((Vector)groups).iterator(); jter.hasNext(); ) {
+				
+				if( classChunk instanceof StringObjectPair ) {
+					String className = ((StringObjectPair)classChunk).getString();
+					Object groups = ((StringObjectPair)classChunk).getObject();
+
+						if( groups instanceof Vector<?> ) {
+							for( Iterator<Object> jter = ((Vector)groups).iterator(); jter.hasNext(); ) {
 								Object groupChunk = jter.next();
-								if( groupChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-									Object responseClasses = ((edu.cmu.cs.stage3.util.StringObjectPair)groupChunk).getObject();
+								if( groupChunk instanceof StringObjectPair ) {
+									Object responseClasses = ((StringObjectPair)groupChunk).getObject();
 									if( responseClasses instanceof Vector ) {
-										for( Iterator kter = ((Vector)responseClasses).iterator(); kter.hasNext(); ) {
+										for( Iterator<Object> kter = ((Vector)responseClasses).iterator(); kter.hasNext(); ) {
 											Object className2 = kter.next();
-											if( (className2 instanceof String) || (className2 instanceof edu.cmu.cs.stage3.util.StringObjectPair) ) {
+											if( (className2 instanceof String) || (className2 instanceof StringObjectPair) ) {
 												// do nothing
 											} else {
 												throw new IllegalArgumentException( "oneShotStructure error: expected String or StringObjectPair, got: " + className );
@@ -396,30 +485,33 @@ public class AuthoringToolResources {
 						} else {
 							throw new IllegalArgumentException( "oneShotStructure error: expected Vector, got: " + groups );
 						}
-//					} catch( java.lang.ClassNotFoundException e ) {
-//						throw new IllegalArgumentException( "oneShotStructure error: " + className + " is not a Class" );
-//					}
 				} else {
 					throw new IllegalArgumentException( "Unexpected object found in oneShotStructure: " + classChunk );
 				}
+			
 			}
 		}
 
 		AuthoringToolResources.resources.oneShotStructure = oneShotStructure;
 	}
 
-	public static Vector getOneShotStructure( Class elementClass ) {
+	/**
+	 * get the structure of the passed element
+	 * @param elementClass 
+	 * @return structure as a vector
+	 */
+	public static Vector<Object> getOneShotStructure( Class elementClass ) {
 		if( AuthoringToolResources.resources.oneShotStructure != null ) {
 			for( Iterator iter = AuthoringToolResources.resources.oneShotStructure.iterator(); iter.hasNext(); ) {
 				Object o = iter.next();
-				if( o instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-					String className = ((edu.cmu.cs.stage3.util.StringObjectPair)o).getString();
+				if( o instanceof StringObjectPair ) {
+					String className = ((StringObjectPair)o).getString();
 					try {
 						Class c = Class.forName( className );
 						if( c.isAssignableFrom( elementClass ) ) {
-							return (Vector)((edu.cmu.cs.stage3.util.StringObjectPair)o).getObject();
+							return (Vector<Object>)((StringObjectPair)o).getObject();
 						}
-					} catch( java.lang.ClassNotFoundException e ) {
+					} catch( ClassNotFoundException e ) {
 						AuthoringTool.showErrorDialog( "Can't find class " + className, e );
 					}
 				} else {
@@ -431,21 +523,22 @@ public class AuthoringToolResources {
 		return null;
 	}
 
+	
 	public static void setQuestionStructure( Vector questionStructure ) {
 		// validate structure
 		if( questionStructure != null ) {
 			for( Iterator iter = questionStructure.iterator(); iter.hasNext(); ) {
 				Object classChunk = iter.next();
-				if( classChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-					String className = ((edu.cmu.cs.stage3.util.StringObjectPair)classChunk).getString();
-					Object groups = ((edu.cmu.cs.stage3.util.StringObjectPair)classChunk).getObject();
+				if( classChunk instanceof StringObjectPair ) {
+					String className = ((StringObjectPair)classChunk).getString();
+					Object groups = ((StringObjectPair)classChunk).getObject();
 //					try {
 //						Class c = Class.forName( className );
 						if( groups instanceof Vector ) {
 							for( Iterator jter = ((Vector)groups).iterator(); jter.hasNext(); ) {
 								Object groupChunk = jter.next();
-								if( groupChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-									Object questionClasses = ((edu.cmu.cs.stage3.util.StringObjectPair)groupChunk).getObject();
+								if( groupChunk instanceof StringObjectPair ) {
+									Object questionClasses = ((StringObjectPair)groupChunk).getObject();
 									if( questionClasses instanceof Vector ) {
 										for( Iterator kter = ((Vector)questionClasses).iterator(); kter.hasNext(); ) {
 											Object className2 = kter.next();
@@ -502,27 +595,25 @@ public class AuthoringToolResources {
 		return null;
 	}
 
+	/**
+	 * check if all the objects in the given victor are valid properties and then set the default properties
+	 * @param defaultPropertyValuesStructure
+	 */
 	public static void setDefaultPropertyValuesStructure( Vector defaultPropertyValuesStructure ) {
 		// validate structure
 		if( defaultPropertyValuesStructure != null ) {
 			for( Iterator iter = defaultPropertyValuesStructure.iterator(); iter.hasNext(); ) {
 				Object classChunk = iter.next();
-				if( classChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-//					String className = ((edu.cmu.cs.stage3.util.StringObjectPair)classChunk).getString();
-					Object properties = ((edu.cmu.cs.stage3.util.StringObjectPair)classChunk).getObject();
-//					try {
-//						Class c = Class.forName( className );
+				if( classChunk instanceof StringObjectPair ) {
+					Object properties = ((StringObjectPair)classChunk).getObject();
+
 						if( properties instanceof Vector ) {
 							for( Iterator jter = ((Vector)properties).iterator(); jter.hasNext(); ) {
 								Object propertyChunk = jter.next();
-								if( propertyChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair ) {
-									Object values = ((edu.cmu.cs.stage3.util.StringObjectPair)propertyChunk).getObject();
+								if( propertyChunk instanceof StringObjectPair ) {
+									Object values = ((StringObjectPair)propertyChunk).getObject();
 									if( ! (values instanceof Vector) ) {
 										throw new IllegalArgumentException( "defaultPropertyValuesStructure error: expected Vector, got: " + values );
-//									} else {
-//										for( Iterator kter = ((Vector)values).iterator(); kter.hasNext(); ) {
-//											System.out.println( kter.next() );
-//										}
 									}
 								} else {
 									throw new IllegalArgumentException( "defaultPropertyValuesStructure error: expected StringObjectPair, got: " + propertyChunk );
@@ -531,9 +622,7 @@ public class AuthoringToolResources {
 						} else {
 							throw new IllegalArgumentException( "defaultPropertyValuesStructure error: expected Vector, got: " + properties );
 						}
-//					} catch( java.lang.ClassNotFoundException e ) {
-//						throw new IllegalArgumentException( "defaultPropertyValuesStructure error: " + className + " is not a Class" );
-//					}
+
 				} else {
 					throw new IllegalArgumentException( "defaultPropertyValuesStructure error: expected StringObjectPair, got: " + classChunk );
 				}
@@ -543,17 +632,23 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.defaultPropertyValuesStructure = defaultPropertyValuesStructure;
 	}
 
+	/**
+	 * get a specific property set from a specific class
+	 * @param elementClass   class containing the property set
+	 * @param propertyName   the required property name
+	 * @return
+	 */
 	public static Vector getDefaultPropertyValues( Class elementClass, String propertyName ) {
 		if( AuthoringToolResources.resources.defaultPropertyValuesStructure != null ) {
 			for( Iterator iter = AuthoringToolResources.resources.defaultPropertyValuesStructure.iterator(); iter.hasNext(); ) {
-				edu.cmu.cs.stage3.util.StringObjectPair classChunk = (edu.cmu.cs.stage3.util.StringObjectPair)iter.next();
+				StringObjectPair classChunk = (StringObjectPair)iter.next();
 				String className = classChunk.getString();
 				try {
 					Class c = Class.forName( className );
 					if( c.isAssignableFrom( elementClass ) ) {
 						Vector properties = (Vector)classChunk.getObject();
 						for( Iterator jter = properties.iterator(); jter.hasNext(); ) {
-							edu.cmu.cs.stage3.util.StringObjectPair propertyChunk = (edu.cmu.cs.stage3.util.StringObjectPair)jter.next();
+							StringObjectPair propertyChunk = (StringObjectPair)jter.next();
 							if( propertyName.equals( propertyChunk.getString() ) ) {
 								return (Vector)propertyChunk.getObject();
 							}
@@ -567,6 +662,7 @@ public class AuthoringToolResources {
 
 		return null;
 	}
+	
 
 	public static void putName( Object key, String prettyName ) {
 		AuthoringToolResources.resources.nameMap.put( key, prettyName );
@@ -600,10 +696,15 @@ public class AuthoringToolResources {
 		return (String)AuthoringToolResources.resources.formatMap.get( key );
 	}
 
+	/**
+	 * return a plain decoded format of the value.
+	 * @param key
+	 * @return   decoded string. For example '&lt;' is decoded to '<' character 
+	 */
 	public static String getPlainFormat( Object key ) {
 		String format = (String)AuthoringToolResources.resources.formatMap.get( key );
 		StringBuffer sb = new StringBuffer();
-		edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer tokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer( format );
+		FormatTokenizer tokenizer = new FormatTokenizer( format );
 		while( tokenizer.hasMoreTokens() ) {
 			String token = tokenizer.nextToken();
 			if( (! token.startsWith( "<<" )) || token.startsWith( "<<<" ) ) {
@@ -656,14 +757,6 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.classesToOmitNoneFor = classesToOmitNoneFor;
 	}
 
-//	public static boolean shouldGUIOmitNone( Class valueClass ) {
-//		for( int i = 0; i < AuthoringToolResources.resources.classesToOmitNoneFor.length; i++ ) {
-//			if( AuthoringToolResources.resources.classesToOmitNoneFor[i].isAssignableFrom( valueClass ) ) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 
 	public static void setPropertiesToOmitNoneFor( edu.cmu.cs.stage3.util.StringTypePair[] propertiesToOmitNoneFor ) {
 		AuthoringToolResources.resources.propertiesToOmitNoneFor = propertiesToOmitNoneFor;
@@ -701,7 +794,7 @@ public class AuthoringToolResources {
 		return false;
 	}
 
-	public static void setPropertyNamesToOmit( edu.cmu.cs.stage3.util.StringTypePair[] propertyNamesToOmit ) {
+	public static void setPropertyNamesToOmit( StringTypePair[] propertyNamesToOmit ) {
 		AuthoringToolResources.resources.propertyNamesToOmit = propertyNamesToOmit;
 	}
 
@@ -718,7 +811,7 @@ public class AuthoringToolResources {
 		return false;
 	}
 
-	public static void setPropertiesToOmitScriptDefinedFor( edu.cmu.cs.stage3.util.StringTypePair[] propertiesToOmitScriptDefinedFor ) {
+	public static void setPropertiesToOmitScriptDefinedFor( StringTypePair[] propertiesToOmitScriptDefinedFor ) {
 		AuthoringToolResources.resources.propertiesToOmitScriptDefinedFor = propertiesToOmitScriptDefinedFor;
 	}
 
@@ -768,6 +861,9 @@ public class AuthoringToolResources {
 		}
 		return getReprForValue( value, elementClass, propertyName, extraContextInfo );
 	}
+	
+	
+	
 	public static String getReprForValue( Object value, Class elementClass, String propertyName, Object extraContextInfo ) {
 		boolean verbose = false;
 		Class valueClass = null;
@@ -882,14 +978,18 @@ public class AuthoringToolResources {
 		return getReprForValue( value, false );
 	}
 
+	/**
+	 * Searches for 'Alice/etc/AliceWebBalleryURL.txt' file and 
+	 * tries to parse and retrieve alice url from that file
+	 */
 	protected static void initWebGalleryURL(){
-		java.net.URL galleryURL = null;
+		URL galleryURL = null;
 		try {
-			galleryURL = new java.net.URL("http://www.alice.org/gallery/");
-			java.io.File urlFile = new java.io.File( edu.cmu.cs.stage3.alice.authoringtool.JAlice.getAliceHomeDirectory(), "etc/AliceWebGalleryURL.txt" ).getAbsoluteFile();
+			galleryURL = new URL("http://www.alice.org/gallery/");
+			File urlFile = new File( JAlice.getAliceHomeDirectory(), "etc/AliceWebGalleryURL.txt" ).getAbsoluteFile();
 			if( urlFile.exists() ) {
-				if( urlFile.canRead() ) {
-					java.io.BufferedReader br = new java.io.BufferedReader( new java.io.FileReader( urlFile ) );
+				if( urlFile.canRead() ) {//if the URL file exists and can be read
+					BufferedReader br = new BufferedReader( new FileReader( urlFile ) );
 					String urlString = null;
 					while (true){
 						urlString = br.readLine();
@@ -898,35 +998,39 @@ public class AuthoringToolResources {
 						} else if (urlString.length() > 0 && urlString.charAt(0) != '#'){
 							break;
 						}
-					}
+					}//end while
 					br.close();
 					
 					if( urlString != null ) {
 						urlString = urlString.trim();
 						if( urlString.length() > 0 ) {
 							try{
-								galleryURL = new java.net.URL( urlString );
-							} catch (java.net.MalformedURLException badURL){
+								galleryURL = new URL( urlString );
+							} 
+							catch (java.net.MalformedURLException badURL){
 								if (urlString.startsWith("www")){
 									urlString = "http://"+urlString;
 									try{
-										galleryURL = new java.net.URL( urlString );
-									} catch (java.net.MalformedURLException badURLAgain){}
+										galleryURL = new URL( urlString );
+									} 
+									catch (MalformedURLException badURLAgain){}
 								}
 							}
 								
 						} 
-					}
+					}//end if
 					
 				} 
 			} 
-		} catch( Throwable t ) {}
+		}//end try 
+		catch( Throwable t ) {}
 		finally{
 			if (galleryURL != null){
 				setMainWebGalleryURL(galleryURL);
 			}
-		}
-	}
+		}//end finally
+	}//end method
+	
 	protected static String stripUnnamedsFromName(Object value){
 		String toStrip = new String(value.toString());
 		String toReturn = "";
@@ -1012,7 +1116,7 @@ public class AuthoringToolResources {
 			String questionRepr = "";
 			Question question = (Question)value;
 			String format = getFormat( value.getClass() );
-			edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer formatTokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer( format );
+			FormatTokenizer formatTokenizer = new FormatTokenizer( format );
 //			int i = 0;
 			while( formatTokenizer.hasMoreTokens() ) {
 				String token = formatTokenizer.nextToken();
@@ -1207,9 +1311,9 @@ public class AuthoringToolResources {
 	}
 
 	public static String[] getInitialVisibleProperties( Class elementClass ) {
-		LinkedList visible = new LinkedList();
+		LinkedList<String> visible = new LinkedList<String>();
 		String format = AuthoringToolResources.getFormat( elementClass );
-		edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer tokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer( format );
+		FormatTokenizer tokenizer = new FormatTokenizer( format );
 		while( tokenizer.hasMoreTokens() ) {
 			String token = tokenizer.nextToken();
 			if( token.startsWith( "<<<" ) && token.endsWith( ">>>" ) ) {
@@ -1299,7 +1403,7 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.colorMap.put( key, color );
 	}
 
-	private static float[] rgbToHSL( java.awt.Color rgb ) {
+	private static float[] rgbToHSL( Color rgb ) {
 		float[] rgbF = rgb.getRGBColorComponents(null);
 		float[] hsl = new float[3];
 		float min = Math.min(rgbF[0], Math.min(rgbF[1], rgbF[2]));
@@ -1350,11 +1454,11 @@ public class AuthoringToolResources {
 	 	return v1; 
 	}
 	
-	private static java.awt.Color hslToRGB( float[] hsl ) {
-		java.awt.Color rgb = new java.awt.Color(0,0,0);
+	private static Color hslToRGB( float[] hsl ) {
+		Color rgb = new Color(0,0,0);
 		if (hsl[1] == 0){
 //			System.out.println("For HSL: "+hsl[0]+", "+hsl[1]+", "+hsl[2]+" RGB = "+hsl[2]+", "+hsl[2]+", "+hsl[2]);
-			return new java.awt.Color(hsl[2],hsl[2],hsl[2]);
+			return new Color(hsl[2],hsl[2],hsl[2]);
 		} else{
 			float var_2 = 0.0f;
 			if ( hsl[2] < 0.5 ){
@@ -1367,26 +1471,12 @@ public class AuthoringToolResources {
 			float G = Math.min(1.0f, hueToRGB( var_1, var_2, hsl[0] ));
 			float B = Math.min(1.0f, hueToRGB( var_1, var_2, hsl[0] - ( 1.0f / 3 ) ));
 //			System.out.println("For HSL: "+hsl[0]+", "+hsl[1]+", "+hsl[2]+" RGB = "+R+", "+G+", "+B);
-			return new java.awt.Color(R,G,B);
+			return new Color(R,G,B);
 		}
 	}
-//	static {
-//		float[] hsl = rgbToHSL(java.awt.Color.white);
-//		hslToRGB(hsl);
-//		hsl = rgbToHSL(java.awt.Color.black);
-//		hslToRGB(hsl);
-//		hsl = rgbToHSL(java.awt.Color.red);
-//		hslToRGB(hsl);
-//		hsl = rgbToHSL(java.awt.Color.green);
-//		hslToRGB(hsl);
-//		hsl = rgbToHSL(new java.awt.Color(100, 100, 100));
-//		hslToRGB(hsl);
-//		hsl = rgbToHSL(new java.awt.Color(.2f, .5f, .5f));
-//		hslToRGB(hsl);
-//		
-//	}
-	public static java.awt.Color getColor( String key ) {
-		java.awt.Color toReturn = (java.awt.Color)AuthoringToolResources.resources.colorMap.get( key );
+
+	public static Color getColor( String key ) {
+		Color toReturn = (java.awt.Color)AuthoringToolResources.resources.colorMap.get( key );
 		if (authoringToolConfig.getValue( "enableHighContrastMode" ).equalsIgnoreCase( "true" ) && 
 			!key.equalsIgnoreCase("mainFontColor") &&
 			!key.equalsIgnoreCase("objectTreeDisabledText") &&
@@ -1461,7 +1551,7 @@ public class AuthoringToolResources {
 	}
 	
 
-	public static java.awt.Image getImageForString( String s ) {
+	public static Image getImageForString( String s ) {
 		if( ! AuthoringToolResources.resources.stringImageMap.containsKey( s ) ) {
 			java.net.URL resource = AuthoringToolResources.class.getResource( "images/" + s + ".gif" );
 			if( resource == null ) {
@@ -1592,36 +1682,7 @@ public class AuthoringToolResources {
 
 			Runtime.getRuntime().exec( cmdarray );
 
-//			final Process p = Runtime.getRuntime().exec( cmdarray );
-//			try {
-//				p.waitFor();
-//			} catch( InterruptedException e ) {
-//				e.printStackTrace();
-//			}
-//			System.out.println( urlString.length() );
-//			System.out.println( urlString );
-//			System.out.println( p.exitValue() );
-//			edu.cmu.cs.stage3.alice.authoringtool.util.SwingWorker worker = new edu.cmu.cs.stage3.alice.authoringtool.util.SwingWorker() {
-//				public Object construct() {
-//					java.io.BufferedInputStream bif = new java.io.BufferedInputStream( p.getErrorStream() );
-//					java.io.OutputStream os = AuthoringTool.getHack().getStdErrOutputComponent().getStdErrStream();
-//					while( true ) {
-//						try {
-//							if( bif.available() > 0 ) {
-//								os.write( bif.read() );
-//							}
-//							Thread.sleep( 1 );
-//						} catch( Exception e ) {
-//							e.printStackTrace();
-//							break;
-//						}
-//					}
-//					return null;
-//				}
-//			};
-//			worker.start();
 
-//			Runtime.getRuntime().exec( "rundll32 url.dll,FileProtocolHandler " + urlString );
 		} else {
 			// try netscape
 		    try {
@@ -1636,35 +1697,7 @@ public class AuthoringToolResources {
 		}
 	}
 
-//	public static String cleanURLString( String urlString ) {
-//		HashMap replacementMap = new HashMap();
-//		replacementMap.put( "/", "%2F" );
-//		replacementMap.put( " ", "%20" );
-//		replacementMap.put( "~", "%7E" );
-//		replacementMap.put( "&", "%26" );
-//		replacementMap.put( "?", "%3F" );
-//		replacementMap.put( "=", "%3D" );
-//		replacementMap.put( ";", "%3B" );
-//		replacementMap.put( ">", "%3E" );
-//		replacementMap.put( "<", "%3C" );
-//
-//		StringBuffer sb = new StringBuffer( urlString );
-//		for( Iterator iter = replacementMap.keySet().iterator(); iter.hasNext(); ) {
-//			String key = (String)iter.next();
-//			String value = (String)replacementMap.get( key );
-//			while( true ) {
-//				int start = sb.toString().indexOf( key );
-//				int end = start + key.length();
-//				if( start > -1 ) {
-//					sb.replace( start, end, value );
-//				} else {
-//					break;
-//				}
-//			}
-//		}
-//
-//		return sb.toString();
-//	}
+
 
 	public static boolean equals( Object o1, Object o2 ) {
 		if( o1 == null ) {
@@ -2348,48 +2381,48 @@ public class AuthoringToolResources {
 	}
 
 	private static void initKeyCodesToStrings() {
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_0 ), "0" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_1 ), "1" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_2 ), "2" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_3 ), "3" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_4 ), "4" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_5 ), "5" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_6 ), "6" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_7 ), "7" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_8 ), "8" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_9 ), "9" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_A ), "A" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_B ), "B" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_C ), "C" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_D ), "D" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_E ), "E" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_F ), "F" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_G ), "G" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_H ), "H" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_I ), "I" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_J ), "J" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_K ), "K" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_L ), "L" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_M ), "M" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_N ), "N" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_O ), "O" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_P ), "P" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_Q ), "Q" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_R ), "R" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_S ), "S" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_T ), "T" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_U ), "U" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_V ), "V" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_W ), "W" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_X ), "X" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_Y ), "Y" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_Z ), "Z" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_ENTER ), "enter" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_SPACE ), "space" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_UP ), "upArrow" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_DOWN ), "downArrow" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_LEFT ), "leftArrow" );
-		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer( java.awt.event.KeyEvent.VK_RIGHT ), "rightArrow" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_0 ), "0" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_1 ), "1" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_2 ), "2" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_3 ), "3" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_4 ), "4" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_5 ), "5" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_6 ), "6" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_7 ), "7" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_8 ), "8" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_9 ), "9" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_A ), "A" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_B ), "B" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_C ), "C" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_D ), "D" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_E ), "E" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_F ), "F" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_G ), "G" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_H ), "H" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_I ), "I" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_J ), "J" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_K ), "K" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_L ), "L" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_M ), "M" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_N ), "N" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_O ), "O" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_P ), "P" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_Q ), "Q" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_R ), "R" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_S ), "S" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_T ), "T" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_U ), "U" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_V ), "V" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_W ), "W" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_X ), "X" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_Y ), "Y" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_Z ), "Z" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_ENTER ), "enter" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_SPACE ), "space" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_UP ), "upArrow" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_DOWN ), "downArrow" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_LEFT ), "leftArrow" );
+		AuthoringToolResources.resources.keyCodesToStrings.put( new Integer(  KeyEvent.VK_RIGHT ), "rightArrow" );
 	}
 
 	public static void copyFile( java.io.File from, java.io.File to ) throws java.io.IOException {
