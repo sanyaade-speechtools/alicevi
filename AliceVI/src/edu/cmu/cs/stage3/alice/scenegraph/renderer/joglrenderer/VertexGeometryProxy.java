@@ -24,7 +24,7 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
 abstract class VertexGeometryProxy extends GeometryProxy {
-    private edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] m_vertices;
+    protected edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] m_vertices;
     protected edu.cmu.cs.stage3.alice.scenegraph.Vertex3d getVertexAt( int index ) {
         return m_vertices[ index ];
     }
@@ -35,7 +35,7 @@ abstract class VertexGeometryProxy extends GeometryProxy {
     }
     
 	protected void changed( edu.cmu.cs.stage3.alice.scenegraph.Property property, Object value ) {
-		if( property == edu.cmu.cs.stage3.alice.scenegraph.VertexGeometry.VERTICES_PROPERTY ) {
+		if( property == edu.cmu.cs.stage3.alice.scenegraph.VertexGeometry.VERTICES_PROPERTY ) {		
 		    m_vertices = (edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[])value;
 		    setIsGeometryChanged( true );
 		} else if( property == edu.cmu.cs.stage3.alice.scenegraph.VertexGeometry.VERTEX_LOWER_BOUND_PROPERTY ) {

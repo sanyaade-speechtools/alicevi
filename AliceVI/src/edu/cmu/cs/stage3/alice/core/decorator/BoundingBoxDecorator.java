@@ -77,6 +77,11 @@ public class BoundingBoxDecorator extends Decorator {
 			Vector3d min = box.getMinimum();
 			Vector3d max = box.getMaximum();
 			Vertex3d[] vs = new Vertex3d[8];
+			
+			//Set line width
+			m_sgLineArray.setLineWidth(Decorator.getPivotAndBoundingBoxLineWidth());
+			
+			//Set vertex values
 			vs[0] = new Vertex3d(new Point3d(min.x, min.y, min.z), null, color,
 					null, null);
 			vs[1] = new Vertex3d(new Point3d(min.x, min.y, max.z), null, color,

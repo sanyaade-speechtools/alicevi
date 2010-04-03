@@ -100,9 +100,27 @@ public abstract class VertexGeometry extends Geometry {
 		return m_vertices;
 	}
 
+	/**
+	 * Sets the vertices used to create this geometry.
+	 * Triggers a VERTICES_PROPERTY changed event.
+	 * 
+	 * @param vertices vertices used to create this geometry.
+	 */
 	public void setVertices(Vertex3d[] vertices) {
+		setVertices(vertices, VERTICES_PROPERTY);
+	}
+	
+	/**
+	 * Sets the vertices used to create this geometry.
+	 * Triggers a changed event for the provided property.
+	 * 
+	 * @param vertices vertices used to create this geometry.
+	 * @param propertyChanged property that was changed, and for
+	 * which to trigger a changed property event.
+	 */
+	protected void setVertices(Vertex3d[] vertices, Property propertyChanged){
 		m_vertices = vertices;
-		onPropertyChange(VERTICES_PROPERTY);
+		onPropertyChange(propertyChanged);
 		onBoundsChange();
 	}
 

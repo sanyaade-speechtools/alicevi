@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.core.decorator;
 
+import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.core.Decorator;
 import edu.cmu.cs.stage3.alice.core.ReferenceFrame;
 import edu.cmu.cs.stage3.alice.core.Transformable;
@@ -109,6 +110,10 @@ public class PivotDecorator extends Decorator {
 			Color zColor = Color.BLUE;
 			// End Pivot Line Colors
 			
+			//Get line width from properties
+			m_sgLineArray.setLineWidth(Decorator.getPivotAndBoundingBoxLineWidth());
+			
+			//Set vertex values
 			Vertex3d[] vertices = new Vertex3d[6];
 			vertices[0] = new Vertex3d(new Point3d(0, 0, 0), null, xColor,
 					null, null);

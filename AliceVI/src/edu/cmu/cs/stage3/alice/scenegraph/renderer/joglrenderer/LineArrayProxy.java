@@ -25,7 +25,12 @@ package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
 import javax.media.opengl.GL;
 
+import edu.cmu.cs.stage3.alice.scenegraph.LineArray;
+
 class LineArrayProxy extends VertexGeometryProxy {
+	
+	private float lineWidth = 0f;
+	
     public void render( RenderContext context ) {
         Integer id = context.getDisplayListID( this );
         if( id == null ) {
@@ -33,7 +38,8 @@ class LineArrayProxy extends VertexGeometryProxy {
 		    setIsGeometryChanged( true );
         }
         if( isGeometryChanged() ) {
-        	//context.gl.glLineWidth(10f); //TODO line width setting
+        	
+        	context.gl.glLineWidth(lineWidth);
             context.gl.glNewList( id.intValue(), GL.GL_COMPILE_AND_EXECUTE );
             context.gl.glBegin( GL.GL_LINES );
             for( int i=0; i<getNumVertices(); i+=2 ) {
@@ -51,4 +57,18 @@ class LineArrayProxy extends VertexGeometryProxy {
     public void pick( PickContext context, boolean isSubElementRequired ) {
         //todo picking
 	}    
+    
+    /**
+     * Changed event for when a LineArray has been updated.
+     */
+    protected void changed( edu.cmu.cs.stage3.alice.scenegraph.Property property, Object value ) {
+		if( property == edu.cmu.cs.stage3.alice.scenegraph.LineArray.LINE_ARRAY_PROPERTY ) {
+			LineArray lnArray = (edu.cmu.cs.stage3.alice.scenegraph.LineArray)value;
+		    m_vertices = lnArray.getVertices();
+		    lineWidth = lnArray.getLineWidth();
+		    setIsGeometryChanged( true );
+		} else {
+			super.changed( property, value );
+		}
+	}
 }

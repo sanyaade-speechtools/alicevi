@@ -23,7 +23,15 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
+
 public abstract class Decorator {
+	
+	//Constants for PivotDecorator and BoundingBoxDecorator line widths
+	private static final String PIVOT_BOUNDING_BOX_KEY = "pivotAndBoundingBoxLineWidth";
+	private static final Package DECORATOR_PACKAGE = Decorator.class.getPackage();
+	private static final float DEFAULT_PIVOT_AND_BOUNDING_BOX_LINE_WIDTH = 0f;
+	
 	protected edu.cmu.cs.stage3.alice.scenegraph.Visual m_sgVisual = null;
 	protected edu.cmu.cs.stage3.alice.scenegraph.Appearance m_sgAppearance = null;
 
@@ -124,5 +132,46 @@ public abstract class Decorator {
 		if (m_sgVisual != null) {
 			m_sgVisual.setIsShowing(false);
 		}
+	}
+	
+	/**
+	 * Gets the line width used for the PivotDecorator and
+	 * BoundingBoxDecorator from the Alice configuration file.
+	 * 
+	 * @return the line width used for the PivotDecorator and 
+	 * BoundingBoxDecorator from the Alice configuration file.
+	 */
+	public static float getPivotAndBoundingBoxLineWidth(){
+		float ret = DEFAULT_PIVOT_AND_BOUNDING_BOX_LINE_WIDTH;
+
+		String value = Configuration.getValue(DECORATOR_PACKAGE, PIVOT_BOUNDING_BOX_KEY);
+		try{
+			ret = Float.parseFloat(value);
+			
+			//If negative, set value back to default
+			if (ret < 0){
+				ret = DEFAULT_PIVOT_AND_BOUNDING_BOX_LINE_WIDTH;
+				setPivotAndBoundingBoxLineWidth(ret);
+			}
+		}catch(Exception e){
+			//Set value back to default in case of Exception
+			setPivotAndBoundingBoxLineWidth(ret);
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * Sets the line width to use for the PivotDecorator and
+	 * BoundingBoxDecorator in the Alice configuration properties.
+	 * 
+	 * @param lineWidth width to make the lines
+	 * @throws IllegalArgumentException when the value is a negative number
+	 */
+	public static void setPivotAndBoundingBoxLineWidth(float lineWidth){
+		if (lineWidth < 0)
+			throw new IllegalArgumentException("A line width can not be a negative number.");
+		
+		Configuration.setValue(DECORATOR_PACKAGE, PIVOT_BOUNDING_BOX_KEY, lineWidth+"");
 	}
 }
