@@ -1247,6 +1247,25 @@ public class PreferencesContentPane extends ContentPane {
 		fontSizePanel.setBorder(null);
 		fontSizePanel.add(fontSizeComboBox);
 		fontSizePanel.add(fontSizeLabel);
+		//Added by Alberto Pareja-Lecaros
+		//A quick hack to add colorblind mode to the application. The ActionEvent must still be filled.
+		JPanel colorblindPanel = new JPanel();
+		final JCheckBox colorblindMode = new JCheckBox();
+		colorblindMode.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (arg0.getSource().equals(PreferencesContentPane.this) && colorblindMode.isSelected()) {
+					System.out.println("Colorblind code!");
+				}
+			}
+			
+		});
+		addOKActionListener(colorblindMode.getActionListeners()[0]);
+		JLabel colorblindLabel = new JLabel("Colorblind Mode");
+		colorblindPanel.add(colorblindMode);
+		colorblindPanel.add(colorblindLabel);
+		//colorblindPanel.add(colorblindPanel);
 		inputDirectoriesPanel.add(worldDirectoryLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
 				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
 
@@ -1307,6 +1326,8 @@ public class PreferencesContentPane extends ContentPane {
 			,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 0, 0), 0, 0));
 		generalPanel.add(fontSizePanel, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
 			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(colorblindPanel, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		generalPanel.add(component5, new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0
 			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		
