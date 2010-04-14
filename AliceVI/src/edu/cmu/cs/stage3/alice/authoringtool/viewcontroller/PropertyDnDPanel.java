@@ -33,7 +33,7 @@ public class PropertyDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 	protected java.util.Vector popupStructure = new java.util.Vector();
 
 	public PropertyDnDPanel() {
-		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "propertyDnDPanel" ) );
+		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "propertyDnDPanel" ).createAWTColor() );
 
 		add( nameLabel, java.awt.BorderLayout.CENTER );
 		addDragSourceComponent( nameLabel );

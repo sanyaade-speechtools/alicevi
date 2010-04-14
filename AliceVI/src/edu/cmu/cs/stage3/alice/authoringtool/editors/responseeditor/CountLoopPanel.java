@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -44,7 +46,7 @@ public class CountLoopPanel extends edu.cmu.cs.stage3.alice.authoringtool.editor
         super.set(r, authoringToolIn);
     }
 
-    protected java.awt.Color getCustomBackgroundColor(){
+    protected Color getCustomBackgroundColor(){
         return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("LoopNInOrder");
     }
 

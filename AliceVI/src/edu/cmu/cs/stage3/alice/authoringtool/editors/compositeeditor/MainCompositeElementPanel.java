@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -34,7 +36,8 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
 public class MainCompositeElementPanel extends CompositeElementPanel implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener{
 
-    protected java.awt.Color backgroundColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedResponseEditor");
+    protected Color backgroundColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedResponseEditor");
+    
     protected javax.swing.JPanel parameterPanel;
     protected javax.swing.JPanel variablePanel;
 
@@ -494,7 +497,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         }
         if (newVariableButton == null){
             newVariableButton = new javax.swing.JButton("create new variable");
-            newVariableButton.setBackground(new java.awt.Color( 240, 240, 255 ));
+            newVariableButton.setBackground(new java.awt.Color( 240, 240, 255 ));//TODO
             newVariableButton.setMargin(new java.awt.Insets(2,2,2,2));
             if (fontSize == 12){
 	            newVariableButton.setMinimumSize(new java.awt.Dimension(buttonWidth, buttonHeight));
@@ -553,12 +556,16 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
                     super.paintComponent( g );
                     if( lineLocation > -1 && paintParameter) {
                         java.awt.Rectangle bounds = getBounds();
-                        g.setColor( java.awt.Color.black );
+                        g.setColor( java.awt.Color.black );//TODO
                         g.fillRect( lineLocation, verticalLineLocation, 2, lineHeight );
                     }
                 }
             };
-            parameterPanel.setBackground(backgroundColor);
+           //TODO: check or find a better solution
+            if(backgroundColor == null){
+            	backgroundColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedResponseEditor");
+            }
+            parameterPanel.setBackground(backgroundColor.createAWTColor());
             parameterPanel.setBorder(null);
             parameterPanel.setLayout(new edu.cmu.cs.stage3.awt.DynamicFlowLayout(java.awt.FlowLayout.LEFT, anchor, javax.swing.JTabbedPane.class, 152));
             parameterPanel.setDropTarget(new java.awt.dnd.DropTarget(parameterPanel, parameterDropHandler));
@@ -579,7 +586,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
                     }
                 }
             };
-            variablePanel.setBackground(backgroundColor);
+            variablePanel.setBackground(backgroundColor.createAWTColor());
             variablePanel.setBorder(null);
             variablePanel.setLayout(new edu.cmu.cs.stage3.awt.DynamicFlowLayout(java.awt.FlowLayout.LEFT, anchor, javax.swing.JTabbedPane.class, 152));
             variablePanel.setDropTarget(new java.awt.dnd.DropTarget(variablePanel, variableDropHandler));
@@ -606,7 +613,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         noVariablesLabel.setFont(noFont);
 
         mainParameterPanel = new javax.swing.JPanel();
-        mainParameterPanel.setBackground(backgroundColor);
+        mainParameterPanel.setBackground(backgroundColor.createAWTColor());
         mainParameterPanel.setOpaque(true);
         mainParameterPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0,0,1,0,java.awt.Color.lightGray));
         mainParameterPanel.setLayout(new java.awt.GridBagLayout());
@@ -618,7 +625,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
 
         mainVariablePanel = new javax.swing.JPanel();
         mainVariablePanel.setOpaque(true);
-        mainVariablePanel.setBackground(backgroundColor);
+        mainVariablePanel.setBackground(backgroundColor.createAWTColor());
         mainVariablePanel.setBorder(null);
         mainVariablePanel.setLayout(new java.awt.GridBagLayout());
         mainVariablePanel.add(variablePanel, new java.awt.GridBagConstraints(0,0,1,1,1,1,java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0,0,0,0), 0,0));

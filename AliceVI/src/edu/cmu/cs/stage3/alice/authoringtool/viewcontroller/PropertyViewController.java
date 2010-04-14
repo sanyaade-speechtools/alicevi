@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 
 /**
  * @author Jason Pratt
@@ -106,8 +108,8 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 	protected javax.swing.JLabel expressionLabel = new javax.swing.JLabel();
 	protected javax.swing.JComponent questionViewController;
 	protected boolean beingDroppedOn = false;
-	protected java.awt.Color dndHighlightColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight" );
-	protected java.awt.Color dndHighlightColor2 = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight2" );
+	protected Color dndHighlightColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight" );
+	protected Color dndHighlightColor2 = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight2" );
 	protected boolean paintDropPotential = false;
 	protected DropPotentialFeedbackListener dropPotentialFeedbackListener = new DropPotentialFeedbackListener();
 	protected javax.swing.JLabel unitLabel = new javax.swing.JLabel();
@@ -122,7 +124,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 		PropertyViewController.created++;
 
 		setLayout( new java.awt.BorderLayout( 0, 0 ) );
-		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "propertyViewControllerBackground" ) );
+		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "propertyViewControllerBackground" ).createAWTColor() );
 		setBorder( javax.swing.BorderFactory.createCompoundBorder( getBorder(), javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 0 ) ) );
 		popupButton.setContentAreaFilled( false );
 		popupButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
@@ -539,12 +541,12 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 		super.paintForeground( g );
 		if( beingDroppedOn && editingEnabled ) {
 			java.awt.Dimension size = getSize();
-			g.setColor( dndHighlightColor2 );
+			g.setColor( dndHighlightColor2.createAWTColor() );
 			g.drawRect( 0, 0, size.width - 1, size.height - 1 );
 			g.drawRect( 1, 1, size.width - 3, size.height - 3 );
 		} else if( paintDropPotential && editingEnabled ) {
 			java.awt.Dimension size = getSize();
-			g.setColor( dndHighlightColor );
+			g.setColor( dndHighlightColor.createAWTColor() );
 			g.drawRect( 0, 0, size.width - 1, size.height - 1 );
 			g.drawRect( 1, 1, size.width - 3, size.height - 3 );
 		}

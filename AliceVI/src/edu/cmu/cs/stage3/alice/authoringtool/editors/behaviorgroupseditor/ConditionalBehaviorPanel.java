@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 
 /**
  * Title:
@@ -73,29 +75,29 @@ public class ConditionalBehaviorPanel extends BasicBehaviorPanel {
     }
 
 	public void getHTML(StringBuffer toWriteTo, boolean useColor){
-		java.awt.Color bgColor = COLOR;
+		Color bgColor = COLOR;
 		String strikeStart = "";
 		String strikeEnd = "";
 		if (!m_behavior.isEnabled.booleanValue()){
 			bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML");
-			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))+"\">";
+			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText").createAWTColor())+"\">";
 			strikeEnd = "</font></strike>";
 		}
-		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor)+" colspan=\"2\" >"+strikeStart);
+		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" colspan=\"2\" >"+strikeStart);
 		toWriteTo.append(edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(labelPanel));
 		toWriteTo.append(strikeEnd+"</td>\n</tr>\n");
-		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor)+" align=\"right\">"+strikeStart+"<b>Begin:</b>"+strikeEnd+"</td>\n");
-		toWriteTo.append("<td bgcolor="+getHTMLColorString(bgColor)+" width=\"100%\"><table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">");
+		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" align=\"right\">"+strikeStart+"<b>Begin:</b>"+strikeEnd+"</td>\n");
+		toWriteTo.append("<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" width=\"100%\"><table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">");
 		toWriteTo.append(edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(beginPanel));
 		toWriteTo.append("</table>\n</td>\n</tr>\n");
 		
-		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor)+" align=\"right\">"+strikeStart+"<b>During:</b>"+strikeEnd+"</td>\n");
-		toWriteTo.append("<td bgcolor="+getHTMLColorString(bgColor)+" width=\"100%\"><table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">");
+		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" align=\"right\">"+strikeStart+"<b>During:</b>"+strikeEnd+"</td>\n");
+		toWriteTo.append("<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" width=\"100%\"><table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">");
 		toWriteTo.append(edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(duringPanel));
 		toWriteTo.append("</table>\n</td>\n</tr>\n");
 
-		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor)+" align=\"right\">"+strikeStart+"<b>End:</b>"+strikeEnd+"</td>\n");
-		toWriteTo.append("<td bgcolor="+getHTMLColorString(bgColor)+" width=\"100%\"><table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">");
+		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" align=\"right\">"+strikeStart+"<b>End:</b>"+strikeEnd+"</td>\n");
+		toWriteTo.append("<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" width=\"100%\"><table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">");
 		toWriteTo.append(edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(endPanel));
 		toWriteTo.append("</table>\n</td>\n</tr>\n");
 
@@ -103,12 +105,12 @@ public class ConditionalBehaviorPanel extends BasicBehaviorPanel {
 
 	protected void guiInit(){
         super.guiInit();
-		this.setBackground(COLOR);
+		this.setBackground(COLOR.createAWTColor());
         if (m_containingPanel == null){
             m_containingPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
             m_containingPanel.setBorder(null);
 		    m_containingPanel.setLayout(new java.awt.GridBagLayout());
-            m_containingPanel.setBackground(COLOR);
+            m_containingPanel.setBackground(COLOR.createAWTColor());
             m_containingPanel.addMouseListener(behaviorMouseListener);
         }
         this.remove(m_containingPanel);
@@ -118,7 +120,7 @@ public class ConditionalBehaviorPanel extends BasicBehaviorPanel {
             labelPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
             labelPanel.setBorder(null);
 		    labelPanel.setLayout(new java.awt.GridBagLayout());
-            labelPanel.setBackground(COLOR);
+            labelPanel.setBackground(COLOR.createAWTColor());
             labelPanel.addMouseListener(behaviorMouseListener);
         }
         this.addDragSourceComponent(labelPanel);

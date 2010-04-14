@@ -24,16 +24,33 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
-import edu.cmu.cs.stage3.alice.authoringtool.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
+import edu.cmu.cs.stage3.alice.authoringtool.Editor;
 import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel;
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.event.PropertyEvent;
 import edu.cmu.cs.stage3.alice.core.event.PropertyListener;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 // Referenced classes of package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor:
 //            TempColorPicker, MainCompositeElementPanel, CompositeElementPanel
@@ -44,7 +61,7 @@ public abstract class CompositeElementEditor extends GroupingPanel
 
     public CompositeElementEditor()
     {
-        mainColor = Color.white;
+        mainColor = Color.WHITE;
         configInit();
         guiInit();
         addMouseListener(new MouseListener() {
@@ -83,9 +100,9 @@ public abstract class CompositeElementEditor extends GroupingPanel
 
     public void setBackground(Color backgroundColor)
     {
-        super.setBackground(backgroundColor);
+        super.setBackground( backgroundColor.createAWTColor());
         if(compositeElementPanel != null)
-            compositeElementPanel.setBackground(backgroundColor);
+            compositeElementPanel.setBackground(backgroundColor.createAWTColor());
     }
 
     private void configInit()
@@ -122,10 +139,10 @@ public abstract class CompositeElementEditor extends GroupingPanel
         setBorder(null);
         removeAll();
         buttonPanel = new JPanel();
-        Color buttonPanelColor = Color.white;
+        Color buttonPanelColor = Color.WHITE;
         buttonPanel.setOpaque(true);
-        buttonPanel.setBackground(buttonPanelColor);
-        buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.gray));
+        buttonPanel.setBackground(buttonPanelColor.createAWTColor());
+        buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY.createAWTColor()));
         buttonPanel.setMinimumSize(new Dimension(0, 0));
         buttonPanel.setLayout(new FlowLayout(0) {
 
@@ -180,7 +197,7 @@ public abstract class CompositeElementEditor extends GroupingPanel
         mainElementContainer.setMinimumSize(new Dimension(0, 0));
         mainElementContainer.setBorder(null);
         mainElementContainer.setOpaque(false);
-        mainElementContainer.setBackground(getEditorColor());
+        mainElementContainer.setBackground(getEditorColor().createAWTColor());
         setLayout(new BorderLayout());
         setBackground(getEditorColor());
         add(buttonPanel, "South");

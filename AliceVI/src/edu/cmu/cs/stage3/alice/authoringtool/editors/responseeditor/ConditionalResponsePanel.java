@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -43,7 +45,7 @@ public class ConditionalResponsePanel extends edu.cmu.cs.stage3.alice.authoringt
         super.set(r, authoringToolIn);
     }
 
-    protected java.awt.Color getCustomBackgroundColor(){
+    protected Color getCustomBackgroundColor(){
         return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("IfElseInOrder");
     }
 }

@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * @author Jason Pratt
  */
@@ -42,28 +44,28 @@ public class GUIEffects {
 		}
 	};
 
-	private static java.awt.Color disabledBackgroundColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsDisabledBackground" );
-	private static java.awt.Color disabledLineColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsDisabledLine" );
+	private static Color disabledBackgroundColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsDisabledBackground" );
+	private static Color disabledLineColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsDisabledLine" );
 	private static java.awt.image.BufferedImage disabledImage;
 	private static java.awt.Dimension disabledImageSize = new java.awt.Dimension( -1, -1 );
-	private static java.awt.Color shadowColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsShadow" );
-	private static java.awt.Color edgeColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsEdge" );
+	private static Color shadowColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsShadow" );
+	private static Color edgeColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsEdge" );
 	private static int shadowSteps = 4;
 	private static double dr = edgeColor.getRed() - shadowColor.getRed();
 	private static double dg = edgeColor.getGreen() - shadowColor.getGreen();
 	private static double db = edgeColor.getBlue() - shadowColor.getBlue();
 	private static double da = edgeColor.getAlpha() - shadowColor.getAlpha();
-	private static java.awt.Color troughHighlightColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsTroughHighlight" );
-	private static java.awt.Color troughShadowColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsTroughShadow" );
+	private static Color troughHighlightColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsTroughHighlight" );
+	private static Color troughShadowColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "guiEffectsTroughShadow" );
 
 	private static void createDisabledImage( int width, int height ) {
 		disabledImageSize.setSize( width, height );
 		disabledImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 		java.awt.Graphics2D g = (java.awt.Graphics2D)disabledImage.getGraphics();
 		g.addRenderingHints( new java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON ) );
-		g.setColor( disabledBackgroundColor );
+		g.setColor( disabledBackgroundColor.createAWTColor() );
 		g.fillRect( 0, 0, width, height );
-		g.setColor( disabledLineColor );
+		g.setColor( disabledLineColor.createAWTColor() );
 		double slope = 2.0;
 		int xOffset = (int)(height/slope);
 		int spacing = 10;
@@ -141,14 +143,14 @@ public class GUIEffects {
 			((java.awt.Graphics2D)g).setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		}
 
-		java.awt.Color c = new java.awt.Color( edgeColor.getRed(), edgeColor.getGreen(), edgeColor.getBlue(), edgeColor.getAlpha() );
+		Color c = new Color( edgeColor.getRed(), edgeColor.getGreen(), edgeColor.getBlue(), edgeColor.getAlpha() );
 		for( int i = 0; i < shadowSteps; i++ ) {
 			double portion = ((double)i)/((double)shadowSteps);
-			c = new java.awt.Color( edgeColor.getRed() - (int)(portion*dr),
+			c = new Color( edgeColor.getRed() - (int)(portion*dr),
 									edgeColor.getGreen() - (int)(portion*dg),
 									edgeColor.getBlue() - (int)(portion*db),
 									edgeColor.getAlpha() - (int)(portion*da) );
-			g.setColor( c );
+			g.setColor( c.createAWTColor() );
 			g.drawRoundRect( bounds.x, bounds.y, bounds.width - 1, bounds.height -1, arcWidth, arcHeight );
 			bounds.x++;
 			bounds.y++;
@@ -156,11 +158,11 @@ public class GUIEffects {
 			bounds.height -= 2;
 		}
 
-		g.setColor( shadowColor );
+		g.setColor( shadowColor.createAWTColor() );
 		g.fillRoundRect( bounds.x, bounds.y, bounds.width, bounds.height, arcWidth, arcHeight );
 	}
 
-	public static java.awt.image.BufferedImage getImageWithColoredBorder( java.awt.Image inputImage, java.awt.Color color ) {
+	public static java.awt.image.BufferedImage getImageWithColoredBorder( java.awt.Image inputImage, Color color ) {
 		int width = inputImage.getWidth( sizeObserver );
 		int height = inputImage.getHeight( sizeObserver );
 
@@ -177,8 +179,8 @@ public class GUIEffects {
 		return outputImage;
 	}
 
-	public static void paintColoredBorder( java.awt.Graphics g, java.awt.Color color, int width, int height ) {
-		g.setColor( color );
+	public static void paintColoredBorder( java.awt.Graphics g, Color color, int width, int height ) {
+		g.setColor( color.createAWTColor() );
 		g.drawRect( 0, 0, width - 1, height - 1 );
 		g.drawRect( 1, 1, width - 3, height - 3 );
 	}
@@ -208,24 +210,24 @@ public class GUIEffects {
 			if( edgeTreatment.equals( "square" ) ) {
 				((java.awt.Graphics2D)g).clip( highlightClip );
 //				g.setClip( highlightClip );
-				g.setColor( troughHighlightColor );
+				g.setColor( troughHighlightColor.createAWTColor() );
 				g.drawRect( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1 );
 
 				g.setClip( oldClip );
 				((java.awt.Graphics2D)g).clip( shadowClip );
 //				g.setClip( shadowClip );
-				g.setColor( troughShadowColor );
+				g.setColor( troughShadowColor.createAWTColor() );
 				g.drawRect( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1 );
 			} else {
 				((java.awt.Graphics2D)g).clip( highlightClip );
 //				g.setClip( highlightClip );
-				g.setColor( troughHighlightColor );
+				g.setColor( troughHighlightColor.createAWTColor() );
 				g.drawRoundRect( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, arcWidth, arcHeight );
 
 				g.setClip( oldClip );
 				((java.awt.Graphics2D)g).clip( shadowClip );
 //				g.setClip( shadowClip );
-				g.setColor( troughShadowColor );
+				g.setColor( troughShadowColor.createAWTColor() );
 				g.drawRoundRect( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, arcWidth, arcHeight );
 			}
 

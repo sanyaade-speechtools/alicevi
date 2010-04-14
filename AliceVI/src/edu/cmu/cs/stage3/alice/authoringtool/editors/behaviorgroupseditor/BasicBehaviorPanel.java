@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -34,7 +36,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
 public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.core.event.PropertyListener {
 
-    public static final java.awt.Color COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("behavior");
+    public static final Color COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("behavior");
 
     protected javax.swing.JPopupMenu popUpMenu;
 
@@ -98,15 +100,15 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 	}
     
 	public void getHTML(StringBuffer toWriteTo, boolean useColor){
-		java.awt.Color bgColor = COLOR;
+		Color bgColor = COLOR;
 		String strikeStart = "";
 		String strikeEnd = "";
 		if (!m_behavior.isEnabled.booleanValue()){
 			bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML");
-			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))+"\">";
+			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText").createAWTColor())+"\">";
 			strikeEnd = "</font></strike>";
 		}
-		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor)+"><b>"+strikeStart+
+		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+"><b>"+strikeStart+
 											edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(this)+"</b>"+strikeEnd+"</td>\n</tr>\n");
 	}
 
@@ -212,7 +214,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
             if (icon == null){
                 toAdd = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
                 ((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel)toAdd).setLayout( new java.awt.BorderLayout( 0, 0 ) );
-                ((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel)toAdd).setBackground( COLOR );
+                ((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel)toAdd).setBackground( COLOR.createAWTColor() );
                 ((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel)toAdd).setBorder( javax.swing.BorderFactory.createCompoundBorder( ((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel)toAdd).getBorder(), javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 0 ) ) );
                 javax.swing.JLabel expressionLabel = new javax.swing.JLabel(key);
                 ((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel)toAdd).add(expressionLabel, java.awt.BorderLayout.CENTER);

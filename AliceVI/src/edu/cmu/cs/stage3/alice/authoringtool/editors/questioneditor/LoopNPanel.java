@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.questioneditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -38,7 +40,7 @@ public class LoopNPanel extends edu.cmu.cs.stage3.alice.authoringtool.editors.co
         super();
     }
 
-    protected java.awt.Color getCustomBackgroundColor(){
+    protected Color getCustomBackgroundColor(){
         return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("LoopNInOrder");
     }
 

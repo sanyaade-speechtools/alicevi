@@ -40,7 +40,7 @@ public class VariableDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 	protected NamePropertyListener namePropertyListener = new NamePropertyListener();
 
 	public VariableDnDPanel() {
-		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "variableDnDPanel" ) );
+		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "variableDnDPanel" ).createAWTColor() );
 
 		add( nameLabel, java.awt.BorderLayout.CENTER );
 		addDragSourceComponent( nameLabel );

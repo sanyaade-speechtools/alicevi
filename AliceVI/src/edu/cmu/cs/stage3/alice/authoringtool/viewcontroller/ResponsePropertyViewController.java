@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * @author Jason Pratt
  */
@@ -57,7 +59,8 @@ public class ResponsePropertyViewController extends PropertyViewController {
 		this.root = root;
 	}
 	
-	protected String getHTMLColorString(java.awt.Color color){
+	protected String getHTMLColorString(Color colorOld){
+		java.awt.Color color= colorOld.createAWTColor() ;
 		int r = color.getRed();
 		int g = color.getGreen();
 		int b = color.getBlue();
@@ -72,7 +75,7 @@ public class ResponsePropertyViewController extends PropertyViewController {
 		String strikeStart = "";
 		String strikeEnd = "";
 		if (!isEnabled){
-			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))+"\">";
+			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText").createAWTColor())+"\">";
 			strikeEnd = "</font></strike>";
 		}
 		
@@ -83,7 +86,7 @@ public class ResponsePropertyViewController extends PropertyViewController {
 				int colSpan = edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementEditor.getDepthCount(((edu.cmu.cs.stage3.alice.core.response.CompositeResponse)property.get()).componentResponses);
 				compPanel.getHTML(toWriteTo, colSpan+1, true, !isEnabled);
 			} else{
-				java.awt.Color bgColor= responsePanel.getComponent(0).getBackground();
+				Color bgColor= new Color(responsePanel.getComponent(0).getBackground());
 				if (!isEnabled){
 					bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML");
 				}

@@ -148,27 +148,27 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 			setTransferable( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory.createTransferable( element ) );
 
 			if( element instanceof edu.cmu.cs.stage3.alice.core.response.Comment ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Comment" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Comment" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Comment ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Comment" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Comment" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.response.Print ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Print" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Print" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Print ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Print" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Print" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.PropertyAssignment ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "PropertyAssignment" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "PropertyAssignment" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Return ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Return" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Return" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedResponse" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedResponse" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.Response ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "response" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "response" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedQuestion" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedQuestion" ).createAWTColor() );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.Question ) { //TODO: specify in config
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "question" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "question" ).createAWTColor() );
 			} else {
-				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "formattedElementViewController" ) );
+				setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "formattedElementViewController" ).createAWTColor() );
 			}
 			
 			
@@ -410,7 +410,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 								((javax.swing.JLabel)gui).setForeground(java.awt.Color.black);
 					}else */
 					if( ((element instanceof edu.cmu.cs.stage3.alice.core.response.Comment) || (element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Comment)) ) { //TODO: put in config file
-						((javax.swing.JLabel)gui).setForeground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "commentForeground" ) );
+						((javax.swing.JLabel)gui).setForeground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "commentForeground" ).createAWTColor() );
 						((javax.swing.JLabel)gui).setFont( new java.awt.Font( "Helvetica", java.awt.Font.BOLD, (int)(13*fontSize/12.0) ) );
 					}
 				}

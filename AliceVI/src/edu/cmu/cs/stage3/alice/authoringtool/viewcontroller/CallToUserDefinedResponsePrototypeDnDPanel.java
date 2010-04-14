@@ -36,7 +36,7 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 	protected ElementNamePropertyViewController nameViewController;
 
 	public CallToUserDefinedResponsePrototypeDnDPanel() {
-		this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedResponse" ) );
+		this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedResponse" ).createAWTColor() );
 		subPanel.setLayout( new java.awt.GridBagLayout() );
 		subPanel.setOpaque( false );
 		subPanel.setBorder( null );
@@ -180,7 +180,7 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 	public void addTile( String text ) {
 		edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel tilePanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
 		tilePanel.setLayout( new java.awt.BorderLayout() );
-		tilePanel.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "prototypeParameter" ) );
+		tilePanel.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "prototypeParameter" ).createAWTColor() );
 		javax.swing.JLabel tileLabel = new javax.swing.JLabel( text );
 		tileLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
 		tilePanel.add( tileLabel, java.awt.BorderLayout.CENTER );

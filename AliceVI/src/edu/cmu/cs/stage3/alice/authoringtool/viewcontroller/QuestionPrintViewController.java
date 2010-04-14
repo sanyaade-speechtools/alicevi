@@ -77,7 +77,7 @@ public class QuestionPrintViewController extends edu.cmu.cs.stage3.alice.authori
 		this.printStatement = printStatement;
 		if( this.printStatement != null ) {
 			setTransferable( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory.createTransferable( printStatement ) );
-			setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Print" ) );
+			setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "Print" ).createAWTColor() );
 
 			this.add( subPanel, java.awt.BorderLayout.CENTER );
 			this.addDragSourceComponent( subPanel );

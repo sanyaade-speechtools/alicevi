@@ -62,9 +62,9 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 //			trashLabel.setEnabled( true );
 			java.awt.Dimension size = getSize();
 			if( beingDroppedOn ) {
-				g.setColor( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight2" ) );
+				g.setColor( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight2" ).createAWTColor() );
 			} else {
-				g.setColor( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight" ) );
+				g.setColor( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight" ).createAWTColor() );
 			}
 			g.drawRect( 0, 0, size.width - 1, size.height - 1 );
 			g.drawRect( 1, 1, size.width - 3, size.height - 3 );

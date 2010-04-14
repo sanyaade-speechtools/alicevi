@@ -47,17 +47,17 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 		this.setTransferable( edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory.createTransferable( elementPrototype ) );
 
 		if( edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class.isAssignableFrom( elementPrototype.getElementClass() ) ) {
-			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedResponse" ) );
+			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedResponse" ).createAWTColor() );
 		} else if( edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom( elementPrototype.getElementClass() ) ) {
-			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "response" ) );
+			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "response" ).createAWTColor() );
 		} else if( edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class.isAssignableFrom( elementPrototype.getElementClass() ) ) {
-			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedQuestion" ) );
+			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedQuestion" ).createAWTColor() );
 		} else if( edu.cmu.cs.stage3.alice.core.Question.class.isAssignableFrom( elementPrototype.getElementClass() ) ) {
-			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "question" ) );
+			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "question" ).createAWTColor() );
 		} else if( edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class.isAssignableFrom( elementPrototype.getElementClass() ) ) {
-			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedQuestionComponent" ) );
+			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "userDefinedQuestionComponent" ).createAWTColor() );
 		} else {
-			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "elementPrototypeDnDPanel" ) );
+			this.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "elementPrototypeDnDPanel" ).createAWTColor() );
 		}
 
 		elementName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue( elementPrototype.getElementClass() );
@@ -154,7 +154,7 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 		public Tile( String text ) {
 			this.text = text;
 			setLayout( new java.awt.BorderLayout() );
-			setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "prototypeParameter" ) );
+			setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "prototypeParameter" ).createAWTColor() );
 			javax.swing.JLabel tileLabel = new javax.swing.JLabel( text );
 			tileLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
 			add( tileLabel, java.awt.BorderLayout.CENTER );

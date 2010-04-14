@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 
 /**
  * Title:
@@ -50,7 +52,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
     protected static final int BAD = -1;
     protected int editorCount = 0;
     protected int counter = 0;
-    protected final java.awt.Color BACKGROUND_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("behaviorBackground");;
+    protected final Color BACKGROUND_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("behaviorBackground");;
     protected edu.cmu.cs.stage3.alice.core.World world;
     protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
     protected javax.swing.JButton newBehaviorButton;
@@ -63,8 +65,8 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 
 
 
-    protected java.awt.Color dndHighlightColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight" );
-    protected java.awt.Color dndHighlightColor2 = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight2" );
+    protected Color dndHighlightColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight" );
+    protected Color dndHighlightColor2 = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight2" );
     protected DropPotentialFeedbackListener dropPotentialFeedbackListener = new DropPotentialFeedbackListener();
 
     public final javax.swing.AbstractAction newBehaviorAction = new javax.swing.AbstractAction(){
@@ -530,7 +532,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
     protected void initGUI(){
         this.setMinimumSize(new java.awt.Dimension(0,0));
         this.setLayout(new java.awt.BorderLayout());
-        this.setBackground(BACKGROUND_COLOR);
+        this.setBackground(BACKGROUND_COLOR.createAWTColor());
 
         this.setBorder(null);
         // this.setDropTarget(new java.awt.dnd.DropTarget( this, this));
@@ -566,7 +568,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
         containingPanelLayout = new java.awt.GridBagLayout();
         m_containingPanel.setLayout(containingPanelLayout);
         m_containingPanel.setBorder(null);
-        m_containingPanel.setBackground(BACKGROUND_COLOR);
+        m_containingPanel.setBackground(BACKGROUND_COLOR.createAWTColor());
         m_containingPanel.setToolTipText(toolTipText);
         scrollPane.setViewportView(m_containingPanel);
 
@@ -579,7 +581,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 
         m_header = new javax.swing.JPanel();
         m_header.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT,2,2));
-        m_header.setBackground(BACKGROUND_COLOR);
+        m_header.setBackground(BACKGROUND_COLOR.createAWTColor());
         m_header.setBorder(javax.swing.BorderFactory.createMatteBorder(0,0,1,0,java.awt.Color.gray));
         m_header.setToolTipText(toolTipText);
         javax.swing.JLabel behaviorLabel = new javax.swing.JLabel(BEHAVIOR_NAME);
@@ -846,12 +848,12 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
         java.awt.Point p = javax.swing.SwingUtilities.convertPoint(m_containingPanel, m_containingPanel.getLocation(), this);
         if( beingDroppedOn ) {
             java.awt.Dimension size = m_containingPanel.getSize();
-            g.setColor( dndHighlightColor2 );
+            g.setColor( dndHighlightColor2.createAWTColor() );
             g.drawRect( p.x, p.y, size.width - 1, size.height - 1 );
             g.drawRect( p.x+1, p.y+1, size.width - 3, size.height - 3 );
         } else if( paintDropPotential ) {
             java.awt.Dimension size = m_containingPanel.getSize();
-            g.setColor( dndHighlightColor );
+            g.setColor( dndHighlightColor.createAWTColor() );
             g.drawRect( p.x, p.y, size.width - 1, size.height - 1 );
             g.drawRect( p.x+1, p.y+1, size.width - 3, size.height - 3 );
         }

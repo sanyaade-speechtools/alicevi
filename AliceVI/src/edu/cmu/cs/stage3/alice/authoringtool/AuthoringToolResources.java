@@ -23,15 +23,24 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool;
 
-import java.awt.Color;
+
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.KeyEvent;
-import java.io.*;
-
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
@@ -93,6 +102,7 @@ import edu.cmu.cs.stage3.alice.core.response.ThinkAnimation;
 import edu.cmu.cs.stage3.alice.core.response.TransformAnimation;
 import edu.cmu.cs.stage3.alice.core.response.TransformResponse;
 import edu.cmu.cs.stage3.alice.core.response.Wait;
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
 import edu.cmu.cs.stage3.util.StringObjectPair;
 import edu.cmu.cs.stage3.util.StringTypePair;
 
@@ -1398,13 +1408,18 @@ public class AuthoringToolResources {
 
 		return null;
 	}
-
+	
 	public static void putColor( String key, java.awt.Color color ) {
+		putColor( key, new Color(color) );
+	}
+	
+	public static void putColor( String key, Color color ) {
 		AuthoringToolResources.resources.colorMap.put( key, color );
 	}
 
 	private static float[] rgbToHSL( Color rgb ) {
-		float[] rgbF = rgb.getRGBColorComponents(null);
+		//float[] rgbF = rgb.getRGBColorComponents(null);
+		float[] rgbF = {rgb.getRed() ,rgb.getGreen() , rgb.getBlue() };
 		float[] hsl = new float[3];
 		float min = Math.min(rgbF[0], Math.min(rgbF[1], rgbF[2]));
 		float max = Math.max(rgbF[0], Math.max(rgbF[1], rgbF[2]));
@@ -1476,7 +1491,16 @@ public class AuthoringToolResources {
 	}
 
 	public static Color getColor( String key ) {
-		Color toReturn = (java.awt.Color)AuthoringToolResources.resources.colorMap.get( key );
+		Color toReturn = new Color (AuthoringToolResources.resources.colorMap.get( key ));
+		try{
+		if( toReturn == null ){
+			throw new Exception( key );
+		}
+		}catch( Exception e ){
+			System.err.println( key );
+			e.printStackTrace();
+		}
+		
 		if (authoringToolConfig.getValue( "enableHighContrastMode" ).equalsIgnoreCase( "true" ) && 
 			!key.equalsIgnoreCase("mainFontColor") &&
 			!key.equalsIgnoreCase("objectTreeDisabledText") &&
@@ -1498,8 +1522,12 @@ public class AuthoringToolResources {
 			!key.equalsIgnoreCase("objectTreeText")){
 				float[] hsl = rgbToHSL(toReturn);
 				hsl[2] = Math.max(hsl[2], .95f);
-				java.awt.Color convertedColor = hslToRGB(hsl);
-				return new java.awt.Color(convertedColor.getRed(), convertedColor.getGreen(), convertedColor.getBlue(), toReturn.getAlpha());
+				// converts from AWT color to edu.cmu.cs.stage3.alice.scenegraph.Color
+				Color convertedColor = new Color(hslToRGB(hsl));
+				/*there is no need to create a new color because the color object has already been created
+				 * new Color(convertedColor.getRed(), convertedColor.getGreen(), convertedColor.getBlue(), toReturn.getAlpha());
+				 */
+				return convertedColor;
 		} else{
 			return toReturn;
 		}
@@ -2228,8 +2256,8 @@ public class AuthoringToolResources {
 			return new edu.cmu.cs.stage3.math.Quaternion();
 		} else if( javax.vecmath.Matrix4d.class.isAssignableFrom( cls ) ) {
 			return new edu.cmu.cs.stage3.math.Matrix44();
-		} else if( cls == java.awt.Color.class ) {
-			return java.awt.Color.white;
+		} else if( cls == Color.class ) {
+			return Color.WHITE;
 		} else if( cls == edu.cmu.cs.stage3.alice.scenegraph.Color.class ) {
 			return edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE;
 		} else if( edu.cmu.cs.stage3.util.Enumerable.class.isAssignableFrom( cls ) ) {

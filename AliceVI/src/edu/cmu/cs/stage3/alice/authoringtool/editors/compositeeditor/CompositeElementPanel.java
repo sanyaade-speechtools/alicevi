@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -46,7 +48,7 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
     protected javax.swing.Action expandAction;
     protected javax.swing.JLabel headerLabel;
     protected boolean isExpanded = true;
-    protected java.awt.Color backgroundColor = new java.awt.Color(255,255,255);
+    protected Color backgroundColor = new Color(255f,255f,255f);
     protected int m_depth = 0;
     protected javax.swing.ImageIcon plus;
     protected javax.swing.ImageIcon minus;
@@ -110,7 +112,7 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
         setDropTargets();
     }
 
-    protected java.awt.Color getCustomBackgroundColor(){
+    protected Color getCustomBackgroundColor(){
         return backgroundColor;
     }
 
@@ -321,12 +323,12 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
         }
     }
 
-    public void setBackground(java.awt.Color color){
-        super.setBackground(color);
+    public void setBackground(Color color){
+        super.setBackground(color.createAWTColor());
         backgroundColor = color;
-        if (containingPanel != null) {containingPanel.setBackground(backgroundColor);}
-        if (headerLabel != null) {headerLabel.setBackground(backgroundColor);}
-        if (headerPanel != null) {headerPanel.setBackground(backgroundColor);}
+        if (containingPanel != null) {containingPanel.setBackground(backgroundColor.createAWTColor());}
+        if (headerLabel != null) {headerLabel.setBackground(backgroundColor.createAWTColor());}
+        if (headerPanel != null) {headerPanel.setBackground(backgroundColor.createAWTColor());}
         if (componentElementPanel != null) {componentElementPanel.setBackground(backgroundColor);}
     }
 
@@ -572,13 +574,13 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
 		}
 		if (useColor){
 			if (isDisabled){
-				colorString = " bgcolor=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML"))+"\"";
+				colorString = " bgcolor=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML").createAWTColor())+"\"";
 			} else{
-				colorString = " bgcolor=\""+getHTMLColorString(getCustomBackgroundColor())+"\"";
+				colorString = " bgcolor=\""+getHTMLColorString(getCustomBackgroundColor().createAWTColor())+"\"";
 			}
 		}
 		if (isDisabled){
-			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))+"\">";
+			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText").createAWTColor())+"\">";
 			strikeEnd = "</font></strike>";
 		}
 		totalRows = getTotalHTMLRows(this.m_element);
@@ -609,8 +611,8 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
 				boolean isComponentDisabled = (isDisabled || ((ComponentElementPanel)currentComponent).isDisabled());
 				if (currentComponent instanceof ComponentElementPanel){
 					if (isComponentDisabled){
-						componentColorString = " bgcolor=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML"))+"\"";
-						componentStrikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))+"\">";
+						componentColorString = " bgcolor=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML").createAWTColor())+"\"";
+						componentStrikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText").createAWTColor())+"\">";
 						componentStrikeEnd = "</font></strike>";
 					} else{
 						componentColorString = " bgcolor=\""+getHTMLColorString(((ComponentElementPanel)currentComponent).getCustomBackgroundColor())+"\"";
@@ -633,7 +635,7 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
 		if (this instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.questioneditor.MainCompositeQuestionPanel){
 			edu.cmu.cs.stage3.alice.authoringtool.editors.questioneditor.MainCompositeQuestionPanel mainQuestion = (edu.cmu.cs.stage3.alice.authoringtool.editors.questioneditor.MainCompositeQuestionPanel)this;
 			styleString = " style=\"border-bottom: 1 solid "+borderColorString+"; border-right: 1 solid "+borderColorString+"; border-left: 1 solid "+borderColorString+";\"";
-			colorString = " bgcolor=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("Return"))+"\"";
+			colorString = " bgcolor=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("Return").createAWTColor())+"\"";
 			toWriteTo.append("<tr>\n<td width=\"100%\" colspan=\""+(colSpan)+"\""+colorString+styleString+">"+
 							edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(mainQuestion.returnPanel)+
 							"</td>\n</tr>\n");
@@ -668,8 +670,8 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
 					boolean isComponentDisabled = (isDisabled || ((ComponentElementPanel)currentComponent).isDisabled());
 					if (currentComponent instanceof ComponentElementPanel){
 						if (isComponentDisabled){
-							componentColorString = " bgcolor=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML"))+"\"";
-							componentStrikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))+"\">";
+							componentColorString = " bgcolor=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML").createAWTColor())+"\"";
+							componentStrikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText").createAWTColor())+"\">";
 							componentStrikeEnd = "</font></strike>";
 						} else{
 							componentColorString = " bgcolor=\""+getHTMLColorString(((ComponentElementPanel)currentComponent).getCustomBackgroundColor())+"\"";

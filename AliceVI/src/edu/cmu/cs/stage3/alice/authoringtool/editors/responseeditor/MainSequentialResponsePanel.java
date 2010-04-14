@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -38,7 +40,7 @@ public class MainSequentialResponsePanel extends MainCompositeResponsePanel{
         super();
     }
 
-    protected java.awt.Color getCustomBackgroundColor(){
+    protected Color getCustomBackgroundColor(){
         return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("DoInOrder");
     }
 

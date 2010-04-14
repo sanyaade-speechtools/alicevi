@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 
 /**
  * Title:
@@ -54,23 +56,23 @@ public class TriggerBehaviorPanel extends BasicBehaviorPanel implements java.awt
 	
     
 	public void getHTML(StringBuffer toWriteTo, boolean useColor){
-		java.awt.Color bgColor = COLOR;
+		Color bgColor = COLOR;
 		String strikeStart = "";
 		String strikeEnd = "";
 		if (!m_behavior.isEnabled.booleanValue()){
 			bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML");
-			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))+"\">";
+			strikeStart = "<strike><font color=\""+getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText").createAWTColor())+"\">";
 			strikeEnd = "</font></strike>";
 		}
 		
 		edu.cmu.cs.stage3.alice.core.Response response = (edu.cmu.cs.stage3.alice.core.Response)((edu.cmu.cs.stage3.alice.core.behavior.TriggerBehavior)m_behavior).triggerResponse.get();
-		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor)+" colspan=\"2\">"+strikeStart);
+		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" colspan=\"2\">"+strikeStart);
 		labelPanel.remove(lastLabel);
 		toWriteTo.append(edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(labelPanel));
 		labelPanel.add(lastLabel, new java.awt.GridBagConstraints(labelPanel.getComponentCount(),0,1,1,0,0,java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,2,0,0), 0,0));
 		toWriteTo.append(strikeEnd+"</td>\n</tr>\n");
-		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor)+" align=\"right\">"+strikeStart+"<b>Do:</b>"+strikeEnd+"</td>\n");
-		toWriteTo.append("<td bgcolor="+getHTMLColorString(bgColor)+" width=\"100%\"><table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">");
+		toWriteTo.append("<tr>\n<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" align=\"right\">"+strikeStart+"<b>Do:</b>"+strikeEnd+"</td>\n");
+		toWriteTo.append("<td bgcolor="+getHTMLColorString(bgColor.createAWTColor())+" width=\"100%\"><table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">");
 		toWriteTo.append(edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(triggerPanel));
 		toWriteTo.append("</table>\n</td>\n</tr>\n");
 	}
@@ -99,7 +101,7 @@ public class TriggerBehaviorPanel extends BasicBehaviorPanel implements java.awt
             m_containingPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
             m_containingPanel.setBorder(null);
             m_containingPanel.setLayout(new java.awt.GridBagLayout());
-            m_containingPanel.setBackground(COLOR);
+            m_containingPanel.setBackground(COLOR.createAWTColor());
             m_containingPanel.addMouseListener(behaviorMouseListener);
         }
         this.remove(m_containingPanel);
@@ -109,12 +111,12 @@ public class TriggerBehaviorPanel extends BasicBehaviorPanel implements java.awt
             labelPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
             labelPanel.setBorder(null);
             labelPanel.setLayout(new java.awt.GridBagLayout());
-            labelPanel.setBackground(COLOR);
+            labelPanel.setBackground(COLOR.createAWTColor());
             labelPanel.addMouseListener(behaviorMouseListener);
         }
         this.addDragSourceComponent(labelPanel);
         labelPanel.removeAll();
-        this.setBackground(COLOR);
+        this.setBackground(COLOR.createAWTColor());
         buildLabel(labelPanel);
         int x = labelPanel.getComponentCount();
 		lastLabel = new javax.swing.JLabel();

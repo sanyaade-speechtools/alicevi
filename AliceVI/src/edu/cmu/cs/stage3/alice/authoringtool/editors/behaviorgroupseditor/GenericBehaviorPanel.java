@@ -55,12 +55,12 @@ public class GenericBehaviorPanel extends BasicBehaviorPanel {
         if (m_containingPanel == null){
     		m_containingPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
 		    m_containingPanel.setLayout(new java.awt.GridBagLayout());
-            m_containingPanel.setBackground(COLOR);
+            m_containingPanel.setBackground(COLOR.createAWTColor());
             m_containingPanel.addMouseListener(behaviorMouseListener);
         }
         this.addDragSourceComponent(m_containingPanel);
         m_containingPanel.removeAll();
-		this.setBackground(COLOR);
+		this.setBackground(COLOR.createAWTColor());
         int base = 0;
         buildLabel(m_containingPanel);
         int x = m_containingPanel.getComponentCount();

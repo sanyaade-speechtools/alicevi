@@ -42,7 +42,7 @@ public class StyledStreamTextPane extends javax.swing.JTextPane {
 		javax.swing.text.StyleConstants.setFontFamily( defaultStyle, "Monospaced" );
 		stdOutStyle = this.addStyle( "stdOut", defaultStyle );
 		stdErrStyle = this.addStyle( "stdErr", defaultStyle );
-		javax.swing.text.StyleConstants.setForeground( stdErrStyle, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("stdErrTextColor") );
+		javax.swing.text.StyleConstants.setForeground( stdErrStyle, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("stdErrTextColor").createAWTColor() );
 
 		defaultStream = getNewStyleStream( defaultStyle );
 

@@ -54,7 +54,7 @@ public class CollectionPropertyViewController extends javax.swing.JButton implem
 		clean();
 		this.property = property;
 		this.omitPropertyName = omitPropertyName;
-		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "propertyViewControllerBackground" ) );
+		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "propertyViewControllerBackground" ).createAWTColor() );
 		setMargin( new java.awt.Insets( 0, 4, 0, 4 ) );
 		startListening();
 		refreshGUI();

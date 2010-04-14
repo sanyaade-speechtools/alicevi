@@ -35,6 +35,7 @@ import edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener;
 import edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel;
 import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent;
 import edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty;
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 /**
  * Title:
@@ -83,7 +84,7 @@ public abstract class CompositeComponentElementPanel extends GroupingPanel imple
     protected java.awt.Insets insets;
     protected int dropPanelPosition = -2;
 
-    protected static java.awt.Color dndFeedBackColor = AuthoringToolResources.getColor("dndHighlight2");
+    protected static Color dndFeedBackColor = AuthoringToolResources.getColor("dndHighlight2");
 
     protected static CompositeComponentElementPanel s_currentComponentPanel;
     protected static java.awt.Component s_componentPanelMoved;
@@ -434,10 +435,10 @@ public abstract class CompositeComponentElementPanel extends GroupingPanel imple
         }
     }
 
-    public void setBackground(java.awt.Color color){
-        super.setBackground(color);
+    public void setBackground(Color color){
+        super.setBackground(color.createAWTColor());
         if (insertPanel != null){
-            insertPanel.setBackground(color);
+            insertPanel.setBackground(color.createAWTColor());
         }
     }
 
@@ -556,11 +557,11 @@ public abstract class CompositeComponentElementPanel extends GroupingPanel imple
 
     private static java.awt.Container s_prevContainer;
     private static java.awt.Rectangle s_prevRect;
-    private static void drawRect( java.awt.Container container, java.awt.Color color, java.awt.Rectangle rect ) {
+    private static void drawRect( java.awt.Container container, Color color, java.awt.Rectangle rect ) {
         java.awt.Graphics g = container.getGraphics();
         if( g != null ) {
             if( color != null ) {
-                g.setColor( color );
+                g.setColor( color.createAWTColor() );
                 g.fillRect( rect.x, rect.y, rect.width, rect.height );
                 g.dispose();
             } 
@@ -575,7 +576,7 @@ public abstract class CompositeComponentElementPanel extends GroupingPanel imple
             }
         }
         if( s_prevContainer != null ) {
-            drawRect( s_prevContainer, s_prevContainer.getBackground(), s_prevRect );
+            drawRect( s_prevContainer, new Color(s_prevContainer.getBackground()), s_prevRect );
             if (s_prevContainer instanceof CompositeComponentElementPanel){
                 ((CompositeComponentElementPanel)s_prevContainer).shouldDrawLine = false;
             }

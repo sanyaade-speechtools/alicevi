@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -52,7 +54,7 @@ public class ParallelResponsePanel extends CompositeResponsePanel {
         super.updateGUI();
     }
 
-    protected java.awt.Color getCustomBackgroundColor(){
+    protected Color getCustomBackgroundColor(){
         return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("DoTogether");
     }
 
@@ -67,7 +69,7 @@ public class ParallelResponsePanel extends CompositeResponsePanel {
 		parallelBackgroundImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 		java.awt.Graphics2D g = (java.awt.Graphics2D)parallelBackgroundImage.getGraphics();
 		g.addRenderingHints( new java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON ) );
-        g.setColor( backgroundColor );
+        g.setColor( backgroundColor.createAWTColor() );
 		g.fillRect( 0, 0, width, height );
   /*      g.setColor( backgroundLineColor );
 		int spacing = 10;

@@ -100,8 +100,8 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 				authoringTool.getJAliceFrame().setGuiMode( edu.cmu.cs.stage3.alice.authoringtool.JAliceFrame.SCENE_EDITOR_SMALL_MODE );
 			}
 		} );
-		makeSceneEditorBigButton.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "makeSceneEditorBigBackground" ) );
-		makeSceneEditorSmallButton.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "makeSceneEditorSmallBackground" ) );
+		makeSceneEditorBigButton.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "makeSceneEditorBigBackground" ).createAWTColor() );
+		makeSceneEditorSmallButton.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "makeSceneEditorSmallBackground" ).createAWTColor() );
 
 		cameraViewPanel.navPanel.add( makeSceneEditorBigButton, new java.awt.GridBagConstraints( 1, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets( 0, 0, 2, 2 ), 0, 0 ) );
 		cameraViewPanel.controlPanel.add( makeSceneEditorSmallButton, new java.awt.GridBagConstraints( 0, 9, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets( 0, 0, 8, 8 ), 0, 0 ) );

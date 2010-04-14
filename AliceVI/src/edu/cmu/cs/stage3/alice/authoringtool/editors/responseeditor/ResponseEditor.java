@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -61,7 +63,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
         updateGui();
     }
 
-    protected java.awt.Color getEditorColor(){
+    protected Color getEditorColor(){
         return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedResponseEditor");
     }
 
@@ -76,6 +78,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
                 toReturn = new MainParallelResponsePanel();
                 toReturn.set((edu.cmu.cs.stage3.alice.core.response.DoTogether)selected, authoringTool);
             }
+            
             return toReturn;
         }
         return null;
@@ -96,24 +99,24 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
         String commentString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(edu.cmu.cs.stage3.alice.core.response.Comment.class);
         String mathString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue("+ - * /");
 
-        java.awt.Color DO_IN_ORDER_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("DoInOrder");
-        java.awt.Color DO_TOGETHER_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("DoTogether");
-        java.awt.Color COUNT_LOOP_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("LoopNInOrder");
-        java.awt.Color DO_IF_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("IfElseInOrder");
+        Color DO_IN_ORDER_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("DoInOrder");
+        Color DO_TOGETHER_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("DoTogether");
+        Color COUNT_LOOP_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("LoopNInOrder");
+        Color DO_IF_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("IfElseInOrder");
         // WAIT_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("Wait");
-        java.awt.Color SEQUENTIAL_LOOP_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ForEachInOrder");
-        java.awt.Color FOR_ALL_TOGETHER_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ForAllTogether");
-        java.awt.Color SCRIPT_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ScriptResponse");
-        java.awt.Color SCRIPT_DEFINED_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ScriptDefinedResponse");
-        java.awt.Color COMMENT_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("Comment");
-        java.awt.Color COMMENT_FOREGROUND = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("commentForeground");
-        java.awt.Color DO_WHILE_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("WhileLoopInOrder");
+        Color SEQUENTIAL_LOOP_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ForEachInOrder");
+        Color FOR_ALL_TOGETHER_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ForAllTogether");
+        Color SCRIPT_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ScriptResponse");
+        Color SCRIPT_DEFINED_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ScriptDefinedResponse");
+        Color COMMENT_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("Comment");
+        Color COMMENT_FOREGROUND = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("commentForeground");
+        Color DO_WHILE_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("WhileLoopInOrder");
         //PRINT_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("Print");
-        java.awt.Color MATH_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("question");
+        Color MATH_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("question");
 
         doInOrderPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
         //doInOrderPrototype.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("SequentialResponse"));
-        doInOrderPrototype.setBackground(DO_IN_ORDER_COLOR);
+        doInOrderPrototype.setBackground(DO_IN_ORDER_COLOR.createAWTColor());
         javax.swing.JLabel DIOJLabel = new javax.swing.JLabel(doInOrderString);
         doInOrderPrototype.add(DIOJLabel, java.awt.BorderLayout.CENTER);
         doInOrderPrototype.setTransferable(
@@ -124,7 +127,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
 
         doTogetherPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
         //doTogetherPrototype.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ParallelResponse"));
-        doTogetherPrototype.setBackground(DO_TOGETHER_COLOR);
+        doTogetherPrototype.setBackground(DO_TOGETHER_COLOR.createAWTColor());
         javax.swing.JLabel DTJLabel = new javax.swing.JLabel(doTogetherString);
         doTogetherPrototype.add(DTJLabel, java.awt.BorderLayout.CENTER);
         doTogetherPrototype.setTransferable(
@@ -135,7 +138,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
 
         doIfTruePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
         //doIfTruePrototype.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ConditionalResponse"));
-        doIfTruePrototype.setBackground(DO_IF_COLOR);
+        doIfTruePrototype.setBackground(DO_IF_COLOR.createAWTColor());
         javax.swing.JLabel DITLabel = new javax.swing.JLabel(doIfTrueString);
         doIfTruePrototype.add(DITLabel, java.awt.BorderLayout.CENTER);
         String DITdesired[] = {"condition"};
@@ -148,7 +151,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
         String CLdesired[] = {"end"};
         loopPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
         //loopPrototype.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("LoopNInOrder"));
-        loopPrototype.setBackground(COUNT_LOOP_COLOR);
+        loopPrototype.setBackground(COUNT_LOOP_COLOR.createAWTColor());
         javax.swing.JLabel LLabel = new javax.swing.JLabel(loopString);
         loopPrototype.add(LLabel, java.awt.BorderLayout.CENTER);
         loopPrototype.setTransferable(
@@ -160,7 +163,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
         String LITdesired[] = {"condition"};
         loopIfTruePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
         //loopIfTruePrototype.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("WhileLoopInOrder"));
-        loopIfTruePrototype.setBackground(DO_WHILE_COLOR);
+        loopIfTruePrototype.setBackground(DO_WHILE_COLOR.createAWTColor());
         javax.swing.JLabel LITLabel = new javax.swing.JLabel(loopIfTrueString);
         loopIfTruePrototype.add(LITLabel, java.awt.BorderLayout.CENTER);
         loopIfTruePrototype.setTransferable(
@@ -172,7 +175,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
         String SLdesired[] = {"list"};
         sequentialLoopPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
         //sequentialLoopPrototype.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ForEachInOrder"));
-        sequentialLoopPrototype.setBackground(SEQUENTIAL_LOOP_COLOR);
+        sequentialLoopPrototype.setBackground(SEQUENTIAL_LOOP_COLOR.createAWTColor());
         javax.swing.JLabel SLLabel = new javax.swing.JLabel(sequentialLoopString);
         sequentialLoopPrototype.add(SLLabel, java.awt.BorderLayout.CENTER);
         sequentialLoopPrototype.setTransferable(
@@ -184,7 +187,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
         String FATdesired[] = {"list"};
         forAllTogetherPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
         //sequentialLoopPrototype.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("ForEachInOrder"));
-        forAllTogetherPrototype.setBackground(FOR_ALL_TOGETHER_COLOR);
+        forAllTogetherPrototype.setBackground(FOR_ALL_TOGETHER_COLOR.createAWTColor());
         javax.swing.JLabel FATLabel = new javax.swing.JLabel(forAllTogetherString);
         forAllTogetherPrototype.add(FATLabel, java.awt.BorderLayout.CENTER);
         forAllTogetherPrototype.setTransferable(
@@ -200,7 +203,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
         //waitPrototype.addDragSourceComponent(WLabel);
 
         scriptDefinedPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
-        scriptDefinedPrototype.setBackground(SCRIPT_DEFINED_COLOR);
+        scriptDefinedPrototype.setBackground(SCRIPT_DEFINED_COLOR.createAWTColor());
         //scriptDefinedPrototype.setBackground(SCRIPT_COLOR);
         javax.swing.JLabel scriptDefinedLabel = new javax.swing.JLabel(scriptDefinedString);
         //javax.swing.JLabel scriptDefinedLabel = new javax.swing.JLabel("Script Defined Response");
@@ -212,7 +215,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
         scriptDefinedPrototype.addDragSourceComponent(scriptDefinedLabel);
 
         scriptPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
-        scriptPrototype.setBackground(SCRIPT_COLOR);
+        scriptPrototype.setBackground(SCRIPT_COLOR.createAWTColor());
         javax.swing.JLabel scriptLabel = new javax.swing.JLabel(scriptString);
         scriptPrototype.add(scriptLabel, java.awt.BorderLayout.CENTER);
         scriptPrototype.setTransferable(
@@ -223,9 +226,9 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
 
         edu.cmu.cs.stage3.util.StringObjectPair Cknown[] = {new edu.cmu.cs.stage3.util.StringObjectPair("text", "No comment")};
         commentPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
-        commentPrototype.setBackground(COMMENT_COLOR);
+        commentPrototype.setBackground(COMMENT_COLOR.createAWTColor());
         javax.swing.JLabel commentLabel = new javax.swing.JLabel(commentString);
-        commentLabel.setForeground(COMMENT_FOREGROUND);
+        commentLabel.setForeground(COMMENT_FOREGROUND.createAWTColor());
         commentPrototype.add(commentLabel, java.awt.BorderLayout.CENTER);
         commentPrototype.setTransferable(
                 new edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ResponsePrototypeReferenceTransferable(
@@ -238,7 +241,7 @@ public class ResponseEditor extends edu.cmu.cs.stage3.alice.authoringtool.editor
                 edu.cmu.cs.stage3.alice.core.response.Print.class, null, null));
 
         mathPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel();
-        mathPrototype.setBackground(MATH_COLOR);
+        mathPrototype.setBackground(MATH_COLOR.createAWTColor());
         javax.swing.JLabel mathLabel = new javax.swing.JLabel(mathString);
         int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
         mathLabel.setFont( new java.awt.Font( "Monospaced", java.awt.Font.BOLD, (int) (12 * (fontSize/12.0)) ) );

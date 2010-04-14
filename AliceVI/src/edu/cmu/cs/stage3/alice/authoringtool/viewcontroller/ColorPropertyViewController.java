@@ -95,7 +95,7 @@ public class ColorPropertyViewController extends PropertyViewController {
 	}
 
 	protected void refreshGUI() {
-		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "propertyViewControllerBackground" ) );
+		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "propertyViewControllerBackground" ).createAWTColor() );
 		super.refreshGUI();
 	}
 }

@@ -29,6 +29,8 @@ package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
 import java.awt.GridBagConstraints;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.ImageObserver{
 	private int index = 0;
 	/*private */java.awt.Image image;
@@ -425,7 +427,7 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 				}
 				((CustomCheckBox)toAdd).setIndex(i);
 			} 
-			java.awt.Color bgColor = java.awt.Color.white;
+			Color bgColor = Color.WHITE;
 			if (currentObject instanceof edu.cmu.cs.stage3.alice.core.Response){
 				bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedResponseEditor");
 			} else if (currentObject instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion){
@@ -434,7 +436,7 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 				bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("behavior");
 			} 
 //			toAdd.setBorder(javax.swing.BorderFactory.createLineBorder(bgColor, 2));
-			toAdd.setBackground(bgColor);
+			toAdd.setBackground(bgColor.createAWTColor());
 			m_elementsToBeExportedPanel.add(toAdd, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, leftIndent, 0, 0), 0, 0));
 			count++;
 		}

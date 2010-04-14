@@ -56,7 +56,7 @@ public class InternalResponseBehaviorPanel extends BasicBehaviorPanel {
         if (m_containingPanel == null){
             m_containingPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
             m_containingPanel.setLayout(new java.awt.GridBagLayout());
-            m_containingPanel.setBackground(COLOR);
+            m_containingPanel.setBackground(COLOR.createAWTColor());
             m_containingPanel.addMouseListener(behaviorMouseListener);
             m_containingPanel.setBorder(null);
         }
@@ -66,13 +66,13 @@ public class InternalResponseBehaviorPanel extends BasicBehaviorPanel {
         if (labelPanel == null){
             labelPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
             labelPanel.setLayout(new java.awt.GridBagLayout());
-            labelPanel.setBackground(COLOR);
+            labelPanel.setBackground(COLOR.createAWTColor());
             labelPanel.addMouseListener(behaviorMouseListener);
             labelPanel.setBorder(null);
         }
         this.addDragSourceComponent(labelPanel);
         labelPanel.removeAll();
-        this.setBackground(COLOR);
+        this.setBackground(COLOR.createAWTColor());
         int base = 0;
         buildLabel(labelPanel);
         java.awt.Component glue = javax.swing.Box.createHorizontalGlue();

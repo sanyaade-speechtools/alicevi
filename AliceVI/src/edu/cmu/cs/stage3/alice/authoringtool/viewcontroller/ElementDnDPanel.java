@@ -32,7 +32,7 @@ public class ElementDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.
 	protected javax.swing.JLabel iconLabel = new javax.swing.JLabel();
 
 	public ElementDnDPanel() {
-		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "elementDnDPanel" ) );
+		setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "elementDnDPanel" ).createAWTColor() );
 		iconLabel.setOpaque( false );
 	}
 

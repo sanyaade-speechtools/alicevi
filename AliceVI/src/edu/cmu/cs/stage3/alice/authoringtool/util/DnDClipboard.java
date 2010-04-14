@@ -69,9 +69,9 @@ public class DnDClipboard extends javax.swing.JPanel {
 		if( paintDropPotential ) {
 			java.awt.Dimension size = getSize();
 			if( underDrag ) {
-				g.setColor( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight2" ) );
+				g.setColor( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight2" ).createAWTColor() );
 			} else {
-				g.setColor( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight" ) );
+				g.setColor( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "dndHighlight" ).createAWTColor() );
 			}
 			g.drawRect( 0, 0, size.width - 1, size.height - 1 );
 		}

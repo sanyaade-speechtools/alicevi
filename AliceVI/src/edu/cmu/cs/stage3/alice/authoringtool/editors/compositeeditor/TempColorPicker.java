@@ -31,11 +31,13 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 public class TempColorPicker extends javax.swing.JPanel {
     protected CompositeElementEditor editor;
 	private class TileColorPicker extends javax.swing.JPanel{
-		public java.awt.Color toChange;
-		public java.awt.Color foregroundToChange;
+		public Color toChange;
+		public Color foregroundToChange;
 		public javax.swing.JLabel tile;
 		public javax.swing.JButton openPicker;
 		public javax.swing.JButton openPicker2;
@@ -51,15 +53,16 @@ public class TempColorPicker extends javax.swing.JPanel {
 			String name = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(classKey);
 			tile = new javax.swing.JLabel(name);
 			tile.setOpaque(true);
-			tile.setBackground(toChange);
+			tile.setBackground(toChange.createAWTColor());
 			openPicker = new javax.swing.JButton("select color");
 			openPicker.addActionListener(new java.awt.event.ActionListener(){
 				public void actionPerformed( java.awt.event.ActionEvent ev ) {
 					javax.swing.JColorChooser colorChooser = new javax.swing.JColorChooser();
-					java.awt.Color newColor = edu.cmu.cs.stage3.swing.DialogManager.showDialog( colorChooser, "Pick color for "+TileColorPicker.this.tile.getText(), TileColorPicker.this.toChange );
+					java.awt.Color newColor = edu.cmu.cs.stage3.swing.DialogManager.showDialog( colorChooser, "Pick color for "+TileColorPicker.this.tile.getText(), TileColorPicker.this.toChange.createAWTColor() );
 					TileColorPicker.this.tile.setBackground(newColor);
-					TileColorPicker.this.toChange = newColor;
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.putColor(TileColorPicker.this.nameKey, newColor);
+					
+					TileColorPicker.this.toChange = new Color(newColor);
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.putColor(TileColorPicker.this.nameKey, new Color(newColor) );
 					editor.guiInit();
 					TileColorPicker.this.repaint();
 					editor.repaint();
@@ -75,15 +78,15 @@ public class TempColorPicker extends javax.swing.JPanel {
 			this(nameKey, classKey);
 			this.foregroundNameKey = foregroundNameKey;
 			this.foregroundToChange = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor(foregroundNameKey);
-			tile.setForeground(this.foregroundToChange);
+			tile.setForeground(this.foregroundToChange.createAWTColor());
 			openPicker2 = new javax.swing.JButton("select text color");
 			openPicker2.addActionListener(new java.awt.event.ActionListener(){
 				public void actionPerformed( java.awt.event.ActionEvent ev ) {
 					javax.swing.JColorChooser colorChooser = new javax.swing.JColorChooser();
-					java.awt.Color newColor = edu.cmu.cs.stage3.swing.DialogManager.showDialog( colorChooser, "Pick color for "+TileColorPicker.this.tile.getText(), TileColorPicker.this.foregroundToChange );
+					java.awt.Color newColor = edu.cmu.cs.stage3.swing.DialogManager.showDialog( colorChooser, "Pick color for "+TileColorPicker.this.tile.getText(), TileColorPicker.this.foregroundToChange.createAWTColor() );
 					TileColorPicker.this.tile.setForeground(newColor);
-					TileColorPicker.this.foregroundToChange = newColor;
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.putColor(TileColorPicker.this.foregroundNameKey, newColor);
+					TileColorPicker.this.foregroundToChange = new Color(newColor);
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.putColor(TileColorPicker.this.foregroundNameKey, new Color(newColor));
 					editor.guiInit();
 					TileColorPicker.this.repaint();
 					editor.repaint();

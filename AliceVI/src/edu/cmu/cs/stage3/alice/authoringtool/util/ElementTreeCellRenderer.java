@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * @author Jason Pratt
  */
@@ -31,12 +33,12 @@ public class ElementTreeCellRenderer extends javax.swing.JPanel implements javax
 	protected javax.swing.JPanel elementPanel = new javax.swing.JPanel();
 	protected javax.swing.JLabel iconLabel = new javax.swing.JLabel();
 	protected javax.swing.JLabel elementLabel = new javax.swing.JLabel();
-	protected java.awt.Color selectedColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeSelected" );
-	protected java.awt.Color bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeBackground" );
-	protected java.awt.Color disabledColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeDisabled" );
-	protected java.awt.Color textColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeText" );
-	protected java.awt.Color disabledTextColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeDisabledText" );
-	protected java.awt.Color selectedTextColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeSelectedText" );
+	protected Color selectedColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeSelected" );
+	protected Color bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeBackground" );
+	protected Color disabledColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeDisabled" );
+	protected Color textColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeText" );
+	protected Color disabledTextColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeDisabledText" );
+	protected Color selectedTextColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "objectTreeSelectedText" );
 
 	public ElementTreeCellRenderer() {
 		setOpaque( false );
@@ -44,11 +46,11 @@ public class ElementTreeCellRenderer extends javax.swing.JPanel implements javax
 		add( dndPanel, new java.awt.GridBagConstraints( 0, 0, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets( 1, 0, 0, 0 ), 0, 0 ) );
 
 		dndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 1, 1, 1, 1 ) );
-		dndPanel.setBackground( bgColor );
+		dndPanel.setBackground( bgColor.createAWTColor() );
 		elementPanel.setLayout( new java.awt.GridBagLayout() );
 		elementPanel.setOpaque( false );
 		iconLabel.setOpaque( false );
-		elementLabel.setBackground( selectedColor );
+		elementLabel.setBackground( selectedColor.createAWTColor() );
 		elementLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 1, 0, 1 ) );
 		elementLabel.setOpaque( false );
 		elementPanel.add( iconLabel, new java.awt.GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets( 0, 0, 0, 0 ), 0, 0 ) );
@@ -68,10 +70,10 @@ public class ElementTreeCellRenderer extends javax.swing.JPanel implements javax
 
 			javax.swing.ImageIcon icon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( element );
 			if( inScope ) {
-				dndPanel.setBackground( bgColor );
+				dndPanel.setBackground( bgColor.createAWTColor() );
 				iconLabel.setIcon( icon );
 			} else {
-				dndPanel.setBackground( disabledColor );
+				dndPanel.setBackground( disabledColor.createAWTColor() );
 				iconLabel.setIcon( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDisabledIcon( icon ) );
 			}
 
@@ -79,16 +81,16 @@ public class ElementTreeCellRenderer extends javax.swing.JPanel implements javax
 			if( selected ) {
 				elementLabel.setOpaque( true );
 				if( inScope ) {
-					elementLabel.setForeground( selectedTextColor );
+					elementLabel.setForeground( selectedTextColor.createAWTColor() );
 				} else {
-					elementLabel.setForeground( disabledTextColor );
+					elementLabel.setForeground( disabledTextColor.createAWTColor() );
 				}
 			} else {
 				elementLabel.setOpaque( false );
 				if( inScope ) {
-					elementLabel.setForeground( textColor );
+					elementLabel.setForeground( textColor.createAWTColor() );
 				} else {
-					elementLabel.setForeground( disabledTextColor );
+					elementLabel.setForeground( disabledTextColor.createAWTColor() );
 				}
 			}
 		} else {
@@ -98,8 +100,8 @@ public class ElementTreeCellRenderer extends javax.swing.JPanel implements javax
 		return this;
 	}
 
-	public void setBackgroundColor( java.awt.Color color ) {
+	public void setBackgroundColor( Color color ) {
 		bgColor = color;
-		dndPanel.setBackground( color );
+		dndPanel.setBackground( color.createAWTColor() );
 	}
 }

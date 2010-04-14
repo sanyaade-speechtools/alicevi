@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -48,7 +50,7 @@ public class SequentialResponsePanel extends CompositeResponsePanel {
         super.set(r, authoringToolIn);
     }
 
-    protected java.awt.Color getCustomBackgroundColor(){
+    protected Color getCustomBackgroundColor(){
         return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("DoInOrder");
     }
 
@@ -66,7 +68,7 @@ public class SequentialResponsePanel extends CompositeResponsePanel {
 		sequentialBackgroundImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 		java.awt.Graphics2D g = (java.awt.Graphics2D)sequentialBackgroundImage.getGraphics();
 		g.addRenderingHints( new java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON ) );
-        g.setColor( backgroundColor );
+        g.setColor( backgroundColor.createAWTColor() );
 		g.fillRect( 0, 0, width, height );
      /*   g.setColor( backgroundLineColor );
 		int spacing = 10;
