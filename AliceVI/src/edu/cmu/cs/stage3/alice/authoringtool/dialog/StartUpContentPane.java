@@ -1030,7 +1030,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				this.setBackground(BACKGROUND_COLOR);
 				this.setOpaque(false);
 				this.repaint();
-				this.setForeground((java.awt.Color) javax.swing.UIManager.get("Label.foreground"));
+				this.setForeground(((edu.cmu.cs.stage3.alice.scenegraph.Color) javax.swing.UIManager.get("Label.foreground")).createAWTColor());
 			}
 		}
 

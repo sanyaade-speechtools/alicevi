@@ -50,10 +50,10 @@ public abstract class VertexGeometryProxy extends GeometryProxy {
                             onVerticesVertexNormalChange( i, vertex.normal.x, vertex.normal.y, vertex.normal.z );
                         }
                         if( vertex.diffuseColor != null ) {
-                            onVerticesVertexDiffuseColorChange( i, vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue, vertex.diffuseColor.alpha );
+                            onVerticesVertexDiffuseColorChange( i, vertex.diffuseColor.getRed(), vertex.diffuseColor.getGreen(), vertex.diffuseColor.getBlue(), vertex.diffuseColor.getAlpha() );
                         }
                         if( vertex.specularHighlightColor != null ) {
-                            onVerticesVertexSpecularHighlightColorChange( i, vertex.specularHighlightColor.red, vertex.specularHighlightColor.green, vertex.specularHighlightColor.blue, vertex.specularHighlightColor.alpha );
+                            onVerticesVertexSpecularHighlightColorChange( i, vertex.specularHighlightColor.getRed(), vertex.specularHighlightColor.getGreen(), vertex.specularHighlightColor.getBlue(), vertex.specularHighlightColor.getAlpha() );
                         }
                         if( vertex.textureCoordinate0 != null ) {
                             onVerticesVertexTextureCoordinate0Change( i, vertex.textureCoordinate0.x, vertex.textureCoordinate0.y );

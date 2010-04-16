@@ -45,14 +45,14 @@ public abstract class AppearanceProxy extends ElementProxy {
 				color = ((edu.cmu.cs.stage3.alice.scenegraph.Appearance)getSceneGraphElement()).getDiffuseColor();
 			}
 			if( color!=null ) {
-				onAmbientColorChange( color.red, color.green, color.blue, color.alpha );
+				onAmbientColorChange( color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() );
 			} else {
 				onAmbientColorChange( 0,0,0,0 );
 			}
 		} else if( property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.DIFFUSE_COLOR_PROPERTY ) {
 			edu.cmu.cs.stage3.alice.scenegraph.Color color = (edu.cmu.cs.stage3.alice.scenegraph.Color)value;
 			if( color!=null ) {
-				onDiffuseColorChange( color.red, color.green, color.blue, color.alpha );
+				onDiffuseColorChange( color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() );
 			} else {
 				onDiffuseColorChange( 0,0,0,0 );
 			}
@@ -88,7 +88,7 @@ public abstract class AppearanceProxy extends ElementProxy {
 		} else if( property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.SPECULAR_HIGHLIGHT_COLOR_PROPERTY ) {
 			edu.cmu.cs.stage3.alice.scenegraph.Color color = (edu.cmu.cs.stage3.alice.scenegraph.Color)value;
 			if( color!=null ) {
-				onSpecularHighlightColorChange( color.red, color.green, color.blue, color.alpha );
+				onSpecularHighlightColorChange( color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() );
 			} else {
 				onSpecularHighlightColorChange( 0,0,0,0 );
 			}
@@ -97,7 +97,7 @@ public abstract class AppearanceProxy extends ElementProxy {
 		} else if( property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.EMISSIVE_COLOR_PROPERTY ) {
 			edu.cmu.cs.stage3.alice.scenegraph.Color color = (edu.cmu.cs.stage3.alice.scenegraph.Color)value;
 			if( color!=null ) {
-				onEmissiveColorChange( color.red, color.green, color.blue, color.alpha );
+				onEmissiveColorChange( color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() );
 			} else {
 				onEmissiveColorChange( 0,0,0,0 );
 			}

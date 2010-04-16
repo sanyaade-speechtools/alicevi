@@ -242,16 +242,16 @@ public class XML {
                             xmlProperty.setAttribute( "class", "edu.cmu.cs.stage3.alice.scenegraph.Color" );
                             edu.cmu.cs.stage3.alice.scenegraph.Color color = (edu.cmu.cs.stage3.alice.scenegraph.Color)value;
                             org.w3c.dom.Element xmlRed = document.createElement( "red" );
-                            xmlRed.appendChild( document.createTextNode( Double.toString( color.red ) ) );
+                            xmlRed.appendChild( document.createTextNode( Double.toString( color.getRawRed() ) ) );
                             xmlProperty.appendChild( xmlRed );
                             org.w3c.dom.Element xmlGreen = document.createElement( "green" );
-                            xmlGreen.appendChild( document.createTextNode( Double.toString( color.green ) ) );
+                            xmlGreen.appendChild( document.createTextNode( Double.toString( color.getRawGreen() ) ) );
                             xmlProperty.appendChild( xmlGreen );
                             org.w3c.dom.Element xmlBlue = document.createElement( "blue" );
-                            xmlBlue.appendChild( document.createTextNode( Double.toString( color.blue ) ) );
+                            xmlBlue.appendChild( document.createTextNode( Double.toString( color.getRawBlue() ) ) );
                             xmlProperty.appendChild( xmlBlue );
                             org.w3c.dom.Element xmlAlpha = document.createElement( "alpha" );
-                            xmlAlpha.appendChild( document.createTextNode( Double.toString( color.alpha ) ) );
+                            xmlAlpha.appendChild( document.createTextNode( Double.toString( color.getRawAlpha() ) ) );
                             xmlProperty.appendChild( xmlAlpha );
                         } else if( int[].class.isAssignableFrom( propertyValueClass ) ) {
                             int[] array = (int[])value;
@@ -578,10 +578,10 @@ public class XML {
                         value = java.awt.Toolkit.getDefaultToolkit().createImage( new java.awt.image.MemoryImageSource( width, height, pixels, 0, width ) );
                     } else if( edu.cmu.cs.stage3.alice.scenegraph.Color.class.isAssignableFrom( propertyValueClass ) ) {
                         edu.cmu.cs.stage3.alice.scenegraph.Color sgColor = new edu.cmu.cs.stage3.alice.scenegraph.Color();
-                        sgColor.red = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "red" ) ) );
-                        sgColor.green = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "green" ) ) );
-                        sgColor.blue = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "blue" ) ) );
-                        sgColor.alpha = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "alpha" ) ) );
+                        sgColor.setRed(Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "red" ) ) ));
+                        sgColor.setGreen(Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "green" ) ) ));
+                        sgColor.setBlue(Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "blue" ) ) ));
+                        sgColor.setAlpha( Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "alpha" ) ) ));
                         value = sgColor;
                     } else if( int[].class.isAssignableFrom( propertyValueClass ) ) {
                         int length = Integer.parseInt( xmlProperty.getAttribute( "length" ) );

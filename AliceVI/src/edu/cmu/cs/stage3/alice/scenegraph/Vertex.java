@@ -107,16 +107,16 @@ public class Vertex extends Vertex3d {
 			array[ xyzOffset+2 ] = normal.z;
 		}
 		if( (format&DIFFUSE_RGBA) != 0 ) {
-			array[ xyzOffset ] = diffuseColor.red;
-			array[ xyzOffset+1 ] = diffuseColor.green;
-			array[ xyzOffset+2 ] = diffuseColor.blue;
-			array[ xyzOffset+3 ] = diffuseColor.alpha;
+			array[ xyzOffset ] = diffuseColor.getRed();
+			array[ xyzOffset+1 ] = diffuseColor.getGreen();
+			array[ xyzOffset+2 ] = diffuseColor.getBlue();
+			array[ xyzOffset+3 ] = diffuseColor.getAlpha();
 		}
 		if( (format&SPECULAR_RGBA) != 0 ) {
-			array[ xyzOffset ] = specularHighlightColor.red;
-			array[ xyzOffset+1 ] = specularHighlightColor.green;
-			array[ xyzOffset+2 ] = specularHighlightColor.blue;
-			array[ xyzOffset+3 ] = specularHighlightColor.alpha;
+			array[ xyzOffset ] = specularHighlightColor.getRed();
+			array[ xyzOffset+1 ] = specularHighlightColor.getGreen();
+			array[ xyzOffset+2 ] = specularHighlightColor.getBlue();
+			array[ xyzOffset+3 ] = specularHighlightColor.getAlpha();
 		}
 		if( (format&TEXTURE_COORDINATE_UV0) != 0 ) {
 			array[ xyzOffset ] = textureCoordinate0.x;
@@ -198,28 +198,28 @@ public class Vertex extends Vertex3d {
 	}
 	public double getR() {
 		if( (getFormat()&DIFFUSE_RGBA)!=0 ) {
-			return diffuseColor.red;
+			return diffuseColor.getRed();
 		} else {
 			return Double.NaN;
 		}
 	}
 	public double getG() {
 		if( (getFormat()&DIFFUSE_RGBA)!=0 ) {
-			return diffuseColor.green;
+			return diffuseColor.getGreen();
 		} else {
 			return Double.NaN;
 		}
 	}
 	public double getB() {
 		if( (getFormat()&DIFFUSE_RGBA)!=0 ) {
-			return diffuseColor.blue;
+			return diffuseColor.getBlue();
 		} else {
 			return Double.NaN;
 		}
 	}
 	public double getA() {
 		if( (getFormat()&DIFFUSE_RGBA)!=0 ) {
-			return diffuseColor.alpha;
+			return diffuseColor.getAlpha();
 		} else {
 			return Double.NaN;
 		}
@@ -298,7 +298,7 @@ public class Vertex extends Vertex3d {
 	}
 	public void setR( double r ) {
 		if( (getFormat()&DIFFUSE_RGBA)!=0 ) {
-			diffuseColor.red = (float)r;
+			diffuseColor.setRed((float)r);
 		} else {
 			if( !Double.isNaN( r ) ) {
 				throw new RuntimeException();
@@ -307,7 +307,7 @@ public class Vertex extends Vertex3d {
 	}
 	public void setG( double g ) {
 		if( (getFormat()&DIFFUSE_RGBA)!=0 ) {
-			diffuseColor.green = (float)g;
+			diffuseColor.setGreen((float)g);
 		} else {
 			if( !Double.isNaN( g ) ) {
 				throw new RuntimeException();
@@ -316,7 +316,7 @@ public class Vertex extends Vertex3d {
 	}
 	public void setB( double b ) {
 		if( (getFormat()&DIFFUSE_RGBA)!=0 ) {
-			diffuseColor.blue = (float)b;
+			diffuseColor.setBlue((float)b);
 		} else {
 			if( !Double.isNaN( b ) ) {
 				throw new RuntimeException();
@@ -325,7 +325,7 @@ public class Vertex extends Vertex3d {
 	}
 	public void setA( double a ) {
 		if( (getFormat()&DIFFUSE_RGBA)!=0 ) {
-			diffuseColor.alpha = (float)a;
+			diffuseColor.setAlpha((float)a);
 		} else {
 			if( !Double.isNaN( a ) ) {
 				throw new RuntimeException();

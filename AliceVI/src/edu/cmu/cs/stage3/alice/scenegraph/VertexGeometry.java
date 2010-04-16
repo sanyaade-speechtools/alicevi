@@ -201,10 +201,10 @@ public abstract class VertexGeometry extends Geometry {
 					vertices[i].normal.z = dis.readDouble();
 				}
 				if ((format & Vertex3d.FORMAT_DIFFUSE_COLOR) != 0) {
-					vertices[i].diffuseColor.red = (float) dis.readDouble();
-					vertices[i].diffuseColor.green = (float) dis.readDouble();
-					vertices[i].diffuseColor.blue = (float) dis.readDouble();
-					vertices[i].diffuseColor.alpha = (float) dis.readDouble();
+					vertices[i].diffuseColor.setRed((float) dis.readDouble());
+					vertices[i].diffuseColor.setGreen((float) dis.readDouble());
+					vertices[i].diffuseColor.setBlue((float) dis.readDouble());
+					vertices[i].diffuseColor.setAlpha((float) dis.readDouble());
 				}
 				if ((format & Vertex3d.FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0) {
 					// vertices[i].specularHighlightColor.x =
@@ -238,16 +238,16 @@ public abstract class VertexGeometry extends Geometry {
 					vertices[i].normal.z = dis.readDouble();
 				}
 				if ((format & Vertex3d.FORMAT_DIFFUSE_COLOR) != 0) {
-					vertices[i].diffuseColor.red = dis.readFloat();
-					vertices[i].diffuseColor.green = dis.readFloat();
-					vertices[i].diffuseColor.blue = dis.readFloat();
-					vertices[i].diffuseColor.alpha = dis.readFloat();
+					vertices[i].diffuseColor.setRed(dis.readFloat());
+					vertices[i].diffuseColor.setGreen(dis.readFloat());
+					vertices[i].diffuseColor.setBlue(dis.readFloat());
+					vertices[i].diffuseColor.setAlpha(dis.readFloat());
 				}
 				if ((format & Vertex3d.FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0) {
-					vertices[i].specularHighlightColor.red = dis.readFloat();
-					vertices[i].specularHighlightColor.green = dis.readFloat();
-					vertices[i].specularHighlightColor.blue = dis.readFloat();
-					vertices[i].specularHighlightColor.alpha = dis.readFloat();
+					vertices[i].specularHighlightColor.setRed(dis.readFloat());
+					vertices[i].specularHighlightColor.setGreen(dis.readFloat());
+					vertices[i].specularHighlightColor.setBlue(dis.readFloat());
+					vertices[i].specularHighlightColor.setAlpha(dis.readFloat());
 				}
 				if ((format & Vertex3d.FORMAT_TEXTURE_COORDINATE_0) != 0) {
 					vertices[i].textureCoordinate0.x = dis.readFloat();
@@ -280,16 +280,16 @@ public abstract class VertexGeometry extends Geometry {
 				dos.writeDouble(vertices[i].normal.z);
 			}
 			if ((format & Vertex3d.FORMAT_DIFFUSE_COLOR) != 0) {
-				dos.writeFloat(vertices[i].diffuseColor.red);
-				dos.writeFloat(vertices[i].diffuseColor.green);
-				dos.writeFloat(vertices[i].diffuseColor.blue);
-				dos.writeFloat(vertices[i].diffuseColor.alpha);
+				dos.writeFloat(vertices[i].diffuseColor.getRed());
+				dos.writeFloat(vertices[i].diffuseColor.getGreen());
+				dos.writeFloat(vertices[i].diffuseColor.getBlue());
+				dos.writeFloat(vertices[i].diffuseColor.getAlpha());
 			}
 			if ((format & Vertex3d.FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0) {
-				dos.writeFloat(vertices[i].specularHighlightColor.red);
-				dos.writeFloat(vertices[i].specularHighlightColor.green);
-				dos.writeFloat(vertices[i].specularHighlightColor.blue);
-				dos.writeFloat(vertices[i].specularHighlightColor.alpha);
+				dos.writeFloat(vertices[i].specularHighlightColor.getRed());
+				dos.writeFloat(vertices[i].specularHighlightColor.getGreen());
+				dos.writeFloat(vertices[i].specularHighlightColor.getBlue());
+				dos.writeFloat(vertices[i].specularHighlightColor.getAlpha());
 			}
 			if ((format & Vertex3d.FORMAT_TEXTURE_COORDINATE_0) != 0) {
 				dos.writeFloat(vertices[i].textureCoordinate0.x);

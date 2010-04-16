@@ -31,7 +31,7 @@ public abstract class LightProxy extends AffectorProxy {
 		if( property == edu.cmu.cs.stage3.alice.scenegraph.Light.COLOR_PROPERTY ) {
 			edu.cmu.cs.stage3.alice.scenegraph.Color color = (edu.cmu.cs.stage3.alice.scenegraph.Color)value;
 			if( color!=null ) {
-				onColorChange( color.red, color.green, color.blue, color.alpha );
+				onColorChange( color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() );
 			} else {
 				onColorChange( 0,0,0,0 );
 			}

@@ -23,6 +23,10 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph;
 
+import edu.cmu.cs.stage3.alice.scenegraph.colorstate.ColorState;
+import edu.cmu.cs.stage3.alice.scenegraph.colorstate.ColorblindColorState;
+import edu.cmu.cs.stage3.alice.scenegraph.colorstate.NormalColorState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -47,10 +51,12 @@ public class Color implements Cloneable, java.io.Serializable,
 	public static final Color CYAN = new Color(java.awt.Color.cyan);
 	public static final Color MAGENTA = new Color(java.awt.Color.magenta);
 
-	public float red;
-	public float green;
-	public float blue;
-	public float alpha;
+	private ColorState currentState = new NormalColorState(this);
+	
+	private float red;
+	private float green;
+	private float blue;
+	private float alpha;
 
 	public Color() {
 		this(0, 0, 0, 1);
@@ -135,6 +141,10 @@ public class Color implements Cloneable, java.io.Serializable,
 	}
 
 	public java.awt.Color createAWTColor() {
+		return currentState.translateColor(createRawAWTColor());
+	}
+	
+	public java.awt.Color createRawAWTColor(){
 		float r = (float) Math.max(Math.min(red, 1.0), 0.0);
 		float g = (float) Math.max(Math.min(green, 1.0), 0.0);
 		float b = (float) Math.max(Math.min(blue, 1.0), 0.0);
@@ -142,23 +152,39 @@ public class Color implements Cloneable, java.io.Serializable,
 	}
 
 	public javax.vecmath.Color3f createVecmathColor3f() {
-		return new javax.vecmath.Color3f(red, green, blue);
+		return new javax.vecmath.Color3f(getRed(), getGreen(), getBlue());
 	}
 
 	public javax.vecmath.Color4f createVecmathColor4f() {
-		return new javax.vecmath.Color4f(red, green, blue, alpha);
+		return new javax.vecmath.Color4f(getRed(), getGreen(), getBlue(), getAlpha());
 	}
 
-	public float getRed() {
+	public float getRawRed(){
 		return red;
+	}
+	
+	public float getRawGreen(){
+		return green;
+	}
+	
+	public float getRawBlue(){
+		return blue;
+	}
+	
+	public float getRawAlpha(){
+		return alpha;
+	}
+	
+	public float getRed() {
+		return currentState.getRed();
 	}
 
 	public float getGreen() {
-		return green;
+		return currentState.getGreen();
 	}
 
 	public float getBlue() {
-		return blue;
+		return currentState.getBlue();
 	}
 
 	public float getAlpha() {

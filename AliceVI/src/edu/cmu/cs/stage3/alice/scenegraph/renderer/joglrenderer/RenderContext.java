@@ -338,7 +338,7 @@ class RenderContext extends Context {
 	    }
     	    
     	if (vertex.diffuseColor!=null ){    
-    		gl.glColor4f(vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue, vertex.diffuseColor.alpha);	
+    		gl.glColor4f(vertex.diffuseColor.getRed(), vertex.diffuseColor.getGreen(), vertex.diffuseColor.getBlue(), vertex.diffuseColor.getAlpha());	
     	}	
             
  		if( m_isShadingEnabled ) {
