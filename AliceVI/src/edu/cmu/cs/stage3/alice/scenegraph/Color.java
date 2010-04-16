@@ -51,7 +51,7 @@ public class Color implements Cloneable, java.io.Serializable,
 	public static final Color CYAN = new Color(java.awt.Color.cyan);
 	public static final Color MAGENTA = new Color(java.awt.Color.magenta);
 
-	private ColorState currentState = new NormalColorState(this);
+	private static ColorState colorState = new NormalColorState();
 	
 	private float red;
 	private float green;
@@ -141,7 +141,7 @@ public class Color implements Cloneable, java.io.Serializable,
 	}
 
 	public java.awt.Color createAWTColor() {
-		return currentState.translateColor(createRawAWTColor());
+		return colorState.translateColor(createRawAWTColor());
 	}
 	
 	public java.awt.Color createRawAWTColor(){
@@ -176,15 +176,15 @@ public class Color implements Cloneable, java.io.Serializable,
 	}
 	
 	public float getRed() {
-		return currentState.getRed();
+		return colorState.getRed(this);
 	}
 
 	public float getGreen() {
-		return currentState.getGreen();
+		return colorState.getGreen(this);
 	}
 
 	public float getBlue() {
-		return currentState.getBlue();
+		return colorState.getBlue(this);
 	}
 
 	public float getAlpha() {
@@ -242,5 +242,13 @@ public class Color implements Cloneable, java.io.Serializable,
 			values[i] = Float.valueOf(s.substring(begin, end)).floatValue();
 		}
 		return new Color(values);
+	}
+	
+	public static void setColorState(ColorState newState){
+		colorState = newState;
+	}
+	
+	public static ColorState getColorState(){
+		return colorState;
 	}
 }

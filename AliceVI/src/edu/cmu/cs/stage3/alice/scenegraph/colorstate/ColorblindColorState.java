@@ -1,32 +1,30 @@
 package edu.cmu.cs.stage3.alice.scenegraph.colorstate;
 
-import java.awt.Color;
 
+
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
 import edu.cmu.cs.stage3.alice.scenegraph.util.ColorblindConverter;
 
-public class ColorblindColorState extends ColorState {
+public class ColorblindColorState implements ColorState {
 
-	public ColorblindColorState(edu.cmu.cs.stage3.alice.scenegraph.Color color) {
-		super(color);
-	}
 
 	@Override
-	public float getBlue() {
+	public float getBlue(Color color) {
 		return ColorblindConverter.convertToColorblind(color.createRawAWTColor()).getBlue()/255.0f;
 	}
 
 	@Override
-	public float getGreen() {
+	public float getGreen(Color color) {
 		return ColorblindConverter.convertToColorblind(color.createRawAWTColor()).getGreen()/255.0f;
 	}
 
 	@Override
-	public float getRed() {
+	public float getRed(Color color) {
 		return ColorblindConverter.convertToColorblind(color.createRawAWTColor()).getRed()/255.0f;
 	}
 
 	@Override
-	public Color translateColor(Color color) {
+	public java.awt.Color translateColor(java.awt.Color color) {
 		return ColorblindConverter.convertToColorblind(color);
 	}
 

@@ -1,27 +1,25 @@
 package edu.cmu.cs.stage3.alice.scenegraph.colorstate;
 
-import java.awt.Color;
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
-public class NormalColorState extends ColorState {
 
-	public NormalColorState(edu.cmu.cs.stage3.alice.scenegraph.Color color){
-		super(color);
-	}
+
+public class NormalColorState implements ColorState {
 
 	@Override
-	public float getRed() {
+	public float getRed(Color color) {
 		return color.getRawRed();
 	}
 	@Override
-	public float getGreen() {
+	public float getGreen(Color color) {
 		return color.getRawGreen();
 	}
 	@Override
-	public float getBlue() {
+	public float getBlue(Color color) {
 		return color.getRawBlue();
 	}
 	@Override
-	public Color translateColor(Color color) {
+	public java.awt.Color translateColor(java.awt.Color color) {
 		return color;
 	}
 
