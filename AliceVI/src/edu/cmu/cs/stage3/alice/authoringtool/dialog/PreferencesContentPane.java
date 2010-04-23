@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -74,6 +75,7 @@ import edu.cmu.cs.stage3.alice.authoringtool.JAlice;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent;
 import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener;
+import edu.cmu.cs.stage3.alice.core.Decorator;
 import edu.cmu.cs.stage3.io.FileUtilities;
 import edu.cmu.cs.stage3.swing.ContentPane;
 import edu.cmu.cs.stage3.swing.DialogManager;
@@ -91,6 +93,7 @@ public class PreferencesContentPane extends ContentPane {
 	protected HashMap<Object, String> checkBoxToConfigKeyMap = new HashMap<Object, String>();
 	protected AuthoringTool authoringTool;
 	private Package authoringToolPackage = Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool" );
+	private Package decoratorPackage = Decorator.DECORATOR_PACKAGE;
 	protected JFileChooser browseFileChooser = new JFileChooser();
 	protected HashMap<Object, String> rendererStringMap = new HashMap<Object, String>();
 	protected boolean restartRequired = false;
@@ -615,6 +618,15 @@ public class PreferencesContentPane extends ContentPane {
 			DialogManager.showMessageDialog( "You must enter a valid number for the font size.", "Bad Backup Font Size", JOptionPane.INFORMATION_MESSAGE );
 			return false;
 		}
+		
+		String pivotLineWidthString = (String)pivotLineWidthCB.getSelectedItem();
+		try{
+			Integer.parseInt(pivotLineWidthString);//make sure that 'fontSizeString' is a number
+		} catch (Throwable t){
+			DialogManager.showMessageDialog( "You must enter a valid number for the pivot line width.", "Bad Backup Pivote Line Width", JOptionPane.INFORMATION_MESSAGE );
+			return false;
+		}
+
 
 
 		return true;
@@ -693,6 +705,15 @@ public class PreferencesContentPane extends ContentPane {
 		if (oldContrast != enableHighContrastCheckBox.isSelected() || oldFontSize != newFontSize){
 			restartRequired = true;
 		}
+		
+		
+		float oldLineWidth = Float.parseFloat(Configuration.getValue(decoratorPackage , "pivotAndBoundingBoxLineWidth"));
+		String newLineWidth = (String)pivotLineWidthCB.getSelectedItem();
+		Configuration.setValue( decoratorPackage, "pivotAndBoundingBoxLineWidth", newLineWidth );
+		int newLineWidthInt = Integer.valueOf(newLineWidth).intValue();
+		//if (oldContrast != enableHighContrastCheckBox.isSelected() || oldLineWidth != newLineWidthInt){
+		//	restartRequired = true;
+		//}
 
 
 		
@@ -723,6 +744,8 @@ public class PreferencesContentPane extends ContentPane {
 		initBackupCountComboBox();
 		setFontSizeValues();
 		initFontSizeComboBox();
+		setPivotLineWidthValues();
+		initPivotLineWidthComboBox();
 
 		maxRecentWorldsTextField.setText( Configuration.getValue( authoringToolPackage, "recentWorlds.maxWorlds" ) );
 		numClipboardsTextField.setText( Configuration.getValue( authoringToolPackage, "numberOfClipboards" ) );
@@ -945,6 +968,36 @@ public class PreferencesContentPane extends ContentPane {
 		}
 	}
 
+	private void setPivotLineWidthValues(){
+		pivoteLineWidthOptions.removeAllElements();
+		pivoteLineWidthOptions.add("1");
+		pivoteLineWidthOptions.add("2");
+		pivoteLineWidthOptions.add("3");
+		pivoteLineWidthOptions.add("4");
+		pivoteLineWidthOptions.add("5");
+		pivoteLineWidthOptions.add("6");
+		pivoteLineWidthOptions.add("7");
+		pivoteLineWidthOptions.add("8");
+		pivoteLineWidthOptions.add("10");
+		pivoteLineWidthOptions.add("12");
+		pivoteLineWidthOptions.add("14");
+		pivoteLineWidthOptions.add("16");
+		pivoteLineWidthOptions.add("18");
+		pivoteLineWidthOptions.add("20");
+	}
+
+
+	private void initPivotLineWidthComboBox(){
+		pivotLineWidthCB.removeAllItems();
+		String lineWidthString = Configuration.getValue( decoratorPackage , "pivotAndBoundingBoxLineWidth" );
+		for (int i=0; i<pivoteLineWidthOptions.size(); i++){
+			pivotLineWidthCB.addItem(pivoteLineWidthOptions.get(i));
+			if (lineWidthString != null && lineWidthString.equalsIgnoreCase(pivoteLineWidthOptions.get(i).toString())){
+				pivotLineWidthCB.setSelectedIndex(i);
+			} 
+		}
+	}
+	
 	/////////////////
 	// Callbacks
 	/////////////////
@@ -1142,6 +1195,10 @@ public class PreferencesContentPane extends ContentPane {
 	JComboBox fontSizeComboBox = new JComboBox();
 	JLabel fontSizeLabel = new JLabel();
 	
+	JPanel pivoteDecoratorPanel = new JPanel();	
+	JComboBox pivotLineWidthCB = new JComboBox();
+	JLabel pivotLineWidthLbl = new JLabel();
+	
 	Component component5;
 	//+++++++ end general tab components +++++++++++
 	
@@ -1192,6 +1249,8 @@ public class PreferencesContentPane extends ContentPane {
 	
 	
 	private java.util.Vector<String> fontSizeOptions = new java.util.Vector<String>();
+	
+	private java.util.Vector<String> pivoteLineWidthOptions = new java.util.Vector<String>();
 
 	private void jbInit() {
 		etchedBorder = BorderFactory.createEtchedBorder();
@@ -1243,10 +1302,20 @@ public class PreferencesContentPane extends ContentPane {
 		fontSizeComboBox.setEditable(true);
 		fontSizeComboBox.setPreferredSize(new java.awt.Dimension(55, 25));
 		fontSizeComboBox.setMaximumRowCount(9);
+		
+		pivotLineWidthLbl.setText(" Pivot Line Width");
+		pivotLineWidthCB.setEditable(true);
+		pivotLineWidthCB.setPreferredSize(new java.awt.Dimension(55, 25));
+		pivotLineWidthCB.setMaximumRowCount(20);
+		
+		
+		
 		fontSizePanel.setOpaque(false);
 		fontSizePanel.setBorder(null);
 		fontSizePanel.add(fontSizeComboBox);
 		fontSizePanel.add(fontSizeLabel);
+		pivoteDecoratorPanel.add(pivotLineWidthCB);
+		pivoteDecoratorPanel.add(pivotLineWidthLbl);
 		//Added by Alberto Pareja-Lecaros
 		//A quick hack to add colorblind mode to the application. The ActionEvent must still be filled.
 		JPanel colorblindPanel = new JPanel();
@@ -1326,12 +1395,14 @@ public class PreferencesContentPane extends ContentPane {
 			,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(4, 0, 0, 0), 0, 0));
 		generalPanel.add(fontSizePanel, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
 			,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		generalPanel.add(colorblindPanel, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+		generalPanel.add(pivoteDecoratorPanel , new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		generalPanel.add(component5, new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0
+		generalPanel.add(colorblindPanel, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(component5, new GridBagConstraints(0, 8, 1, 1, 1.0, 1.0
 			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		
-		generalPanel.add(viStyleFontPanel, new GridBagConstraints(0, 7, 1, 1, 1.0, 1.0
+		generalPanel.add(viStyleFontPanel, new GridBagConstraints(0, 9, 1, 1, 1.0, 1.0
 				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		
 	  //// end init General tab +++++++++++++++++++++++++++

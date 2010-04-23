@@ -498,6 +498,7 @@ public class JAlice {
 		if (authoringtoolConfig.getValue("doProfiling") == null) {
 			authoringtoolConfig.setValue("doProfiling", "false");
 		}
+		
 	}
 
 	private static void parseCommandLineArgs(String[] args) {

@@ -23,14 +23,19 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import java.io.IOException;
+
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 
 public abstract class Decorator {
 	
 	//Constants for PivotDecorator and BoundingBoxDecorator line widths
 	private static final String PIVOT_BOUNDING_BOX_KEY = "pivotAndBoundingBoxLineWidth";
-	private static final Package DECORATOR_PACKAGE = Decorator.class.getPackage();
+	public static final Package DECORATOR_PACKAGE = Decorator.class.getPackage();
 	private static final float DEFAULT_PIVOT_AND_BOUNDING_BOX_LINE_WIDTH = 0f;
+	
+	////Mohammed
+	private static final Configuration decoratorConfig = Configuration.getLocalConfiguration(DECORATOR_PACKAGE);
 	
 	protected edu.cmu.cs.stage3.alice.scenegraph.Visual m_sgVisual = null;
 	protected edu.cmu.cs.stage3.alice.scenegraph.Appearance m_sgAppearance = null;
@@ -144,7 +149,24 @@ public abstract class Decorator {
 	public static float getPivotAndBoundingBoxLineWidth(){
 		float ret = DEFAULT_PIVOT_AND_BOUNDING_BOX_LINE_WIDTH;
 
-		String value = Configuration.getValue(DECORATOR_PACKAGE, PIVOT_BOUNDING_BOX_KEY);
+		String value;// = Configuration.getValue(DECORATOR_PACKAGE, PIVOT_BOUNDING_BOX_KEY);
+		if(decoratorConfig.getValue(PIVOT_BOUNDING_BOX_KEY) == null)
+		{
+			System.out.println("Line width is null");
+			decoratorConfig.setValue(PIVOT_BOUNDING_BOX_KEY, Float.toString(ret));
+			value = Float.toHexString(ret);
+		
+			try {
+				decoratorConfig.storeConfig();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			value = decoratorConfig.getValue(PIVOT_BOUNDING_BOX_KEY);
+		}
 		try{
 			ret = Float.parseFloat(value);
 			
