@@ -30,5 +30,6 @@
 	<classpathentry kind="lib" path="RefLib/xercesSamples.jar"/>
 	<classpathentry kind="lib" path="RefLib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="RefLib/xmlParserAPIs.jar"/>
+	<classpathentry kind="lib" path="RefLib/Jama-1.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
