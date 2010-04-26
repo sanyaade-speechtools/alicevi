@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph;
 
+import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.scenegraph.colorstate.ColorState;
 import edu.cmu.cs.stage3.alice.scenegraph.colorstate.ColorblindColorState;
 import edu.cmu.cs.stage3.alice.scenegraph.colorstate.NormalColorState;
@@ -51,7 +52,19 @@ public class Color implements Cloneable, java.io.Serializable,
 	public static final Color CYAN = new Color(java.awt.Color.cyan);
 	public static final Color MAGENTA = new Color(java.awt.Color.magenta);
 
-	private static ColorState colorState = new NormalColorState();
+	private static ColorState colorState;
+	
+	static {
+		if (Configuration.getValue(Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool" ), "colorblindMode") == null) {
+			Configuration.setValue(Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool"), "colorblindMode", "false");
+		}
+		if (Configuration.getValue(Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool" ), "colorblindMode").equals("true")) {
+			colorState = new ColorblindColorState();
+		}
+		else {
+			colorState = new NormalColorState();
+		}
+	}
 	
 	private float red;
 	private float green;
