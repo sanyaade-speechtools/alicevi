@@ -53,7 +53,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -62,11 +61,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -79,8 +75,6 @@ import edu.cmu.cs.stage3.alice.authoringtool.JAlice;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent;
 import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener;
-import edu.cmu.cs.stage3.alice.scenegraph.colorstate.ColorblindColorState;
-import edu.cmu.cs.stage3.alice.scenegraph.colorstate.NormalColorState;
 import edu.cmu.cs.stage3.alice.core.Decorator;
 import edu.cmu.cs.stage3.io.FileUtilities;
 import edu.cmu.cs.stage3.swing.ContentPane;
@@ -100,6 +94,7 @@ public class PreferencesContentPane extends ContentPane {
 	protected AuthoringTool authoringTool;
 	private Package authoringToolPackage = Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool" );
 	private Package decoratorPackage = Decorator.DECORATOR_PACKAGE;
+	private Package colorStatePackage = Package.getPackage("edu.cmu.cs.stage3.alice.scenegraph.colorstate");
 	protected JFileChooser browseFileChooser = new JFileChooser();
 	protected HashMap<Object, String> rendererStringMap = new HashMap<Object, String>();
 	protected boolean restartRequired = false;
@@ -331,7 +326,6 @@ public class PreferencesContentPane extends ContentPane {
 		checkBoxToConfigKeyMap.put( saveAsSingleFileCheckBox, "useSingleFileLoadStore" );
 		checkBoxToConfigKeyMap.put( clearStdOutOnRunCheckBox, "clearStdOutOnRun" );
 		checkBoxToConfigKeyMap.put( screenCaptureInformUserCheckBox, "screenCapture.informUser" );
-		checkBoxToConfigKeyMap.put( colorblindMode, "colorblindMode");
 //		checkBoxToConfigKeyMap.put( printingFillBackgroundCheckBox, "printing.fillBackground" );
 	}
 
@@ -722,6 +716,20 @@ public class PreferencesContentPane extends ContentPane {
 		//	restartRequired = true;
 		//}
 
+		String oldState = Configuration.getValue(colorStatePackage, "colorBlindState");
+		String newState = "";
+		if(colorblindMode.isSelected())
+		{
+			newState = "1";
+		}
+		else{
+			newState = "0";
+		}
+		
+		if(!oldState.equals(newState)){
+			Configuration.setValue(colorStatePackage, "colorBlindState" , newState);
+			restartRequired = true;
+		}
 
 		
 		//TODO: currently the rendererList updates its data immediately...
@@ -1230,8 +1238,8 @@ public class PreferencesContentPane extends ContentPane {
 	JLabel numClipboardsLabel = new JLabel();
 	///++++++ end  seldom used tab components ++++++++++
 	
-	JPanel colorblindPanel = new JPanel();
-	JCheckBox colorblindMode = new JCheckBox();
+	
+	
 	
 	
 	
@@ -1252,6 +1260,7 @@ public class PreferencesContentPane extends ContentPane {
 	private JComboBox backupCountComboBox = new JComboBox();
 	private JLabel backupCountLabel = new JLabel();
 	
+	private JCheckBox colorblindMode;
 	private java.util.Vector<String> backupCountOptions = new java.util.Vector<String>();
 	
 	
@@ -1325,29 +1334,42 @@ public class PreferencesContentPane extends ContentPane {
 		pivoteDecoratorPanel.add(pivotLineWidthLbl);
 		//Added by Alberto Pareja-Lecaros
 		//A quick hack to add colorblind mode to the application. The ActionEvent must still be filled.
-		
-		
+		JPanel colorblindPanel = new JPanel();
+		colorblindMode = new JCheckBox();
 		colorblindMode.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (arg0.getSource().equals(PreferencesContentPane.this) && colorblindMode.isSelected() && 
-						edu.cmu.cs.stage3.alice.scenegraph.Color.getColorState() instanceof NormalColorState) {
-					edu.cmu.cs.stage3.alice.scenegraph.Color.setColorState(new ColorblindColorState());
-					restartRequired = true;	
+				if (arg0.getSource().equals(PreferencesContentPane.this) && colorblindMode.isSelected()) {
+					System.out.println("Colorblind code clicked!");
+					String newValue = "";
+					if(colorblindMode.isSelected()){
+						newValue = "1";
+					}
+					else{
+						newValue = "0";
+					}
+					
+					if(! Configuration.getValue(colorStatePackage, "colorBlindState").equals(newValue)){
+						Configuration.setValue(colorStatePackage, "colorBlindState", newValue);
+						restartRequired = true;
+					}
+						
+					
 				}
-				else if (arg0.getSource().equals(PreferencesContentPane.this) && !colorblindMode.isSelected() &&
-						edu.cmu.cs.stage3.alice.scenegraph.Color.getColorState() instanceof ColorblindColorState) {
-					edu.cmu.cs.stage3.alice.scenegraph.Color.setColorState(new NormalColorState());
-					restartRequired = true;
-				}
-			}			
+			}
+			
 		});
-		
 		addOKActionListener(colorblindMode.getActionListeners()[0]);
+		
+		String state = Configuration.getValue(colorStatePackage, "colorBlindState");
+		if(state.equals("1")){
+			colorblindMode.setSelected(true);
+		}
 		JLabel colorblindLabel = new JLabel("Colorblind Mode");
 		colorblindPanel.add(colorblindMode);
 		colorblindPanel.add(colorblindLabel);
+		//colorblindPanel.add(colorblindPanel);
 		inputDirectoriesPanel.add(worldDirectoryLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
 				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
 
