@@ -26,6 +26,8 @@ package edu.cmu.cs.stage3.alice.authoringtool;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.authoringtool.util.SplashScreen;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
+import edu.cmu.cs.stage3.alice.scenegraph.colorstate.ColorblindColorState;
+import edu.cmu.cs.stage3.alice.scenegraph.colorstate.NormalColorState;
 import edu.cmu.cs.stage3.alice.scenegraph.renderer.DefaultRenderTargetFactory;
 import gnu.getopt.LongOpt;
 
@@ -228,6 +230,8 @@ public class JAlice {
 	private static void configInit() {
 
 		final Configuration authoringtoolConfig = Configuration.getLocalConfiguration( JAlice.class.getPackage() );
+		final Configuration colorBlindConfig = Configuration.getLocalConfiguration(
+				Package.getPackage("edu.cmu.cs.stage3.alice.scenegraph.colorstate"));
 
 		authoringtoolConfig.setValue( "backgroundColor", backgroundColor );
 		if( authoringtoolConfig.getValue( "recentWorlds.maxWorlds" ) == null ) {
@@ -497,6 +501,22 @@ public class JAlice {
 
 		if (authoringtoolConfig.getValue("doProfiling") == null) {
 			authoringtoolConfig.setValue("doProfiling", "false");
+		}
+		
+		//make the color blind mode the default
+		if(colorBlindConfig.getValue("colorBlindState") == null){
+			colorBlindConfig.setValue("colorBlindState" , "1");
+			Color.setColorState(new ColorblindColorState());
+		}
+		else{
+			String value = colorBlindConfig.getValue("colorBlindState");
+			if(value.equals("1"))
+			{
+				Color.setColorState(new ColorblindColorState());
+			}
+			else{
+				Color.setColorState(new NormalColorState());
+			}
 		}
 		
 	}
