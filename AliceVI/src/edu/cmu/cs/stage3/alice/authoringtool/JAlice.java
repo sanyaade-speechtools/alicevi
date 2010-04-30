@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
+import edu.cmu.cs.stage3.alice.core.Decorator;
 
 
 /**
@@ -230,6 +231,7 @@ public class JAlice {
 	private static void configInit() {
 
 		final Configuration authoringtoolConfig = Configuration.getLocalConfiguration( JAlice.class.getPackage() );
+		final Configuration decoratorConfig =Configuration.getLocalConfiguration( Decorator.DECORATOR_PACKAGE);
 		final Configuration colorBlindConfig = Configuration.getLocalConfiguration(
 				Package.getPackage("edu.cmu.cs.stage3.alice.scenegraph.colorstate"));
 
@@ -501,6 +503,11 @@ public class JAlice {
 
 		if (authoringtoolConfig.getValue("doProfiling") == null) {
 			authoringtoolConfig.setValue("doProfiling", "false");
+		}
+		
+		// create a default pivot line width
+		if (decoratorConfig.getValue("pivotAndBoundingBoxLineWidth") == null){
+			decoratorConfig.setValue("pivotAndBoundingBoxLineWidth", "7");
 		}
 		
 		//make the color blind mode the default
