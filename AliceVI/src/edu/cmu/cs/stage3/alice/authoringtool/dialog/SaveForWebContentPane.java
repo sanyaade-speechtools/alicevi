@@ -26,6 +26,8 @@ package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * @author Jason Pratt, Dennis Cosgrove
  */
@@ -406,11 +408,11 @@ public class SaveForWebContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private javax.swing.JButton cancelButton = new javax.swing.JButton("Cancel");
 
 	private void jbInit() {
-		border1 = new javax.swing.border.TitledBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white,new java.awt.Color(142, 142, 142)),"Size in browser");
-		setTitleBorder = new javax.swing.border.TitledBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white,new java.awt.Color(142, 142, 142)),"Title");
+		border1 = new javax.swing.border.TitledBorder(javax.swing.BorderFactory.createEtchedBorder(new Color(java.awt.Color.white).createAWTColor(),new Color(new java.awt.Color(142, 142, 142)).createAWTColor()),"Size in browser");
+		setTitleBorder = new javax.swing.border.TitledBorder(javax.swing.BorderFactory.createEtchedBorder(new Color(java.awt.Color.white).createAWTColor(),new Color(new java.awt.Color(142, 142, 142)).createAWTColor()),"Title");
 		border2 = javax.swing.BorderFactory.createEmptyBorder(8,8,0,8);
 		border3 = javax.swing.BorderFactory.createEmptyBorder(12,12,12,12);
-		border4 = javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white,new java.awt.Color(142, 142, 142));
+		border4 = javax.swing.BorderFactory.createEtchedBorder(Color.WHITE.createAWTColor(),new Color(new java.awt.Color(142, 142, 142)).createAWTColor());
 		titledBorder1 = new javax.swing.border.TitledBorder(border4,"Save Location");
 		fileChooserPanel.setLayout(gridBagLayout3);
 		setLayout(borderLayout1);
@@ -438,11 +440,11 @@ public class SaveForWebContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		htmlFileChooser.setFileSelectionMode( javax.swing.JFileChooser.DIRECTORIES_ONLY );
 		browseDirectoryButton.setPreferredSize(new java.awt.Dimension(80, 21));
 		directoryPathPanel.setPreferredSize(new java.awt.Dimension(300, 21));
-		directoryPathPanel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.black, 1));
+		directoryPathPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(java.awt.Color.black).createAWTColor(), 1));
 		directoryPathPanel.setLayout(new java.awt.BorderLayout());
 		directoryPathPanel.add(directoryPath, java.awt.BorderLayout.CENTER);
 		add(mainPanel,  java.awt.BorderLayout.CENTER);
-		filesToSaveLabel.setForeground(java.awt.Color.black);
+		filesToSaveLabel.setForeground(new Color(java.awt.Color.black).createAWTColor());
 		saveDirectoryCheckBox.setSelected(true);
 		saveDirectoryCheckBox.setText("Use title to create new directory for the files below");
 		saveCodeCheckBox.setSelected(false);

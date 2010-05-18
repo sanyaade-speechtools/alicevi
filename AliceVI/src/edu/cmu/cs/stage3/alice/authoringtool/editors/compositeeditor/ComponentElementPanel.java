@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -56,7 +58,7 @@ public class ComponentElementPanel extends edu.cmu.cs.stage3.alice.authoringtool
 		if (this.getComponentCount() > 0){
 			return this.getComponent(0).getBackground();
 		}
-		return java.awt.Color.white;
+		return new Color(java.awt.Color.white).createAWTColor();
 	}
 	
 	public boolean isDisabled(){

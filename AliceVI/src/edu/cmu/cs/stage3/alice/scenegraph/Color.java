@@ -56,9 +56,9 @@ public class Color implements Cloneable, java.io.Serializable,
 	
 	static {
 		if (Configuration.getValue(Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool" ), "colorblindMode") == null) {
-			Configuration.setValue(Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool"), "colorblindMode", "false");
+			Configuration.setValue(Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool"), "colorblindMode", "0");
 		}
-		if (Configuration.getValue(Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool" ), "colorblindMode").equals("true")) {
+		if (Configuration.getValue(Package.getPackage( "edu.cmu.cs.stage3.alice.authoringtool" ), "colorblindMode").equals("1")) {
 			colorState = new ColorblindColorState();
 		}
 		else {

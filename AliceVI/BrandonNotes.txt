@@ -1,3 +1,7 @@
+Notes for Quarter 20093
+OpenGL line drawing
 LineArrayProxy.java - line width OpenGL at line 36
+Property.java - line 94 remove and replace with getLineArray() method call
 
+Python loading
 Python loading - AuthoringToolResource::loadResourcesPy() - line 255

@@ -3,7 +3,14 @@ package edu.cmu.cs.stage3.alice.scenegraph.colorstate;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 
-
+/**
+ * Class representing untranslated color values.
+ * Methods in this class return untranslated (normal)
+ * color values.
+ * 
+ * @author Brett Snare (bws7783@rit.edu)
+ * @author Brandon Pastuszek (bjp5129@rit.edu)
+ */
 public class NormalColorState implements ColorState {
 
 	@Override

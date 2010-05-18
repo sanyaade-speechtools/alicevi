@@ -1,5 +1,7 @@
 package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * @author Ben Buchwald, Dennis Cosgrove
  */
@@ -211,10 +213,10 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 		
 	private void checkNameForValidity() {
-		java.awt.Color color = java.awt.Color.black;
+		java.awt.Color color = new Color(java.awt.Color.black).createAWTColor();
 		if( m_parentToCheckForNameValidity != null ) {
 			if( m_parentToCheckForNameValidity.getChildNamedIgnoreCase( m_nameTextField.getText() ) != null ) {
-				color = java.awt.Color.red;
+				color = new Color(java.awt.Color.red).createAWTColor();
 			}
 		}
 		m_nameTextField.setForeground( color );
@@ -222,7 +224,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 
 	private void updateOKButtonEnabled() {
-		m_okButton.setEnabled( m_dataSource != null && m_nameTextField.getForeground().equals( java.awt.Color.black ) );
+		m_okButton.setEnabled( m_dataSource != null && m_nameTextField.getForeground().equals( new Color(java.awt.Color.black).createAWTColor() ) );
 	}
 
 	private void onDurationUpdate() {

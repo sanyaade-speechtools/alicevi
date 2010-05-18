@@ -163,10 +163,10 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
         public void menuSelectionChanged(boolean isIncluded){
             super.menuSelectionChanged(isIncluded);
             if (isIncluded){
-                internalComponent.setBackground(java.awt.Color.white);
+                internalComponent.setBackground(new Color(java.awt.Color.white).createAWTColor());
             }
             else{
-                internalComponent.setBackground(java.awt.Color.black);
+                internalComponent.setBackground(new Color(java.awt.Color.black).createAWTColor());
             }
         }
     }
@@ -576,13 +576,13 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
         newBehaviorButton.setToolTipText("Display Menu of New Event Types");
         newBehaviorButton.setMargin(new java.awt.Insets(2,2,2,2));
         newBehaviorButton.addActionListener(newBehaviorAction);
-        newBehaviorButton.setBackground(new java.awt.Color( 240, 240, 255 ));
+        newBehaviorButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());
         newBehaviorButton.setDropTarget(new java.awt.dnd.DropTarget( newBehaviorButton, this));
 
         m_header = new javax.swing.JPanel();
         m_header.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT,2,2));
         m_header.setBackground(BACKGROUND_COLOR.createAWTColor());
-        m_header.setBorder(javax.swing.BorderFactory.createMatteBorder(0,0,1,0,java.awt.Color.gray));
+        m_header.setBorder(javax.swing.BorderFactory.createMatteBorder(0,0,1,0,new Color(java.awt.Color.gray).createAWTColor()));
         m_header.setToolTipText(toolTipText);
         javax.swing.JLabel behaviorLabel = new javax.swing.JLabel(BEHAVIOR_NAME);
         int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));

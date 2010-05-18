@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -70,9 +72,9 @@ public class InsertPanel extends javax.swing.JPanel implements java.awt.dnd.Drop
                 ((java.awt.Graphics2D)g).addRenderingHints( new java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON ) );
             }
             java.awt.Rectangle bounds = getBounds();
-            g.setColor( new java.awt.Color(255,255,255) );
+            g.setColor( new Color(new java.awt.Color(255,255,255)).createAWTColor() );
             g.fillRoundRect( 0, 0, bounds.width, bounds.height, arcWidth, arcHeight );
-            g.setColor( java.awt.Color.lightGray );
+            g.setColor( new Color(java.awt.Color.lightGray).createAWTColor() );
             g.drawRoundRect( 0, 0, bounds.width - 1, bounds.height - 1, arcWidth, arcHeight );
             if( g instanceof java.awt.Graphics2D ) {
                 ((java.awt.Graphics2D)g).addRenderingHints( new java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing ) );

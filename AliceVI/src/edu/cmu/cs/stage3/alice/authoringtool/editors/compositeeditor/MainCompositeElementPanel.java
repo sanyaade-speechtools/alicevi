@@ -458,7 +458,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
         if (newParameterButton == null){
             newParameterButton = new javax.swing.JButton("create new parameter");
-            newParameterButton.setBackground(new java.awt.Color( 240, 240, 255 ));
+            newParameterButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());
             newParameterButton.setMargin(new java.awt.Insets(2,2,2,2));
             if (fontSize == 12){
 	            newParameterButton.setMinimumSize(new java.awt.Dimension(buttonWidth, buttonHeight));
@@ -497,7 +497,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         }
         if (newVariableButton == null){
             newVariableButton = new javax.swing.JButton("create new variable");
-            newVariableButton.setBackground(new java.awt.Color( 240, 240, 255 ));//TODO
+            newVariableButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());//TODO
             newVariableButton.setMargin(new java.awt.Insets(2,2,2,2));
             if (fontSize == 12){
 	            newVariableButton.setMinimumSize(new java.awt.Dimension(buttonWidth, buttonHeight));
@@ -556,7 +556,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
                     super.paintComponent( g );
                     if( lineLocation > -1 && paintParameter) {
                         java.awt.Rectangle bounds = getBounds();
-                        g.setColor( java.awt.Color.black );//TODO
+                        g.setColor( new Color(java.awt.Color.black).createAWTColor() );//TODO
                         g.fillRect( lineLocation, verticalLineLocation, 2, lineHeight );
                     }
                 }
@@ -580,7 +580,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
                     super.paintComponent( g );
                     if( lineLocation > -1 && paintVariable) {
                         java.awt.Rectangle bounds = getBounds();
-                        g.setColor( java.awt.Color.black );
+                        g.setColor( new Color(java.awt.Color.black).createAWTColor() );
                         g.fillRect( lineLocation, verticalLineLocation, 2, lineHeight );
 
                     }
@@ -595,7 +595,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         if (headerPanel == null){
             headerPanel = new javax.swing.JPanel();
             headerPanel.setOpaque(false);
-            headerPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0,0,1,0,java.awt.Color.gray));
+            headerPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0,0,1,0,new Color(java.awt.Color.gray).createAWTColor()));
             headerPanel.setLayout(new java.awt.GridBagLayout());
             //headerPanel.setLayout(new javax.swing.BoxLayout(headerPanel, javax.swing.BoxLayout.Y_AXIS));
         }
@@ -615,7 +615,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         mainParameterPanel = new javax.swing.JPanel();
         mainParameterPanel.setBackground(backgroundColor.createAWTColor());
         mainParameterPanel.setOpaque(true);
-        mainParameterPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0,0,1,0,java.awt.Color.lightGray));
+        mainParameterPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0,0,1,0,new Color(java.awt.Color.lightGray).createAWTColor()));
         mainParameterPanel.setLayout(new java.awt.GridBagLayout());
         mainParameterPanel.add(parameterPanel, new java.awt.GridBagConstraints(0,0,1,1,1,1,java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0,0,0,0), 0,0));
         mainParameterPanel.add(newParameterButton, new java.awt.GridBagConstraints(1,0,1,1,0,0,java.awt.GridBagConstraints.NORTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(4,4,4,4), 0,0));
@@ -770,14 +770,14 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         private void turnNoPanelOn(){
             if (isParameter){
                 if (!noParametersLabel.isOpaque()){
-                    noParametersLabel.setBackground(java.awt.Color.white);
+                    noParametersLabel.setBackground(new Color(java.awt.Color.white).createAWTColor());
                     noParametersLabel.setOpaque(true);
                     noParametersLabel.repaint();
                 }
             }
             else{
                 if (!noVariablesLabel.isOpaque()){
-                    noVariablesLabel.setBackground(java.awt.Color.white);
+                    noVariablesLabel.setBackground(new Color(java.awt.Color.white).createAWTColor());
                     noVariablesLabel.setOpaque(true);
                     noVariablesLabel.repaint();
                 }
@@ -787,14 +787,14 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         private void turnNoPanelOff(){
             if (isParameter){
                 if (noParametersLabel.isOpaque()){
-                    noParametersLabel.setBackground(java.awt.Color.white);
+                    noParametersLabel.setBackground(new Color(java.awt.Color.white).createAWTColor());
                     noParametersLabel.setOpaque(false);
                     noParametersLabel.repaint();
                 }
             }
             else{
                 if (noVariablesLabel.isOpaque()){
-                    noVariablesLabel.setBackground(java.awt.Color.white);
+                    noVariablesLabel.setBackground(new Color(java.awt.Color.white).createAWTColor());
                     noVariablesLabel.setOpaque(false);
                     noVariablesLabel.repaint();
                 }

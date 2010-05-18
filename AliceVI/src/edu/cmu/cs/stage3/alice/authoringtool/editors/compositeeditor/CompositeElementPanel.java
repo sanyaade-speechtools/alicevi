@@ -565,7 +565,7 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
 	public void getHTML(StringBuffer toWriteTo, int colSpan, boolean useColor, boolean isDisabled){
 		int totalRows = 0;
 		String colorString = "";
-		String borderColorString = getHTMLColorString(java.awt.Color.lightGray);
+		String borderColorString = getHTMLColorString(new Color(java.awt.Color.lightGray).createAWTColor());
 		String styleString = "";
 		String strikeStart = "";
 		String strikeEnd = "";

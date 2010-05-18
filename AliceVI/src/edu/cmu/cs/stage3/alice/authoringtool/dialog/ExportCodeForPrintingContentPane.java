@@ -44,7 +44,7 @@ class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.Ima
 	public void paint(java.awt.Graphics g){
 		super.paint(g);
 		if (image != null){
-			g.drawImage(image, 14,0, java.awt.Color.white, this);
+			g.drawImage(image, 14,0, Color.WHITE.createAWTColor(), this);
 		}
 	}
 	
@@ -202,7 +202,7 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		
 		javax.swing.JScrollPane whatToPrintScrollPane = new javax.swing.JScrollPane( m_elementsToBeExportedPanel );
 		m_elementsToBeExportedPanel.setLayout( new java.awt.GridBagLayout() );
-		m_elementsToBeExportedPanel.setBackground( java.awt.Color.white );
+		m_elementsToBeExportedPanel.setBackground( new Color(java.awt.Color.white).createAWTColor() );
 //		int height = 200;
 //		int width = edu.cmu.cs.stage3.math.GoldenRatio.getLongerSideLength( height );
 //		m_elementsToBeExportedPanel.setPreferredSize( new java.awt.Dimension( width, height ) );

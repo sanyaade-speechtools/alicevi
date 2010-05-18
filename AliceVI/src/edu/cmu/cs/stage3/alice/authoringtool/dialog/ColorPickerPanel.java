@@ -1,7 +1,7 @@
 package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,18 +15,20 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 @SuppressWarnings("serial")
 public class ColorPickerPanel  extends JPanel  implements ChangeListener{
 	 protected JColorChooser tcc;
 	  protected JLabel banner;
-      Color c;
+
 	  public ColorPickerPanel() {
 	        super(new BorderLayout());
 	        //Set up the banner at the top of the window
 	        banner = new JLabel("Welcome to the Tutorial Zone!",
 	                            JLabel.CENTER);
-	        banner.setForeground(Color.yellow);
-	        banner.setBackground(Color.blue);
+	        banner.setForeground(Color.YELLOW.createAWTColor());
+	        banner.setBackground(Color.BLUE.createAWTColor());
 	        banner.setOpaque(true);
 	        banner.setFont(new Font("SansSerif", Font.BOLD, 24));
 	        banner.setPreferredSize(new Dimension(100, 65));
@@ -49,7 +51,7 @@ public class ColorPickerPanel  extends JPanel  implements ChangeListener{
 	  
 
 	    public void stateChanged(ChangeEvent e) {
-	        Color newColor = tcc.getColor();
+	        java.awt.Color newColor = tcc.getColor();
 	        banner.setForeground(newColor);
 	    }
 

@@ -365,13 +365,13 @@ public class PreferencesContentPane extends ContentPane {
 		try{
 			w = Integer.parseInt( boundsWidthTextField.getText() );
 			if (w > 0){
-				boundsWidthTextField.setForeground(java.awt.Color.black);
+				boundsWidthTextField.setForeground(new edu.cmu.cs.stage3.alice.scenegraph.Color(java.awt.Color.black).createAWTColor());
 			} else{
-				boundsWidthTextField.setForeground(java.awt.Color.red);
+				boundsWidthTextField.setForeground(new edu.cmu.cs.stage3.alice.scenegraph.Color(java.awt.Color.red).createAWTColor());
 				isOK = false;
 			}
 		}catch (NumberFormatException e ){
-			boundsWidthTextField.setForeground(java.awt.Color.red);
+			boundsWidthTextField.setForeground(new edu.cmu.cs.stage3.alice.scenegraph.Color(java.awt.Color.red).createAWTColor());
 			isOK = false;
 		}
 		try{

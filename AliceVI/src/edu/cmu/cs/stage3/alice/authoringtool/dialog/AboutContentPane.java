@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 public class AboutContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private javax.swing.JButton m_okButton = new javax.swing.JButton( "OK" );
 	
@@ -30,7 +32,7 @@ public class AboutContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		javax.swing.JLabel imageLabel = new javax.swing.JLabel();
 		imageLabel.setIcon( new javax.swing.ImageIcon( edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getResource( "images/aboutAlice.png" ) ) );
 
-		setBackground(new java.awt.Color(173,202,234));
+		setBackground(new Color(new java.awt.Color(173,202,234)).createAWTColor());
 		setPreferredSize( new java.awt.Dimension(520, 410) );
 		
 		setLayout( new java.awt.GridBagLayout() );

@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
+
 /**
  * Title:
  * Description:
@@ -44,7 +46,7 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
     protected javax.swing.Action expandAction;
     protected javax.swing.JLabel headerLabel;
     protected boolean isExpanded = true;
-    protected java.awt.Color backgroundColor = new java.awt.Color(255,255,255);
+    protected java.awt.Color backgroundColor = new Color(new java.awt.Color(255,255,255)).createAWTColor();
     protected javax.swing.ImageIcon plus;
     protected javax.swing.ImageIcon minus;
     protected java.awt.Component glue;

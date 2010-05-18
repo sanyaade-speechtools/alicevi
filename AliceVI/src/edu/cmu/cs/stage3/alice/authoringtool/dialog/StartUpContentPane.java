@@ -79,9 +79,9 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private final int HEIGHT = 500;
 	private final int INSET = 14;
 
-	private static final java.awt.Color SELECTED_COLOR = new java.awt.Color(10, 10, 100);
-	private static final java.awt.Color SELECTED_TEXT_COLOR = new java.awt.Color(255, 255, 255);
-	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color(0, 0, 0);
+	private static final java.awt.Color SELECTED_COLOR = new edu.cmu.cs.stage3.alice.scenegraph.Color(new java.awt.Color(10, 10, 100)).createAWTColor();
+	private static final java.awt.Color SELECTED_TEXT_COLOR = new edu.cmu.cs.stage3.alice.scenegraph.Color(new java.awt.Color(255, 255, 255)).createAWTColor();
+	private static final java.awt.Color BACKGROUND_COLOR = new edu.cmu.cs.stage3.alice.scenegraph.Color(new java.awt.Color(0, 0, 0)).createAWTColor();
 
 	private static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig =
 		edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getPackage());

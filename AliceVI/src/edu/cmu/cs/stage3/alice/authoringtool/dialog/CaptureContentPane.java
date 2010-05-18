@@ -13,6 +13,7 @@ import edu.cmu.cs.stage3.alice.core.Response;
 import edu.cmu.cs.stage3.alice.core.Sandbox;
 import edu.cmu.cs.stage3.alice.core.World;
 import edu.cmu.cs.stage3.alice.core.property.ElementArrayProperty;
+import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 import movieMaker.FrameSequencer;
 import movieMaker.MovieCapturer;
@@ -488,8 +489,8 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	//start capturing the momvie
 	public void startCaptureAction() {
 	
-		// captureBar.setBackground(java.awt.Color.RED);
-		timeLabel.setBackground(java.awt.Color.RED);
+		// captureBar.setBackground(new Color(java.awt.Color.RED).createAWTColor());
+		timeLabel.setBackground(Color.RED.createAWTColor());
 		// If a new capture sequence
 		setButtonsCapturing(true);
 		restartButton.setEnabled(true);
@@ -967,7 +968,7 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		// running = false;
 		authoringTool.stopWorld();
 		statusFrame.setVisible(false);
-		timeLabel.setBackground(java.awt.Color.GREEN);
+		timeLabel.setBackground(Color.GREEN.createAWTColor());
 		setClear(false);
 		setButtonsCapturing(false);
 		//clearAction();
@@ -1150,7 +1151,7 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				0.0, 0.0, java.awt.GridBagConstraints.EAST,
 				java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2,
 						2), 0, 0));
-		timeLabel.setBackground(java.awt.Color.GREEN);
+		timeLabel.setBackground(Color.GREEN.createAWTColor());
 		// exportBar.setBackground(java.awt.Color.GREEN);
 
 		setButtonsCapturing(false);

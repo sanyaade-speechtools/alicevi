@@ -1,0 +1,51 @@
+Utilizing Custom Color Class
+
+---Problem---
+The colors in AliceVI need translated in order to provide colorblind functionality.
+
+---Proposed Solution---
+Carnegie Mellon University (CMU) created a custom Color class (edu.cmu.cs.stage3.alice.scenegraph.Color) for OpenGL colors (values are stores in the range [0,1]) and high contrast color mode.  We intend to use (and began to do so) the custom Color class to retrieve RGB values via the getRed(), getGreen() and getBlue() methods.  These methods utilize an RIT-created ColorState interface (with NormalColorState and ColorblindColorState implementing classes) to retrieve the normal RGB values or the colorblind translated RGB values.  The ColorState implementing classes use a modified ColorblindConverter in edu.cmu.cs.stage3.alice.scenegraph.util to translate RGB values to colorblind values.
+
+OpenGL colors have been expressed using the custom Color object.  AWT colors have been expressed using the java.awt.Color class.  We intend to use (and began to do so) the custom Color class to create AWT versions of itself to pass into Java AWT components.  Ideally, the custom Color class would subclass java.awt.Color.  We have been unable to find the method used by AWT components to determine color.  So far, overriding getRed(), getGreen(), getBlue() and getRGB() have been tried unsuccessfully.
+
+---Issues---
+1) Some components, such as JButtons, are frequently not given a color and thus default to the look and feel value of the operating system.  No work has been done to locate or modify the components that use default colors.
+
+2) Some color settings for objects are saved by writing their RGB values to XML.  Ensure that when this occurs, untranslated (normal) values are obtained and serialized.  In the custom Color object, use the getRawRed(), getRawBlue() and getRawGreen() methods to retrieve untranslated values.
+
+---Progress---
+The approach to find references to translate (on Windows) has been to click Search -> File, then search for java.awt.Color in *.java.  CMU rarely used import statements (classes that do were most likely refactored at RIT) so searching the entire class path is fruitful.  It may also be advantageous to find a reference to the java.awt.Color class and have Eclipse list all references.
+
+Changes made to have AWT colors be created via the custom Color class were made to non-default colors in the following classes:
+
+edu.cmu.cs.stage3.alice.authoringtool.dialog:
+	AboutContentPane.java
+	CaptureContentPane.java
+	ColorPicker.java
+	ExportCodeForPrintingContentPane.java
+	PreferencesContentPane.java
+	SaveForWebContentPane.java
+	SoundRecorder.java
+	StartUpContentPane.java
+	ViStyleFontPanel.java
+
+edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor:
+	BehaviorGroupEditor.java
+	BehaviorGroupsEditor.java
+	
+edu.cmu.cs.stage3.alice.authoringtool.compositeeditor.compositeeditor:
+	ComponentElementPanel.java
+	CompositeElementPanel.java
+	InsertPanel.java
+	LoopNElementPane.java
+	MainCompositeElementPanel.java
+	
+edu.cmu.cs.stage3.alice.authoringtool.compositeeditor.sceneeditor:
+	CameraViewPanel.java
+	
+	
+---Questions---
+-ColorState, NormalColorState and ColorblindColorState authors are Brett Snare (bws7783@rit.edu) and Brandon Pastuszek (bjp5129@rit.edu)
+-Modifications largely done by Brett Snare (bws7783@rit.edu) and Brandon Pastuszek (bjp5129@rit.edu)
+-Color blind translation algorithm was implemented by Alberto Pareja-Lecaros (aop5292@rit.edu) and was modified to translate on a per-color basis by Brett Snare (bws7783@rit.edu) and Brandon Pastuszek (bjp5129@rit.edu)
+(Brandon uses push E-mail so you *may* want to try him first if a quick answer is needed.)

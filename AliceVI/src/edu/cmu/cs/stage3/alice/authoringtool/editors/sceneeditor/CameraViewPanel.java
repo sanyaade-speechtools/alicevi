@@ -165,11 +165,11 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 	protected String fromFrontText = "from the front";
 	
 	protected String selectedButtonText = "Mouse Controls";
-	protected java.awt.Color defaultBorderColor = new java.awt.Color(102,102,153);
-	protected java.awt.Color highlightBorderColor = new java.awt.Color(102,153,102);
+	protected java.awt.Color defaultBorderColor = new edu.cmu.cs.stage3.alice.scenegraph.Color(new java.awt.Color(102,102,153)).createAWTColor();
+	protected java.awt.Color highlightBorderColor = new edu.cmu.cs.stage3.alice.scenegraph.Color (new java.awt.Color(102,153,102)).createAWTColor();
 	
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.class.getPackage() );
-	protected java.awt.Color viewLabelColor = new java.awt.Color( 255, 255, 255, 128 );
+	protected java.awt.Color viewLabelColor = new edu.cmu.cs.stage3.alice.scenegraph.Color(new java.awt.Color( 255, 255, 255, 128 )).createAWTColor();
 	private int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
 	protected java.awt.Font viewLabelFont = new java.awt.Font( "SansSerif", java.awt.Font.BOLD, (int)(18 * fontSize/12.0) );
 	protected boolean originalTileDraggingOption;
@@ -789,7 +789,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		singleQuadGroup.add( quadViewButton );
 		singleViewButton.setSelected( true );
 
-		quadPanel.setBackground( java.awt.Color.black );
+		quadPanel.setBackground( new edu.cmu.cs.stage3.alice.scenegraph.Color(java.awt.Color.black).createAWTColor() );
 		quadPanel.setLayout( new java.awt.GridLayout( 2, 2, 1, 1 ) );
 
 		// dummy objects
@@ -1823,10 +1823,10 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 
 	private void jbInit() {
 		mouseInfoBorder.setTitleFont(new java.awt.Font("Dialog", 0, 11));
-		border1 = BorderFactory.createEtchedBorder(Color.white,new Color(165, 164, 164));
+		border1 = BorderFactory.createEtchedBorder(edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE.createAWTColor(),new edu.cmu.cs.stage3.alice.scenegraph.Color(new Color(165, 164, 164)).createAWTColor());
 		titledBorder2 = new TitledBorder(BorderFactory.createEmptyBorder(),"");
-		border2 = BorderFactory.createEtchedBorder(Color.white,new Color(165, 164, 164));
-		titledBorder3 = new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(165, 164, 164)),"Point Of View");
+		border2 = BorderFactory.createEtchedBorder(edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE.createAWTColor(),new edu.cmu.cs.stage3.alice.scenegraph.Color (new Color(165, 164, 164)).createAWTColor());
+		titledBorder3 = new TitledBorder(BorderFactory.createEtchedBorder(edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE.createAWTColor(),new edu.cmu.cs.stage3.alice.scenegraph.Color(new Color(165, 164, 164)).createAWTColor()),"Point Of View");
 		border3 = BorderFactory.createEmptyBorder(8,8,8,8);
 		border4 = BorderFactory.createEmptyBorder(8,8,8,8);
 		border5 = BorderFactory.createEmptyBorder(8,8,8,8);
@@ -1837,17 +1837,17 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		flowLayout4.setVgap(0);
 		this.setLayout(borderLayout1);
 		placeHolderLabel.setFont(new java.awt.Font("Dialog", 0, (int)(24*fontSize/12.0)));
-		placeHolderLabel.setForeground(Color.gray);
+		placeHolderLabel.setForeground(edu.cmu.cs.stage3.alice.scenegraph.Color.GRAY.createAWTColor());
 		placeHolderLabel.setText("The Gallery will go here.");
 		galleryPanel.setLayout(borderLayout2);
 		navPanel.setLayout(gridBagLayout4);
-		navPanel.setBackground(Color.white);
+		navPanel.setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE.createAWTColor());
 		renderPanel.setLayout(borderLayout5);
-		renderPanel.setBackground(Color.black);
+		renderPanel.setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color.BLACK.createAWTColor());
 		renderAndNavPanel.setLayout(borderLayout3);
-		renderAndNavPanel.setBackground(Color.black);
+		renderAndNavPanel.setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color.BLACK.createAWTColor());
 		superRenderPanel.setLayout(borderLayout4);
-		superRenderPanel.setBackground(Color.black);
+		superRenderPanel.setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color.BLACK.createAWTColor());
 		lensAngleSlider.setOpaque(false);
 		lensAngleSlider.setPreferredSize(new Dimension(150, 16));
 		lensAngleSlider.setMinimumSize(new Dimension(10, 16));
@@ -1855,9 +1855,9 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		aspectPanel.setBorder(border4);
 		aspectPanel.setOpaque(false);
 		moveCameraLabel.setText("move camera to dummy:");
-		jSeparator3.setForeground(Color.gray);
-		jSeparator2.setForeground(Color.gray);
-		jSeparator1.setForeground(Color.gray);
+		jSeparator3.setForeground(edu.cmu.cs.stage3.alice.scenegraph.Color.GRAY.createAWTColor());
+		jSeparator2.setForeground(edu.cmu.cs.stage3.alice.scenegraph.Color.GRAY.createAWTColor());
+		jSeparator1.setForeground(edu.cmu.cs.stage3.alice.scenegraph.Color.GRAY.createAWTColor());
 		quadViewButton.setOpaque(false);
 		quadViewButton.setText("quad view");
 		quadViewButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1873,7 +1873,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		aspectRatioComboBox.setPreferredSize(new Dimension(80, 20));
 		aspectRatioComboBox.setEditable(true);
 		mousePanel.setLayout(gridBagLayout2);
-		mousePanel.setBackground(new Color(236, 235, 235));
+		mousePanel.setBackground(new edu.cmu.cs.stage3.alice.scenegraph.Color(new Color(236, 235, 235)).createAWTColor());
 		mousePanel.setBorder(border3);
 		markerPanel.setLayout(gridBagLayout5);
 		markerPanel.setBorder(border5);
@@ -1907,7 +1907,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			}
 		});
 		controlPanel.setLayout(gridBagLayout1);
-		controlPanel.setBackground(new Color(236, 235, 235));
+		controlPanel.setBackground(new edu.cmu.cs.stage3.alice.scenegraph.Color(new Color(236, 235, 235)).createAWTColor());
 		cameraDummyButton.setHorizontalAlignment(SwingConstants.LEFT);
 		cameraDummyButton.setMargin(new Insets(2, 8, 2, 8));
 		cameraDummyButton.setText("drop dummy at camera");
