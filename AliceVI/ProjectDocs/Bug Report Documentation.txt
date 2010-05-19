@@ -1,0 +1,106 @@
+Bug Report
+
+---OPEN TICKETS---
+
+Ticket #12 – Screen Capture
+
+---Problem---
+•	A null pointer exception is thrown when there is an attempt to perform a screen capture from the playing world window.
+
+---Steps to Repeat Error---
+•	Start ice skater tutorial
+•	Exit tutorial
+•	Press ‘PLAY’ button
+•	Press ‘Screen Capture’
+•	Error is displayed
+
+---Notes---
+•	This is an error in the original code. This bug was not introduced by the AliceVI team.
+
+---Status---
+Open
+
+---Proposed Solution---
+•	None at this time.
+
+Ticket #14 – Object Selection
+---Problem---
+•	Clicking an object in the world window is sometimes not being selected
+---Steps to Repeat Error---
+•	Add pier to world and it can’t be selected.
+
+---Notes---
+•	There is something odd going on with the program in general regarding this bug. Brandon and Brett reverted to revision 15 on the laptop Alex and Brett have been sharing (WhiteRabbit - running Windows Vista). WhiteRabbit allows for, but still has slight errors, when selecting objects. All other computers, which are running Windows 7 and Windows XP, have issues when adding a pier object. Once the pier is added to the world the selection is locked to the ground object.
+•	This is in fact a bug introduced by the AliceVI team. When the program is ran unmodified, by using original source code, this bug still exists.
+---Status---
+Open
+
+---Proposed Solution---
+
+Ticket #15 – Possible Performance Issue
+---Problem---
+•	Refresh rate (performance, Speculating that it is currently >= 30fps)
+•	Possible that OpenGL thread is running in a loop as fast as possible when no updates are needed to the world.
+
+---Steps to Repeat Error---
+N/A
+
+---Notes---
+•	This is purely speculation based off how it appeared the program was running. This has not been investigated.
+---Status---	
+Open
+
+---Proposed Solution---
+N/A
+
+Ticket #16 – Green Line Hard to See
+---Problem---
+•	The green 'drop method indicator' line is difficult to see in colorblind mode.
+
+---Steps to Repeat Error---
+•	Turn on colorblind mode
+•	Drag a ‘Method’ from the left of the screen to right bottom window of screen
+•	Line is difficult to see.
+
+---Notes---
+•	This could be a deficiency in the algorithm provided by imaging sciences
+•	Color blind algorithm could have errors in its implementation.
+
+---Status---
+Open
+
+---Proposed Solution---
+N/A
+
+Ticket #18 - Default Colors Not Colorblind Translated
+---Problem---
+•	AWT Components Using Default Colors Not Colorblind Translated.
+
+---Steps to Repeat Error---
+N/A
+
+---Notes---
+•	Certain Java elements have default AWT colors that don’t need to be specified. These colors are not being pushed through the colorblind translator.
+
+---Status---
+Open
+
+---Proposed Solution---
+N/A
+
+Ticket #19 - Color changed from blue to teal
+---Problem---
+•	Between revision 15 and 42 the application background color is changed from Blue to a Teal color. This is a bug we introduced.
+
+---Steps to Repeat Error---
+N/A
+
+---Notes---
+•	This could have occurred when performing code cleanup. 
+
+---Status---
+Open
+
+---Proposed Solution---
+
+
