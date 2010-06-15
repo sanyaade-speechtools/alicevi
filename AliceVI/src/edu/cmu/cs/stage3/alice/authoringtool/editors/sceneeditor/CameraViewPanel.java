@@ -228,10 +228,13 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			return toReturn;
 		}
 		
-		private void startDraggingFromGallery(){
+		/**
+		 * TODO: Delete dead method.
+		 */
+		/*private void startDraggingFromGallery(){
 			edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject galleryObject = getGalleryObject(edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentDragComponent());
 			startDraggingFromGallery(galleryObject);
-		}
+		}*/
 		
 		private void startDraggingFromGallery(edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject galleryObject){
 			if (galleryObject != null){
@@ -678,19 +681,30 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 
  
 
+	// TODO: Determine how an object or its component is "selected" by picking
 	protected java.awt.event.MouseListener renderTargetMouseListener = new edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter() {
-		public void singleClickResponse( java.awt.event.MouseEvent ev ) {
+		/**
+		 * Event to handle a single click event from a click within the
+		 * viewport of the 3D world.
+		 */
+		public void mouseDownResponse( java.awt.event.MouseEvent ev ) {
+			// The currently picked and previously selected elements
 			edu.cmu.cs.stage3.alice.core.Transformable picked = pickedTransformable;
 			edu.cmu.cs.stage3.alice.core.Element selectedElement = authoringTool.getSelectedElement();
+			
+			// Determine what case should be used to decide which element should be "selected"
 			if( selectedElement == picked ) {
-				// do nothing
+				// do nothing!
 			} else if( affectSubpartsCheckBox.isSelected() ) {
 				authoringTool.setSelectedElement( picked );
-			} else if( (selectedElement != null) && selectedElement.isDescendantOf( picked ) ) {
+			} /*else if( (selectedElement != null) && selectedElement.isDescendantOf( picked ) ) {
 				authoringTool.setSelectedElement( picked );
-			} else {
+			}*/ else {
+				// Declare the parent element
 				edu.cmu.cs.stage3.alice.core.Element parent = null;
-				while( (picked != null) && (! picked.doEventsStopAscending()) && (picked.getParent() != selectedElement) ) {
+				
+				// Get the parent element of the current picked value, until we can't
+				while( (picked != null) && (! picked.doEventsStopAscending()) ) {
 					parent = picked.getParent();
 					if( parent instanceof edu.cmu.cs.stage3.alice.core.Transformable ) {
 						picked = (edu.cmu.cs.stage3.alice.core.Transformable)parent;
@@ -698,10 +712,12 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 						picked = null;
 					}
 				}
-				if( picked != null ) {
-					authoringTool.setSelectedElement( picked );
-				} else {
+				
+				// See if we have a parent, or should just use what we picked
+				if( parent != null && picked != null ) {
 					authoringTool.setSelectedElement( parent );
+				} else {
+					authoringTool.setSelectedElement( picked );
 				}
 			}
 		}
