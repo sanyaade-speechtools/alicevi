@@ -50,10 +50,10 @@ public class JAlice {
 	private static String version = "Unknown version";
 
 	private static String backgroundColor =  new Color( 127.0/255.0, 138.0/255.0, 209.0/255.0 ).toString();
-
 	
 	private static String directory = null;
-	static {
+	
+	protected static String initVersion() {
 		try {
 
 			File versionFile = new File( getAliceHomeDirectory(), "etc/version.txt" ).getAbsoluteFile();
@@ -74,45 +74,49 @@ public class JAlice {
 								// java.awt.Color.decode(colorString);
 								// +++++++++++++++++++++++ my change
 								// ++++++++++++++++++++
-								StringTokenizer tok = new StringTokenizer(
-										colorString, ",");
-								int r = Integer.parseInt(tok.nextToken());
-								int b = Integer.parseInt(tok.nextToken());
-								int g = Integer.parseInt(tok.nextToken());
-								Color newColor = new Color(r/255.0, b/255.0, g/255.0);
-								// +++++++++++++++++++++++end my change
-								// ++++++++++++++++++++
-								backgroundColor = new edu.cmu.cs.stage3.alice.scenegraph.Color(
-										newColor).toString();
+								backgroundColor = buildBackgroundColor(colorString);
 							} catch (NumberFormatException numberE) {
 								System.err
 										.println("Color initialization string is not correct");
 							} catch (Throwable colorT) {
 								colorT.printStackTrace();
 							}
-
 						}
 					}
 					if (versionString != null) {
 						versionString = versionString.trim();
 						if (versionString.length() > 0) {
-							version = versionString;
+							return versionString;
 						} else {
-							version = "Unknown version [first line of version.txt empty]";
+							return "Unknown version [first line of version.txt empty]";
 						}
 					} else {
-						version = "Unknown version [version.txt is empty]";
+						return "Unknown version [version.txt is empty]";
 					}
 				} else {
-					version = "Unknown version [cannot read version.txt]";
+					return "Unknown version [cannot read version.txt]";
 				}
 			} else {
-				version = "Unknown version [version.txt does not exist]";
+				return "Unknown version [version.txt does not exist]";
 			}
 		} catch (Throwable t) {
 			t.printStackTrace();
-			version = "Unknown version [error while reading version.txt]";
+			return "Unknown version [error while reading version.txt]";
 		}
+	}
+	
+	protected static String buildBackgroundColor(String colorString)
+	{
+		StringTokenizer tok = new StringTokenizer(
+				colorString, ",");
+		int r = Integer.parseInt(tok.nextToken());
+		int b = Integer.parseInt(tok.nextToken());
+		int g = Integer.parseInt(tok.nextToken());
+		Color newColor = new Color(r/255.0, b/255.0, g/255.0);
+		// +++++++++++++++++++++++end my change
+		// ++++++++++++++++++++
+		return new edu.cmu.cs.stage3.alice.scenegraph.Color(
+				newColor).toString();
 	}
 
 	public static String getVersion() {
@@ -137,6 +141,7 @@ public class JAlice {
 	// ////////////////////
 
 	public static void main(String[] args) {
+		version = initVersion();
 		try {
 			String[] mp3args = new String[0];
 			System.out.println("attempting to register mp3 capability... ");
