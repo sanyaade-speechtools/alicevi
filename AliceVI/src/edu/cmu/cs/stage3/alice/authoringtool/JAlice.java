@@ -490,7 +490,7 @@ public class JAlice {
 		
 		// create a default pivot line width
 		if (decoratorConfig.getValue("pivotAndBoundingBoxLineWidth") == null){
-			decoratorConfig.setValue("pivotAndBoundingBoxLineWidth", "7");
+			decoratorConfig.setValue("pivotAndBoundingBoxLineWidth", "9");
 		}
 		
 		//make the color blind mode the default
