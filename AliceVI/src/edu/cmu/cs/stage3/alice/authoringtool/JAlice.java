@@ -66,28 +66,6 @@ public class JAlice {
 					br.close();
 					if (colorString != null) {
 						colorString = colorString.trim();
-						if( colorString.length() > 0 ) {
-							try{
-								
-								//
-								//java.awt.Color newColor = java.awt.Color.decode(colorString);
-								//+++++++++++++++++++++++ my change ++++++++++++++++++++
-								StringTokenizer tok = new StringTokenizer(colorString , ",");
-								double r= Double.parseDouble(tok.nextToken());
-								double b= Double.parseDouble(tok.nextToken());
-								double g= Double.parseDouble(tok.nextToken());
-								//TODO: validate
-								//The next commented to get rid of java.awt.Color  --Mohammed
-								//Color newColor= new Color(r,b,g);
-							
-								//backgroundColor = new edu.cmu.cs.stage3.alice.scenegraph.Color(newColor).toString();
-								backgroundColor = new Color(r,g,b).toString();
-								//+++++++++++++++++++++++end my change ++++++++++++++++++++
-							} catch(NumberFormatException numberE){System.err.println("Color initialization string is not correct");}
-							catch (Throwable colorT){colorT.printStackTrace();}
-							
-								
-						} 
 
 						if (colorString.length() > 0) {
 							try {
@@ -101,7 +79,7 @@ public class JAlice {
 								int r = Integer.parseInt(tok.nextToken());
 								int b = Integer.parseInt(tok.nextToken());
 								int g = Integer.parseInt(tok.nextToken());
-								Color newColor = new Color(r, b, g);
+								Color newColor = new Color(r/255.0, b/255.0, g/255.0);
 								// +++++++++++++++++++++++end my change
 								// ++++++++++++++++++++
 								backgroundColor = new edu.cmu.cs.stage3.alice.scenegraph.Color(
