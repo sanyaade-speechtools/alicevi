@@ -1341,7 +1341,6 @@ public class PreferencesContentPane extends ContentPane {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getSource().equals(PreferencesContentPane.this) && colorblindMode.isSelected()) {
-					System.out.println("Colorblind code clicked!");
 					String newValue = "";
 					if(colorblindMode.isSelected()){
 						newValue = "1";
