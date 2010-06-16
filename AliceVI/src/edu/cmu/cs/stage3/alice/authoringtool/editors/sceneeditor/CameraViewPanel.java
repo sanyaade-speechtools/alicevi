@@ -35,7 +35,9 @@ import javax.swing.border.*;
  * @author Clifton Forlines
  */
 public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetListener, edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorListener {
+	private static final long serialVersionUID = 1L;
 	
+	// TODO: Analyze if this is dead or obsolete
 //	public final static java.awt.datatransfer.DataFlavor df = new java.awt.datatransfer.DataFlavor("text/plain; charset=unicode; class=java.io.InputStream", "Plain Text");
 //	static{
 //		final java.awt.datatransfer.SystemFlavorMap sfm = (java.awt.datatransfer.SystemFlavorMap)java.awt.datatransfer.SystemFlavorMap.getDefaultFlavorMap(); 
@@ -47,8 +49,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 //			System.out.println(i.next());
 //		}
 //	}
-
-	
 	
 	public final static int NAVIGATOR_TAB = 0;
 	public final static int MANIPULATOR_TAB = 1;
@@ -67,14 +67,16 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 	protected edu.cmu.cs.stage3.alice.core.Camera renderCamera = null;
 	protected edu.cmu.cs.stage3.math.Matrix44 originalCameraPOV;
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.RenderTargetMultiManipulator rtmm;
-//	protected edu.cmu.cs.stage3.alice.authoringtool.util.RenderTargetOrbitManipulator rtom;
 	protected edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable = null;
 	protected edu.cmu.cs.stage3.alice.core.Transformable selectedTransformable = null;
 	protected edu.cmu.cs.stage3.alice.core.Transformable blankTransformable = new edu.cmu.cs.stage3.alice.core.Transformable();
 	protected java.util.HashMap resizeTable = new java.util.HashMap();
+	
+	// TODO: Analyze if this is dead or obsolete
 //	protected java.util.HashMap povMap = new java.util.HashMap();
 //	protected edu.cmu.cs.stage3.alice.authoringtool.util.FilteringElementTreeModel povTreeModel = new edu.cmu.cs.stage3.alice.authoringtool.util.FilteringElementTreeModel();
 //	protected edu.cmu.cs.stage3.alice.core.Transformable povTransformable;
+	
 	edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator guiNavigator;
 	edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryViewer galleryViewer;
 	protected double minimumViewingAngle;
@@ -208,6 +210,8 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 				} catch (Exception e){
 					e.printStackTrace();
 				}
+				
+				// TODO: Analyze if this is dead or obsolete
 //			} else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, df  )) { //Works in 1.4, but not in 1.3_0_10 or 1.3_0_11
 ////				System.out.println("here");
 //				toReturn = true;
@@ -240,7 +244,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			if (galleryObject != null){
 				authoringToolConfig.setValue( "gui.pickUpTiles", "false" );
 				javax.vecmath.Vector3d dimensions = galleryObject.getBoundingBox();
-//						System.out.println("dimensions: "+dimensions);
+				
 				if (!showDroppingFeedback){
 					showDroppingFeedback = true;
 					dropFeedbackDecorator.setIsShowing(true);
@@ -265,7 +269,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 				sgScene = (edu.cmu.cs.stage3.alice.scenegraph.Scene)sgCamera.getRoot();
 
 				oldTransformation = new edu.cmu.cs.stage3.math.Matrix44( boundingBoxFeedbackTransformable.getSceneGraphTransformable().getLocalTransformation() );
-				//DEBUG System.out.println( "picked: " + sgPickedTransformable );
 				helper.setParent( sgScene );
 				sgIdentity.setParent( sgScene );
 			}
@@ -291,6 +294,8 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			originalTileDraggingOption = authoringToolConfig.getValue( "gui.pickUpTiles").equalsIgnoreCase( "true" );
 			
 			if(  authoringToolConfig.getValue( "showObjectLoadFeedback").equalsIgnoreCase("true") && (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, java.awt.datatransfer.DataFlavor.javaFileListFlavor ) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.URLTransferable.urlFlavor )) ) {
+
+				// TODO: Analyze if this is dead or obsolete
 //				try{
 //					startDraggingFromGallery();
 //				} catch (Exception e){
@@ -342,6 +347,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			boolean shiftDown = keyMode >= 2;
 			boolean controlDown = (keyMode == 1 || keyMode == 3);
 
+			// TODO: Figure out what this code was supposed to actually do.
 //			if( mode == GROUND_PLANE_MODE ) {
 			if( true ) {
 				if( controlDown ) {
@@ -450,10 +456,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 							firstTimeKeyIsDown = false;
 							edu.cmu.cs.stage3.awt.AWTUtilities.setCursorLocation(originalMousePoint);
 							edu.cmu.cs.stage3.awt.AWTUtilities.setIsCursorShowing(false);
-//							System.out.println("hiding");
-							
-						}
-						else{
+						} else{
 							turnAndRaiseManipulator(keyMode, edu.cmu.cs.stage3.awt.AWTUtilities.getCursorLocation());
 							edu.cmu.cs.stage3.awt.AWTUtilities.setCursorLocation(originalMousePoint);
 						}
@@ -514,13 +517,13 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			boolean visualDrop = successFullVisualDrop;
 			edu.cmu.cs.stage3.math.Matrix44 dropPoint = null;
 			if (visualDrop && ground != null){
+				// TODO: Analyze if this is dead or obsolete
 //				edu.cmu.cs.stage3.math.Matrix44 groundToWorld = ((edu.cmu.cs.stage3.alice.core.Model)ground).getTransformation(world);
 //				edu.cmu.cs.stage3.math.Matrix44 currentTransform = pickFeedbackTransformable.getTransformation(world);
 				dropPoint = boundingBoxFeedbackTransformable.getTransformation(world);
 				boundingBoxFeedbackTransformable.setLocalTransformationRightNow(edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d());
 			}
 			edu.cmu.cs.stage3.awt.AWTUtilities.setIsCursorShowing(true);
-//			System.out.println("showing");
 			stopDraggingFromGallery();
 			pickingPlane = new edu.cmu.cs.stage3.math.Plane(new javax.vecmath.Vector3d(0,0,0), new javax.vecmath.Vector3d(0,1,0));
 			try {
@@ -557,6 +560,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 									} else{
 										authoringTool.loadAndAddCharacter( file );
 									}
+									// TODO: Analyze if this is dead or obsolete
 //									final edu.cmu.cs.stage3.alice.authoringtool.util.SwingWorker worker = new edu.cmu.cs.stage3.alice.authoringtool.util.SwingWorker() {
 //										public Object construct() {
 //											return new Integer( authoringTool.loadCharacter( file ) );
@@ -613,6 +617,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 						authoringTool.importElement( url, authoringTool.getWorld() );
 					}
 
+					// TODO: Analyze if this is dead or obsolete
 //					final edu.cmu.cs.stage3.alice.authoringtool.util.SwingWorker worker = new edu.cmu.cs.stage3.alice.authoringtool.util.SwingWorker() {
 //						public Object construct() {
 //							if( url.getPath().toLowerCase().endsWith( "." + edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.CHARACTER_EXTENSION ) ) {
@@ -625,6 +630,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 //					};
 //					worker.start();
 					dtde.dropComplete( true );
+					// TODO: Analyze if this is dead or obsolete
 //				} else if( dtde.getDropAction() == java.awt.dnd.DnDConstants.ACTION_NONE ){  //Doesn't work in 1.3_0_10 or 1.3_0_11
 ////				else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, df) ) { // HACK for UniformResourceLocators
 //					dtde.acceptDrop( java.awt.dnd.DnDConstants.ACTION_LINK ); // HACK for UniformResourceLocators
@@ -679,13 +685,11 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		public void drop( java.awt.dnd.DropTargetDropEvent dtde ) {}
 	};
 
- 
-
 	// TODO: Determine how an object or its component is "selected" by picking
 	protected java.awt.event.MouseListener renderTargetMouseListener = new edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter() {
 		/**
-		 * Event to handle a single click event from a click within the
-		 * viewport of the 3D world.
+		 * Response to handle when a mouse button is pressed in the
+		 * viewport.
 		 */
 		public void mouseDownResponse( java.awt.event.MouseEvent ev ) {
 			// The currently picked and previously selected elements
@@ -697,9 +701,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 				// do nothing!
 			} else if( affectSubpartsCheckBox.isSelected() ) {
 				authoringTool.setSelectedElement( picked );
-			} /*else if( (selectedElement != null) && selectedElement.isDescendantOf( picked ) ) {
-				authoringTool.setSelectedElement( picked );
-			}*/ else {
+			} else {
 				// Declare the parent element
 				edu.cmu.cs.stage3.alice.core.Element parent = null;
 				
@@ -767,7 +769,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		boundingBoxFeedbackTransformable.vehicle.set(pickFeedbackTransformable);
 		dropFeedbackDecorator.setReferenceFrame(boundingBoxFeedbackTransformable);
 		dropFeedbackPivotDecorator.setTransformable(boundingBoxFeedbackTransformable);
-//		povInit();
 	}
 
 	private void guiInit() {
@@ -831,6 +832,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		setVisibleControls( FEWER_CONTROLS );
 	}
 
+	// TODO: Analyze if this is dead or obsolete
 //	private void povInit() {
 //		java.util.LinkedList inclusionList = new java.util.LinkedList();
 //		inclusionList.add( new edu.cmu.cs.stage3.util.Criterion() {
@@ -883,9 +885,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			rtmm = new edu.cmu.cs.stage3.alice.authoringtool.util.RenderTargetMultiManipulator( renderTarget );
 			rtmm.addRenderTargetPickManipulatorListener( this );
 			rtmm.setMode( defaultMoveMode );
-//			rtom = new edu.cmu.cs.stage3.alice.authoringtool.util.RenderTargetOrbitManipulator( renderTarget, authoringTool.getUndoRedoStack(), authoringTool.getOneShotScheduler() );
-//			rtom.addRenderTargetPickManipulatorListener( this );
-//			rtom.setEnabled( false );
+			
 			renderPanel.add( renderTarget.getAWTComponent(), java.awt.BorderLayout.CENTER );
 			renderTarget.addRenderTargetListener( this );
 			renderTargetDropTarget = new java.awt.dnd.DropTarget( renderTarget.getAWTComponent(), renderTargetDropTargetListener );
@@ -959,11 +959,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 
 			singleViewButton.setSelected( true );
 			setViewMode( SINGLE_VIEW_MODE );
-			
-			
-			
-			
-			
 		} else {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "CameraViewPanel unable to create renderTarget", null );
 		}
@@ -1011,6 +1006,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		bi.getGraphics().drawImage( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getImageForString( "manipulatorModes/zoomInMode" ), 0, 0, 22, 22, null );
 		orthoZoomInMode.setPreferredCursor( java.awt.Toolkit.getDefaultToolkit().createCustomCursor( bi, new java.awt.Point( 7, 7 ), "zoomInMode" ) );
 
+		// TODO: Analyze if this is dead or obsolete
 //		bestSize = java.awt.Toolkit.getDefaultToolkit().getBestCursorSize( 22, 22 );
 //		bi = new java.awt.image.BufferedImage( bestSize.width, bestSize.height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 //		bi.getGraphics().drawImage( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getImageForString( "manipulatorModes/zoomOutMode" ), 0, 0, 22, 22, null );
@@ -1192,7 +1188,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 
 					double aspectRatio = hAngle.doubleValue()/vAngle.doubleValue();
 					String aspectRatioString = (String)cam.data.get( "edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.aspectRatioString" );
-//					System.out.println( "aspectRatioString: " + aspectRatioString );
 
 					if( aspectRatioString == null ) {
 						aspectRatioString = "4/3";
@@ -1203,8 +1198,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 						parsedAspectRatio = new Double( 0.0 );
 					}
 					if( aspectRatio != parsedAspectRatio.doubleValue() ) {
-//						System.out.println( "aspectRatio: " + aspectRatio );
-//						System.out.println( "parsedAspectRatio: " + parsedAspectRatio );
 						aspectRatioString = Double.toString( aspectRatio );
 						cam.data.put( "edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.aspectRatioString", aspectRatioString );
 					}
@@ -1242,7 +1235,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 
 	public java.awt.Dimension getRenderSize() {
 		java.awt.Dimension size = renderPanel.getSize();
-//		size.height -= navPanel.getHeight();
 		return size;
 	}
 
@@ -1315,6 +1307,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		}
 	}
 
+	// TODO: Analyze if this is dead or obsolete
 //	public void setPovTransformable( edu.cmu.cs.stage3.alice.core.Transformable trans ) {
 //		povTransformable = trans;
 //
@@ -1381,7 +1374,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 				boundingBoxDecorator.setIsShowing( true );
 				pivotDecorator.setTransformable(selectedTransformable);
 				pivotDecorator.setIsShowing( true );
-				//selectedTransformable.HACK_showBoundingBoxRightNow();
 			}
 		}
 
@@ -1403,7 +1395,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 				boundingBoxDecorator.setReferenceFrame( null );
 				pivotDecorator.setIsShowing( false );
 				pivotDecorator.setTransformable(null);
-//				selectedTransformable.HACK_hideBoundingBoxRightNow();
 			}
 		}
 
@@ -1457,6 +1448,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		}
 	}
 
+	// TODO: Analyze if this is dead or obsolete
 	/*
 	public void postPick( edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorEvent ev ) {
 		edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo = ev.getPickInfo();
@@ -1697,6 +1689,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		}
 	}
 
+	// TODO: Analyze if this is dead or obsolete
 //	void btnStandUp_actionPerformed(ActionEvent e) {
 //		edu.cmu.cs.stage3.alice.core.response.StandUpAnimation ani = new edu.cmu.cs.stage3.alice.core.response.StandUpAnimation();
 //		edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation inverseAni = new edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation();
@@ -1743,7 +1736,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 	void affectSubpartsCheckBox_actionPerformed(ActionEvent e) {
 		boolean ascendTreeEnabled = ! affectSubpartsCheckBox.isSelected();
 		rtmm.setAscendTreeEnabled( ascendTreeEnabled );
-//		rtom.setAscendTreeEnabled( ascendTreeEnabled );
 		if( ascendTreeEnabled ) {
 			defaultMoveModeButton.doClick();
 		} else {
