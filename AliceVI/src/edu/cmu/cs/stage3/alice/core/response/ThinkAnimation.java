@@ -28,5 +28,25 @@ public class ThinkAnimation extends AbstractBubbleAnimation {
 		protected edu.cmu.cs.stage3.alice.core.bubble.Bubble createBubble() {
 			return new edu.cmu.cs.stage3.alice.core.bubble.ThoughtBubble();
 		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "[subject] thinks \"[thought]\"."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "[subject] thinks \"[thought]\"."
+			retVal.append(subject.getOwner().getRepr());
+			retVal.append(" thinks \"");
+			retVal.append(what.getStringValue());
+			retVal.append("\".");
+			
+			// Return
+			return retVal.toString();
+		}
     }
 }

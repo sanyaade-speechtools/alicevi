@@ -33,5 +33,26 @@ public class TurnAwayFromAnimation extends AbstractPointAtAnimation {
 			m.rotateY( Math.PI );
 			return m;
 		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "Turn [subject] away from [target]."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "Turn [subject] away from [target]."
+			retVal.append("Turn ");
+			retVal.append(this.m_subject.getRepr());
+			retVal.append(" away from ");
+			retVal.append(this.m_target.getRepr());
+			retVal.append('.');
+			
+			// Return
+			return retVal.toString();
+		}
 	}
 }

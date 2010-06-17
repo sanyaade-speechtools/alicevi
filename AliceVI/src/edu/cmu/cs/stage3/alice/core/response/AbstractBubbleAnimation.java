@@ -68,6 +68,8 @@ public abstract class AbstractBubbleAnimation extends edu.cmu.cs.stage3.alice.co
 			if( m_world != null ) {
 				m_world.bubbles.add( m_bubble );
 			}
+			
+			// TODO: Remove dead code.
 /*
 			m_character = AbstractBubbleAnimation.this.subject.getTransformableValue();
 			m_what = AbstractBubbleAnimation.this.what.getStringValue();

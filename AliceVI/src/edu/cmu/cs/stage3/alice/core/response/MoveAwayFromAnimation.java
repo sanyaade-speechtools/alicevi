@@ -28,5 +28,26 @@ public class MoveAwayFromAnimation extends AbstractMoveInDirectionOfAnimation {
         protected double getActualAmountValue() {
             return -MoveAwayFromAnimation.this.amount.doubleValue();
         }
+        
+        /**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "Move [subject] away from [target]."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "Move [subject] towards [target]."
+			retVal.append("Move ");
+			retVal.append(this.m_subject.getRepr());
+			retVal.append(" away from ");
+			retVal.append(this.m_target.getRepr());
+			retVal.append('.');
+			
+			// Return
+			return retVal.toString();
+		}
     }
 }

@@ -41,5 +41,28 @@ public class TurnAtSpeed extends RotateAtSpeed {
 				return null;
 			}
 		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "Turn [subject] [direction] [number] revolutions per second."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "Turn [subject] [direction] [number] revolutions per second."
+			retVal.append("Turn ");
+			retVal.append(this.m_subject.getRepr());
+			retVal.append(' ');
+			retVal.append(direction.getDirectionValue().getRepr().toLowerCase());
+			retVal.append(' ');
+			retVal.append(speed.doubleValue());
+			retVal.append(" revolutions per second.");
+			
+			// Return
+			return retVal.toString();
+		}
 	}
 }

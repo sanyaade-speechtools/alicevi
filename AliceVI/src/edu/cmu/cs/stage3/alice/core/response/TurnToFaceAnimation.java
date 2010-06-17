@@ -28,5 +28,26 @@ public class TurnToFaceAnimation extends AbstractPointAtAnimation {
 		protected boolean onlyAffectYaw() {
 			return true;
 		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "Turn [subject] to face [target]."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "Turn [subject] to face [target]."
+			retVal.append("Turn ");
+			retVal.append(this.m_subject.getRepr());
+			retVal.append(" to face ");
+			retVal.append(this.m_target.getRepr());
+			retVal.append('.');
+			
+			// Return
+			return retVal.toString();
+		}
 	}
 }

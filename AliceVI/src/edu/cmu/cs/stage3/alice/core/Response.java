@@ -27,7 +27,7 @@ import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
 
 public abstract class Response extends Code {
 	public final NumberProperty duration = new NumberProperty( this, "duration", getDefaultDuration() );
-	
+
 	protected Number getDefaultDuration() {
 		return new Double( 1 );
 	}
@@ -64,13 +64,13 @@ public abstract class Response extends Code {
 	}
 
 	public abstract class RuntimeResponse {
-        private boolean HACK_m_isMarkedForRemoval = false;
-        public void HACK_markForRemoval() {
-            HACK_m_isMarkedForRemoval = true;
-        }
-        public boolean HACK_isMarkedForRemoval() {
-            return HACK_m_isMarkedForRemoval;
-        }
+		private boolean HACK_m_isMarkedForRemoval = false;
+		public void HACK_markForRemoval() {
+			HACK_m_isMarkedForRemoval = true;
+		}
+		public boolean HACK_isMarkedForRemoval() {
+			return HACK_m_isMarkedForRemoval;
+		}
 
 
 		private boolean m_isActive = false;
@@ -98,7 +98,7 @@ public abstract class Response extends Code {
 			return m_duration - getTimeElapsed( t );
 		}
 		public void prologue( double t ) {
-            m_t0 = t;
+			m_t0 = t;
 			m_tPrev = t;
 			m_dt = 0;
 			m_duration = Response.this.duration.doubleValue( Double.NaN );
@@ -110,11 +110,15 @@ public abstract class Response extends Code {
 		}
 		public void epilogue( double t ) {
 			m_isActive = false;
+
+			// TODO: Print Out / Say what the response is doing.
+			//       Need some form of text-to-audio converter.
+			System.out.println(this);
 		}
 		public void stop( double t ) {
-            if( isActive() ) {
-    			epilogue( t );
-            }
+			if( isActive() ) {
+				epilogue( t );
+			}
 		}
 		public void finish() {
 			m_t0 = Double.NEGATIVE_INFINITY;
@@ -130,7 +134,7 @@ public abstract class Response extends Code {
 			}
 			return null;
 		}
-		
+
 		protected java.util.Stack getCurrentStack() {
 			edu.cmu.cs.stage3.alice.core.Behavior behavior = getCurrentBehavior();
 			if( behavior != null ) {
@@ -140,5 +144,8 @@ public abstract class Response extends Code {
 			}
 		}
 
+		public String toString() {
+			return this.getClass().getSimpleName();
+		}
 	}
 }

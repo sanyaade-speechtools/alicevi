@@ -31,7 +31,7 @@ public abstract class AbstractMoveInDirectionOfAnimation extends TransformAnimat
 	public final NumberProperty amount = new NumberProperty( this, "amount", new Double( 1 ) );
 
 	public abstract class RuntimeAbstractMoveInDirectionOfAnimationAnimation extends RuntimeTransformAnimation {
-		private edu.cmu.cs.stage3.alice.core.ReferenceFrame m_target;
+		protected edu.cmu.cs.stage3.alice.core.ReferenceFrame m_target;
 		private javax.vecmath.Vector3d m_vector;
 		private javax.vecmath.Vector3d m_vectorPrev;
         protected abstract double getActualAmountValue();

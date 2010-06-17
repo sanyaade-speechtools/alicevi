@@ -32,7 +32,7 @@ public abstract class AbstractPointAtAnimation extends OrientationAnimation {
 	public final Vector3Property upGuide = new Vector3Property( this, "upGuide", null );
 
 	public abstract class RuntimeAbstractPointAtAnimation extends RuntimeOrientationAnimation {
-		private edu.cmu.cs.stage3.alice.core.ReferenceFrame m_target;
+		protected edu.cmu.cs.stage3.alice.core.ReferenceFrame m_target;
 		private javax.vecmath.Vector3d m_offset;
 		private javax.vecmath.Vector3d m_upGuide;
 		private boolean m_onlyAffectYaw;

@@ -64,6 +64,29 @@ public class MoveAnimation extends DirectionAmountTransformAnimation {
 			m_subject.moveRightNow( delta, m_asSeenBy );
 			m_vectorPrev.add( delta );
 		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "Move [subject] [direction] [number] meters."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "Move [subject] [direction] [number] meters."
+			retVal.append("Move ");
+			retVal.append(this.m_subject.getRepr());
+			retVal.append(' ');
+			retVal.append(direction.getDirectionValue().getRepr().toLowerCase());
+			retVal.append(' ');
+			retVal.append(amount.doubleValue());
+			retVal.append(" meters.");
+			
+			// Return
+			return retVal.toString();
+		}
 
 		//public void epilogue( double t ) {
 		//	edu.cmu.cs.stage3.math.Vector3 delta = edu.cmu.cs.stage3.math.Vector3.subtract( m_vector, m_vectorPrev );

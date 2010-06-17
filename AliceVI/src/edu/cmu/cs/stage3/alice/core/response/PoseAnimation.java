@@ -99,6 +99,25 @@ public class PoseAnimation extends Animation {
 				key.setOrientationRightNow( currentQuaternion );
 			}
 		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "[subject] poses."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "[subject] poses."
+			
+			retVal.append(subject.getRepr());
+			retVal.append(" poses.");
+			
+			// Return
+			return retVal.toString();
+		}
 
 		/*
 		private edu.cmu.cs.stage3.alice.core.Transformable getDescendantFromKey( edu.cmu.cs.stage3.alice.core.Transformable subject, String relativeKey ) {

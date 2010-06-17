@@ -74,5 +74,25 @@ public class GetAGoodLookAtAnimation extends OrientationAnimation {
 			}
 			super.epilogue( t );
 		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "[subject] gets a good look at [target]."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "[subject] gets a good look at [target]."
+			retVal.append(this.m_subject.getRepr());
+			retVal.append(" gets a good look at ");
+			retVal.append(this.m_target.getRepr());
+			retVal.append('.');
+			
+			// Return
+			return retVal.toString();
+		}
 	}
 }
