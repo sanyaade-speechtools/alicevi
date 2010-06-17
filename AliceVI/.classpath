@@ -33,5 +33,15 @@
 	<classpathentry kind="lib" path="RefLib/xmlParserAPIs.jar"/>
 	<classpathentry kind="lib" path="RefLib/Jama-1.0.2.jar"/>
 	<classpathentry kind="lib" path="RefLib/junit-4.8.2.jar"/>
+	<classpathentry kind="lib" path="RefLib/jsapi.jar"/>
+	<classpathentry kind="lib" path="RefLib/freetts.jar"/>
+	<classpathentry kind="lib" path="RefLib/cmu_time_awb.jar"/>
+	<classpathentry kind="lib" path="RefLib/cmu_us_kal.jar"/>
+	<classpathentry kind="lib" path="RefLib/cmudict04.jar"/>
+	<classpathentry kind="lib" path="RefLib/cmulex.jar"/>
+	<classpathentry kind="lib" path="RefLib/cmutimelex.jar"/>
+	<classpathentry kind="lib" path="RefLib/en_us.jar"/>
+	<classpathentry kind="lib" path="RefLib/freetts-jsapi10.jar"/>
+	<classpathentry kind="lib" path="RefLib/mbrola.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -37,9 +37,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.core.Decorator;
+
+import javax.speech.Central;
+import javax.speech.Engine;
+import javax.speech.EngineList;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
+import javax.speech.synthesis.SynthesizerProperties;
+import javax.speech.synthesis.Voice;
+
 
 
 /**
@@ -146,6 +156,30 @@ public class JAlice {
 			String[] mp3args = new String[0];
 			System.out.println("attempting to register mp3 capability... ");
 			com.sun.media.codec.audio.mp3.JavaDecoder.main(mp3args);
+			
+			/**
+			 * This is an example of how to use the voice synthesizer.
+			 * 
+			 *
+			SynthesizerModeDesc desc = new SynthesizerModeDesc(
+	                null,          // engine name
+	                "general",     // mode name
+	                Locale.US,     // locale
+	                null,          // running
+	                null);         // voice
+			
+			Synthesizer synth = Central.createSynthesizer(desc);
+			synth.allocate();
+			synth.resume();
+			desc = (SynthesizerModeDesc)synth.getEngineModeDesc();
+			Voice[] voices = desc.getVoices();
+			synth.getSynthesizerProperties().setVoice(voices[0]);
+			
+			synth.speakPlainText("Hello World! I am the java void synthesizer!", null);
+			synth.waitEngineState(Synthesizer.QUEUE_EMPTY);
+			synth.deallocate();
+			**/
+			
 		} catch (Throwable t) {
 			System.out.println("FAILED.");
 			t.printStackTrace(System.out);
