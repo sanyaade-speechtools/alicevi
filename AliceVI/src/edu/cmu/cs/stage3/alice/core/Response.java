@@ -103,6 +103,10 @@ public abstract class Response extends Code {
 			m_dt = 0;
 			m_duration = Response.this.duration.doubleValue( Double.NaN );
 			m_isActive = true;
+			
+			// TODO: Print Out / Say what the response is doing.
+			//       Need some form of text-to-audio converter.
+			System.out.println(this);
 		}
 		public void update( double t ) {
 			m_dt = t - m_tPrev;
@@ -110,10 +114,6 @@ public abstract class Response extends Code {
 		}
 		public void epilogue( double t ) {
 			m_isActive = false;
-
-			// TODO: Print Out / Say what the response is doing.
-			//       Need some form of text-to-audio converter.
-			System.out.println(this);
 		}
 		public void stop( double t ) {
 			if( isActive() ) {

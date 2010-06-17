@@ -118,15 +118,5 @@ public class PoseAnimation extends Animation {
 			// Return
 			return retVal.toString();
 		}
-
-		/*
-		private edu.cmu.cs.stage3.alice.core.Transformable getDescendantFromKey( edu.cmu.cs.stage3.alice.core.Transformable subject, String relativeKey ) {
-			java.util.StringTokenizer tokenizer = new java.util.StringTokenizer( relativeKey, ".", false );
-			while( tokenizer.hasMoreTokens() ) {
-				subject = (edu.cmu.cs.stage3.alice.core.Transformable)subject.getChildNamed( tokenizer.nextToken() );
-			}
-			return subject;
-		}
-		*/
 	}
 }
