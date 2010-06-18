@@ -47,6 +47,7 @@ public class PoseAnimation extends Animation {
 //		}
 	}
 
+	// TODO: Figure out if there are any models that accurately use this
 	public class RuntimePoseAnimation extends RuntimeAnimation {
 		protected edu.cmu.cs.stage3.alice.core.Transformable subject;
 		protected edu.cmu.cs.stage3.alice.core.Pose pose;

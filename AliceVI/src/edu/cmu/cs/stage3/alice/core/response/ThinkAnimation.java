@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.core.response;
 
+//TODO: Figure out if there are any models that accurately use this
 public class ThinkAnimation extends AbstractBubbleAnimation {
     public class RuntimeThinkAnimation extends RuntimeAbstractBubbleAnimation {
 		protected edu.cmu.cs.stage3.alice.core.bubble.Bubble createBubble() {

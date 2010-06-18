@@ -72,7 +72,6 @@ public abstract class Response extends Code {
 			return HACK_m_isMarkedForRemoval;
 		}
 
-
 		private boolean m_isActive = false;
 		private double m_t0 = Double.NaN;
 		private double m_tPrev = Double.NaN;
