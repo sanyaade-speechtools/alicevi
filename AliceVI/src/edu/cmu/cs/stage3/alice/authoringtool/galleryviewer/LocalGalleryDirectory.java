@@ -67,18 +67,6 @@ public class LocalGalleryDirectory extends LocalGalleryObject {
         }
     }
 
-    public void galleryMouseExited(){
-       /* if (mouseOver){
-            mouseOver = false;
-            this.repaint();
-        }*/
-    }
-
-    public void galleryMouseEntered(){
-       /* if (!mouseOver){
-            mouseOver = true;
-            this.repaint();
-        }*/
-    }
+    
 
 }
