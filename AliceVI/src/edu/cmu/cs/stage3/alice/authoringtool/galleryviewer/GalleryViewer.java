@@ -23,6 +23,10 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
+import java.awt.Component;
+
+import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.iohandler.GalleryKeyScroll;
+
 /**
  * @author David Culyba
  *
@@ -1940,9 +1944,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         //Aik Min added this to make scroll bar scroll more
         scrollPane.getHorizontalScrollBar().setUnitIncrement(44);
         
-    //    this.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(1,0,1,1,1,1,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0,0,0,0), 0,0 ));
-    //    this.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(1,1,1,1,1,1,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0,0,0,0), 0,0 ));
-    //    this.add(javax.swing.Box.createVerticalGlue(), new java.awt.GridBagConstraints(0,2,1,1,1,1,java.awt.GridBagConstraints.SOUTH,java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0,0,0,0), 0,0 ));
         this.setPreferredSize(new java.awt.Dimension(Integer.MAX_VALUE, 250));
         this.setMinimumSize(new java.awt.Dimension(100, 250));
     }
@@ -2048,6 +2049,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         catch (Exception e){
             return null;
         }
+        toReturn.addKeyListener(new GalleryKeyScroll(this, toReturn));
         toReturn.loadImage();
         return toReturn;
     }
@@ -2060,12 +2062,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         catch (Exception e){
             return null;
         }
-  /*      if (toReturn instanceof WebGalleryDirectory){
-            ((WebGalleryDirectory)toReturn).setDirectoryData(directoryOnDisplay.getDirectoryNamed(currentObject.name));
-        }
-        else if (toReturn instanceof LocalGalleryDirectory){
-            ((LocalGalleryDirectory)toReturn).setDirectoryData(directoryOnDisplay.getDirectoryNamed(currentObject.name));
-        }*/
+        toReturn.addKeyListener(new GalleryKeyScroll(this, toReturn));
         toReturn.loadImage();
         return toReturn;
     }
@@ -2324,8 +2321,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 	        searching.setText(noModelsYet);
 	        searchCount = 0;
 			objectPanel.removeAll();
-//			objectPanel.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(1,0,1,1,1,1,java.awt.GridBagConstraints.WEST,java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0,0,0,0), 0,0 ));
-//			objectPanel.add(searching, new java.awt.GridBagConstraints(0,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,4,0,0), 0,0 ));
 			objectPanel.add(searching);
 			objectPanel.revalidate();
 			objectPanel.repaint();
@@ -2376,14 +2371,12 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 					public void run(){
 		        		if (finalTotal <= 0 && searchCount <=0){
 				            objectPanel.removeAll();
-				//            objectPanel.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(1,0,1,1,1,1,java.awt.GridBagConstraints.WEST,java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0,0,0,0), 0,0 ));
 				            if (isWeb){
 				            	noSearchResults.setText("No models matching \""+toSearchFor+"\" were found on "+webGalleryHostName);
 				            }
 				            else{
 								noSearchResults.setText("No models matching \""+toSearchFor+"\" were found on your machine.");
 				            }
-				//            objectPanel.add(noSearchResults, new java.awt.GridBagConstraints(0,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,4,0,0), 0,0 ));
 							objectPanel.add(noSearchResults);
 				            objectPanel.revalidate();
 				            objectPanel.repaint();
@@ -2468,7 +2461,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
                 }
                 catch (Exception e){}
             }
-//			System.out.println("it's dead");
             stopBuildingGallery = false;
         }
         if (isInWebGallery){
@@ -2478,8 +2470,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			attributeLabel.setText("Loading...");
         }
         objectPanel.removeAll();
-//        objectPanel.add(javax.swing.Box.createHorizontalGlue(), glueConstraints);
-//        System.out.println("ok, let's do it");
         changingThread = new Thread(toRun);
         changingThread.start();
     }
@@ -2570,27 +2560,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		});
     }
 
-    private void bumpDown(int index){
-//        for (int i=index; i<objectPanel.getComponentCount(); i++){
-//            java.awt.Component c = objectPanel.getComponent(i);
-//            java.awt.GridBagConstraints g = objectPanelLayout.getConstraints(c);
-//            g.gridx++;
-//            objectPanelLayout.setConstraints(c,g);
-//        }
-    }
-
-    private void resetLayout(int index){
-//        for (int i=index; i<objectPanel.getComponentCount(); i++){
-//            java.awt.Component c = objectPanel.getComponent(i);
-//            java.awt.GridBagConstraints g = objectPanelLayout.getConstraints(c);
-//            g.gridx = i;
-//            objectPanelLayout.setConstraints(c,g);
-//        }
-    }
-
     private void removeGalleryObject(GalleryObject toRemove){
         objectPanel.remove(toRemove);
-        resetLayout(0);
     }
 
     private void modelAdded(ObjectXmlData added, int count){
@@ -2611,8 +2582,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		javax.swing.SwingUtilities.invokeLater( new Runnable(){
 			public void run(){
 		        if (toAdd != null){
-		            bumpDown(count);
-		//			objectPanel.add(toAdd, new java.awt.GridBagConstraints(count,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, panelInset, 0,0 ), count);
 					objectPanel.add(toAdd);
 		            objectPanel.revalidate();
 		        }
@@ -2658,15 +2627,12 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				size ++;
 				isLocal = true;
 			}
-//            objectPanel.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(size,0,1,1,1,1,java.awt.GridBagConstraints.WEST,java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0,0,0,0), 0,0 ));
             for (int i=0; i<xmlData.directories.size(); i++){
                 if (!stopBuildingGallery){
                     ObjectXmlData currentDirectory = (ObjectXmlData)xmlData.directories.get(i);
                     long oldTime = System.currentTimeMillis();
                     GalleryObject toAdd = createGalleryDirectory(currentDirectory);
-                 //   System.out.println("directory build time: "+(System.currentTimeMillis()-oldTime));
                     if (toAdd != null){
-//                        objectPanel.add(toAdd, new java.awt.GridBagConstraints(count,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, panelInset, 0,0 ));
 						objectPanel.add(toAdd);
                         count++;
                     }
@@ -2680,9 +2646,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
                     ObjectXmlData currentModel = (ObjectXmlData)xmlData.models.get(i);
                     long oldTime = System.currentTimeMillis();
                     GalleryObject toAdd = createGalleryObject(currentModel);
-                 //   System.out.println("object build time: "+(System.currentTimeMillis()-oldTime));
                     if (toAdd != null){
-//                        objectPanel.add(toAdd, new java.awt.GridBagConstraints(count,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, panelInset, 0,0 ));
 						objectPanel.add(toAdd);
                         count++;
                     }
@@ -2696,33 +2660,27 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				  for (int p=0; p< builderButtonsVector.size(); p++){
 					count++;
 					GenericBuilderButton builderButton = (GenericBuilderButton)builderButtonsVector.get(p);
-//					objectPanel.add(builderButton, new java.awt.GridBagConstraints(count,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, panelInset, 0,0 ));
 					objectPanel.add(builderButton);
 					builderButton.updateGUI();
-					  
 				}
 			}
 
 			if (isLocal){
 				count++;
-				bumpDown(count);
-//				objectPanel.add(add3DTextButton, new java.awt.GridBagConstraints(count,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, panelInset, 0,0 ), count);
 				objectPanel.add(add3DTextButton);
 				add3DTextButton.updateGUI();
 				objectPanel.repaint();
 			}
             if (count == 0){
                 objectPanel.removeAll();
-//                objectPanel.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(1,0,1,1,1,1,java.awt.GridBagConstraints.WEST,java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0,0,0,0), 0,0 ));
                 if (directoryOnDisplay == searchResults){
-//                    objectPanel.add(noSearchResults, new java.awt.GridBagConstraints(0,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,4,0,0), 0,0 ));
 					objectPanel.add(noSearchResults);
                 }
                 else{
-//                    objectPanel.add(noObjectsLabel, new java.awt.GridBagConstraints(0,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,4,0,0), 0,0 ));
 					objectPanel.add(noObjectsLabel);
                 }
             }
+            objectPanel.requestFocusInWindow();
         }
     }
 
@@ -2731,7 +2689,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
             int count = 0;
             int maxCount = rootDirectories.size();
             objectPanel.removeAll();
-//            objectPanel.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(maxCount,0,1,1,1,1,java.awt.GridBagConstraints.WEST,java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0,0,0,0), 0,0 ));
             for(int i=0; i<rootDirectories.size(); i++){
                 if (!stopBuildingGallery){
                     RootDirectoryStructure currentRoot = (RootDirectoryStructure)rootDirectories.get(i);
@@ -2755,7 +2712,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
                         continue;
                     }
                     if (toAdd != null){
-//                        objectPanel.add(toAdd, new java.awt.GridBagConstraints(count,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, panelInset, 0,0 ));
+                    	toAdd.addKeyListener(new GalleryKeyScroll(this, toAdd));
 						objectPanel.add(toAdd);
                         count++;
                     }
@@ -2767,6 +2724,58 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
             
 
         }
+    }
+    
+    public void moveFocusLeft(GalleryObject startingPoint) {
+    	Component[] components = objectPanel.getComponents();
+    	int startingIndex = -1;
+    	for(int i = 0; i < components.length; ++i) {
+    		if(components[i] == startingPoint) {
+    			startingIndex = i;
+    			break;
+    		}
+    	}
+    	if(startingIndex == -1) return;
+    	int leftIndex = -1;
+    	for(int j = (startingIndex - 1 + components.length) % components.length; 
+    		j != startingIndex; 
+    		j = (j - 1 + components.length) % components.length) {
+    		
+    		if(components[j] instanceof GalleryObject) {
+    			leftIndex = j;
+    			break;
+    		}
+    	}
+    	if(leftIndex == -1) return;
+    	components[leftIndex].requestFocusInWindow();
+    	((GalleryObject)components[startingIndex]).galleryMouseExited();
+    	((GalleryObject)components[leftIndex]).galleryMouseEntered();
+    }
+    
+    public void moveFocusRight(GalleryObject startingPoint) {
+    	Component[] components = objectPanel.getComponents();
+    	int startingIndex = -1;
+    	for(int i = 0; i < components.length; ++i) {
+    		if(components[i] == startingPoint) {
+    			startingIndex = i;
+    			break;
+    		}
+    	}
+    	if(startingIndex == -1) return;
+    	int rightIndex = -1;
+    	for(int j = (startingIndex + 1 + components.length) % components.length; 
+    		j != startingIndex; 
+    		j = (j + 1 + components.length) % components.length) {
+    		
+    		if(components[j] instanceof GalleryObject) {
+    			rightIndex = j;
+    			break;
+    		}
+    	}
+    	if(rightIndex == -1) return;
+    	components[rightIndex].requestFocusInWindow();
+    	((GalleryObject)components[startingIndex]).galleryMouseExited();
+    	((GalleryObject)components[rightIndex]).galleryMouseEntered();
     }
 
     protected void goUpOneLevel(){

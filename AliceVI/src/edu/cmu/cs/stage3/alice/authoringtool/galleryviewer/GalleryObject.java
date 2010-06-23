@@ -76,7 +76,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 
     protected java.awt.datatransfer.Transferable transferable;
 
-    protected String getToolTipString(){
+    protected String getToolTipString() {
         return "";
     }
 
@@ -367,6 +367,11 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
                 ((java.awt.Graphics2D)g).addRenderingHints( new java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing ) );
             }
         }
+    }
+    
+    public void repaint() {
+    	super.repaint();
+    	this.requestFocusInWindow();
     }
 
 }
