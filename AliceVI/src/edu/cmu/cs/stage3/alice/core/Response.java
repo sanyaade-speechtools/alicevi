@@ -23,11 +23,65 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import java.beans.PropertyVetoException;
+import java.util.Locale;
+
 import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
+
+import javax.speech.AudioException;
+import javax.speech.Central;
+import javax.speech.Engine;
+import javax.speech.EngineException;
+import javax.speech.EngineList;
+import javax.speech.EngineStateError;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
+import javax.speech.synthesis.SynthesizerProperties;
+import javax.speech.synthesis.Voice;
+
+class Global {
+	public static Synthesizer g_Synth;
+}
 
 public abstract class Response extends Code {
 	public final NumberProperty duration = new NumberProperty( this, "duration", getDefaultDuration() );
-
+	
+	/**
+	 * Initialize the voice synthesizer for the responses to the system.
+	 */
+	static {
+		SynthesizerModeDesc desc = new SynthesizerModeDesc(
+                null,          // engine name
+                "general",     // mode name
+                Locale.US,     // locale
+                null,          // running
+                null);         // voice
+		
+		try {
+			Global.g_Synth = Central.createSynthesizer(desc);
+			Global.g_Synth.allocate();
+			Global.g_Synth.resume();
+			desc = (SynthesizerModeDesc)Global.g_Synth.getEngineModeDesc();
+			Voice[] voices = desc.getVoices();
+			Global.g_Synth.getSynthesizerProperties().setVoice(voices[0]);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EngineException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AudioException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EngineStateError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	protected Number getDefaultDuration() {
 		return new Double( 1 );
 	}
@@ -102,10 +156,6 @@ public abstract class Response extends Code {
 			m_dt = 0;
 			m_duration = Response.this.duration.doubleValue( Double.NaN );
 			m_isActive = true;
-			
-			// TODO: Print Out / Say what the response is doing.
-			//       Need some form of text-to-audio converter.
-			System.out.println(this);
 		}
 		public void update( double t ) {
 			m_dt = t - m_tPrev;
@@ -113,6 +163,11 @@ public abstract class Response extends Code {
 		}
 		public void epilogue( double t ) {
 			m_isActive = false;
+			
+			// TODO: Print Out / Say what the response is doing.
+			//       Need some form of text-to-audio converter.
+			//System.out.println(this);
+			Global.g_Synth.speakPlainText(this.toString(), null);
 		}
 		public void stop( double t ) {
 			if( isActive() ) {
@@ -144,7 +199,7 @@ public abstract class Response extends Code {
 		}
 
 		public String toString() {
-			return this.getClass().getSimpleName();
+			return "";//this.getClass().getSimpleName();
 		}
 	}
 }

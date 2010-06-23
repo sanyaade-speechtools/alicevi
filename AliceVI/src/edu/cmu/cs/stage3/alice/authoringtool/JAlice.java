@@ -42,9 +42,12 @@ import java.util.StringTokenizer;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.core.Decorator;
 
+import javax.speech.AudioException;
 import javax.speech.Central;
 import javax.speech.Engine;
+import javax.speech.EngineException;
 import javax.speech.EngineList;
+import javax.speech.EngineStateError;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
 import javax.speech.synthesis.SynthesizerProperties;

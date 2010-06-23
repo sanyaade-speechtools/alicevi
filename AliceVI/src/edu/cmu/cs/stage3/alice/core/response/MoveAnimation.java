@@ -77,7 +77,7 @@ public class MoveAnimation extends DirectionAmountTransformAnimation {
 			
 			// Generate return string "Move [subject] [direction] [number] meters."
 			retVal.append("Move ");
-			retVal.append(this.m_subject.getRepr());
+			retVal.append(m_subject.getRepr());
 			retVal.append(' ');
 			retVal.append(direction.getDirectionValue().getRepr().toLowerCase());
 			retVal.append(' ');
