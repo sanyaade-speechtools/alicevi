@@ -85,7 +85,7 @@ public class GetAGoodLookAtAnimation extends OrientationAnimation {
 			// Declare the return structure for the value
 			StringBuilder retVal = new StringBuilder();
 			
-			// Generate return string "[subject] gets a good look at [target]."
+			// Generate return string
 			retVal.append(this.m_subject.getRepr());
 			retVal.append(" gets a good look at ");
 			retVal.append(this.m_target.getRepr());

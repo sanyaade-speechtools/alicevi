@@ -21,13 +21,17 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
+// The package we're part of
 package edu.cmu.cs.stage3.alice.core;
 
+// Imports to check specific property changes
 import java.beans.PropertyVetoException;
-import java.util.Locale;
 
+// Import for numeric properties for responses
 import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
 
+// Imports for speech support
+import java.util.Locale;
 import javax.speech.AudioException;
 import javax.speech.Central;
 import javax.speech.Engine;
@@ -39,15 +43,22 @@ import javax.speech.synthesis.SynthesizerModeDesc;
 import javax.speech.synthesis.SynthesizerProperties;
 import javax.speech.synthesis.Voice;
 
-class Global {
-	public static Synthesizer g_Synth;
-}
-
+/**
+ * Response - An object which encapsulates the behavior of animated /
+ *            programmable objects within Alice. These are evaluated
+ *            at runtime to give objects their unique behaviors, from
+ *            moving to turning, speaking, and the like.
+ */
 public abstract class Response extends Code {
+	// The static synthesizer for voicing out a response during runtime
+	public static Synthesizer Synth;
+	
+	// The duration that the response lasts during runtime
 	public final NumberProperty duration = new NumberProperty( this, "duration", getDefaultDuration() );
 	
 	/**
-	 * Initialize the voice synthesizer for the responses to the system.
+	 * Initialize the voice synthesizer for the responses to the system statically,
+	 * making it accessible to all responses.
 	 */
 	static {
 		SynthesizerModeDesc desc = new SynthesizerModeDesc(
@@ -58,26 +69,21 @@ public abstract class Response extends Code {
                 null);         // voice
 		
 		try {
-			Global.g_Synth = Central.createSynthesizer(desc);
-			Global.g_Synth.allocate();
-			Global.g_Synth.resume();
-			desc = (SynthesizerModeDesc)Global.g_Synth.getEngineModeDesc();
+			Synth = Central.createSynthesizer(desc);
+			Synth.allocate();
+			Synth.resume();
+			desc = (SynthesizerModeDesc)Synth.getEngineModeDesc();
 			Voice[] voices = desc.getVoices();
-			Global.g_Synth.getSynthesizerProperties().setVoice(voices[0]);
+			Synth.getSynthesizerProperties().setVoice(voices[1]);
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (PropertyVetoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (AudioException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineStateError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -167,7 +173,7 @@ public abstract class Response extends Code {
 			// TODO: Print Out / Say what the response is doing.
 			//       Need some form of text-to-audio converter.
 			//System.out.println(this);
-			Global.g_Synth.speakPlainText(this.toString(), null);
+			Synth.speakPlainText(this.toString(), null);
 		}
 		public void stop( double t ) {
 			if( isActive() ) {

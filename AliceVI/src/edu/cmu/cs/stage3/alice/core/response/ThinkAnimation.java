@@ -34,15 +34,15 @@ public class ThinkAnimation extends AbstractBubbleAnimation {
 		 * Returns the string representation of this object to be used in
 		 * vocalizing it to non-seeing users.
 		 * 
-		 * @return "[subject] thinks \"[thought]\"."
+		 * @return "[subject] thinks, \"[thought]\"."
 		 */
 		public String toString() {
 			// Declare the return structure for the value
 			StringBuilder retVal = new StringBuilder();
 			
-			// Generate return string "[subject] thinks \"[thought]\"."
+			// Generate return string
 			retVal.append(subject.getOwner().getRepr());
-			retVal.append(" thinks \"");
+			retVal.append(" thinks, \"");
 			retVal.append(what.getStringValue());
 			retVal.append("\".");
 			

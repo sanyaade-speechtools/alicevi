@@ -31,11 +31,32 @@ public class PointAtAnimation extends AbstractPointAtAnimation {
 		protected boolean onlyAffectYaw() {
 			return PointAtAnimation.this.onlyAffectYaw.booleanValue();
 		}
+		
 		public void prologue( double t ) {
 			super.prologue( t );
 			if( PointAtAnimation.this.onlyAffectYaw.getValue() == null ) {
 				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException( "only affect yaw value must not be null.", null, PointAtAnimation.this.onlyAffectYaw );
 			}
+		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "[subject] points at [target]."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "Move [subject] [direction] [number] meters."
+			retVal.append(m_subject.getRepr());
+			retVal.append(" points at ");
+			retVal.append(m_target.getRepr());
+			retVal.append('.');
+			
+			// Return
+			return retVal.toString();
 		}
 	}
 }

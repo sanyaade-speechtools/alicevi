@@ -61,16 +61,15 @@ public class MoveAtSpeed extends DirectionSpeedTransformResponse {
 		 * Returns the string representation of this object to be used in
 		 * vocalizing it to non-seeing users.
 		 * 
-		 * @return "Move [subject] [direction] at [number] meters per second."
+		 * @return "[subject] moves [direction] at [number] meters per second."
 		 */
 		public String toString() {
 			// Declare the return structure for the value
 			StringBuilder retVal = new StringBuilder();
 			
-			// Generate return string "Turn [subject] [direction] [number] revolutions."
-			retVal.append("Move ");
+			// Generate return string
 			retVal.append(this.m_subject.getRepr());
-			retVal.append(' ');
+			retVal.append(" moves ");
 			retVal.append(direction.getDirectionValue().getRepr().toLowerCase());
 			retVal.append(' ');
 			retVal.append(speed.doubleValue());

@@ -69,16 +69,15 @@ public class MoveAnimation extends DirectionAmountTransformAnimation {
 		 * Returns the string representation of this object to be used in
 		 * vocalizing it to non-seeing users.
 		 * 
-		 * @return "Move [subject] [direction] [number] meters."
+		 * @return "[subject] moves [direction] [number] meters."
 		 */
 		public String toString() {
 			// Declare the return structure for the value
 			StringBuilder retVal = new StringBuilder();
 			
-			// Generate return string "Move [subject] [direction] [number] meters."
-			retVal.append("Move ");
+			// Generate return string
 			retVal.append(m_subject.getRepr());
-			retVal.append(' ');
+			retVal.append(" moves ");
 			retVal.append(direction.getDirectionValue().getRepr().toLowerCase());
 			retVal.append(' ');
 			retVal.append(amount.doubleValue());

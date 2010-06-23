@@ -112,7 +112,6 @@ public class PoseAnimation extends Animation {
 			StringBuilder retVal = new StringBuilder();
 			
 			// Generate return string "[subject] poses."
-			
 			retVal.append(subject.getRepr());
 			retVal.append(" poses.");
 			

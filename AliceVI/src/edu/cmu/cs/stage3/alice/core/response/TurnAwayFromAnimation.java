@@ -38,16 +38,15 @@ public class TurnAwayFromAnimation extends AbstractPointAtAnimation {
 		 * Returns the string representation of this object to be used in
 		 * vocalizing it to non-seeing users.
 		 * 
-		 * @return "Turn [subject] away from [target]."
+		 * @return "[subject] turns away from [target]."
 		 */
 		public String toString() {
 			// Declare the return structure for the value
 			StringBuilder retVal = new StringBuilder();
 			
-			// Generate return string "Turn [subject] away from [target]."
-			retVal.append("Turn ");
+			// Generate return string
 			retVal.append(this.m_subject.getRepr());
-			retVal.append(" away from ");
+			retVal.append(" turns away from ");
 			retVal.append(this.m_target.getRepr());
 			retVal.append('.');
 			

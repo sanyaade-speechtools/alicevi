@@ -28,5 +28,23 @@ public class StandUpAnimation extends OrientationAnimation {
 		protected edu.cmu.cs.stage3.math.Quaternion getTargetQuaternion() {
 			return m_subject.calculateStandUp( m_asSeenBy ).getQuaternion();
 		}
+		
+		/**
+		 * Returns the string representation of this object to be used in
+		 * vocalizing it to non-seeing users.
+		 * 
+		 * @return "[subject] stands up.."
+		 */
+		public String toString() {
+			// Declare the return structure for the value
+			StringBuilder retVal = new StringBuilder();
+			
+			// Generate return string "Move [subject] [direction] [number] meters."
+			retVal.append(m_subject.getRepr());
+			retVal.append("stands up.");
+			
+			// Return
+			return retVal.toString();
+		}
 	}
 }
