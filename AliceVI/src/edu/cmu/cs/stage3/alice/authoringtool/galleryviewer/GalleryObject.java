@@ -371,6 +371,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
     
     public void repaint() {
     	super.repaint();
+    	this.setFocusable(true);
     	this.requestFocusInWindow();
     }
 

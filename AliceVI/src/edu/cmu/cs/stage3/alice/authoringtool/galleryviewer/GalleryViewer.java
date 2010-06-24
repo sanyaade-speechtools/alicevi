@@ -25,6 +25,8 @@ package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
 import java.awt.Component;
 
+import javax.swing.JScrollPane;
+
 import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.iohandler.GalleryKeyScroll;
 
 /**
@@ -65,6 +67,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     protected RootDirectoryStructure localGallery = null;
     protected RootDirectoryStructure cdGallery = null;
     protected java.util.Vector currentGalleryObjects;
+    protected JScrollPane objectPanelScrollPane;
     protected edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel objectPanel;
     protected java.awt.FlowLayout objectPanelLayout;
     protected javax.swing.JPanel directoryPanel;
@@ -1792,9 +1795,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         searchButton = new javax.swing.JButton(startSearchString);
         searchButton.setBackground(new java.awt.Color( 240, 240, 255 ));
         searchButton.setMargin(new java.awt.Insets(2,2,2,2));
-//        searchButton.setMinimumSize(new java.awt.Dimension(60, 26));
-//        searchButton.setPreferredSize(new java.awt.Dimension(60, 26));
-//        searchButton.setMaximumSize(new java.awt.Dimension(60, 26));
         searchButton.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent e){
                 if (!stopSearch){
@@ -1810,9 +1810,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		searchWebButton = new javax.swing.JButton(startSearchWebString);
 		searchWebButton.setBackground(new java.awt.Color( 240, 240, 255 ));
 		searchWebButton.setMargin(new java.awt.Insets(2,2,2,2));
-//		searchWebButton.setMinimumSize(new java.awt.Dimension(140, 26));
-//		searchWebButton.setPreferredSize(new java.awt.Dimension(140, 26));
-//		searchWebButton.setMaximumSize(new java.awt.Dimension(140, 26));
 		searchWebButton.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent e){
 				if (!stopSearch){
@@ -1860,9 +1857,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         headerPanel.add(searchBrowseButton, new java.awt.GridBagConstraints(2,0,1,1,0,0,java.awt.GridBagConstraints.NORTHEAST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(2,0,0,4), 0,0 ));
         headerPanel.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(1,1,2,1,1,1,java.awt.GridBagConstraints.EAST,java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0,0,0,0), 0,0 ));
         headerPanel.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(1,0,1,1,1,1,java.awt.GridBagConstraints.EAST,java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0,0,0,0), 0,0 ));
-        //  headerPanel.add(javax.swing.Box.createHorizontalGlue(), new java.awt.GridBagConstraints(1,1,1,1,1,1,java.awt.GridBagConstraints.EAST,java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0,0,0,0), 0,0 ));
-      //  headerPanel.add(javax.swing.Box.createVerticalGlue(), new java.awt.GridBagConstraints(0,2,1,1,1,1,java.awt.GridBagConstraints.SOUTH,java.awt.GridBagConstraints.VERTICAL, new java.awt.Insets(0,0,0,0), 0,0 ));
-      //  headerPanel.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 40));
         webGalleryIcon = new javax.swing.ImageIcon( GalleryViewer.class.getResource( "images/webGalleryIcon.png" ) );
         loadingImageIcon = new javax.swing.ImageIcon( GalleryViewer.class.getResource( "images/loadingImageIcon.png" ) );
         noImageIcon = new javax.swing.ImageIcon( GalleryViewer.class.getResource( "images/noImageIcon.png" ) );
@@ -1872,7 +1866,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         add3DTextIcon = new javax.swing.ImageIcon( GalleryViewer.class.getResource( "images/3DText.png" ) );
         javax.swing.ImageIcon upLevelIcon = new javax.swing.ImageIcon( GalleryViewer.class.getResource( "images/upLevelIcon.png" ) );
         javax.swing.ImageIcon upLevelIconPressed = new javax.swing.ImageIcon( GalleryViewer.class.getResource( "images/upLevelIconPressed.png" ) );
-        //javax.swing.ImageIcon upLevelIconDisabled = new javax.swing.ImageIcon( GalleryViewer.class.getResource( "images/upLevelIconDisabled.png" ) );
         javax.swing.ImageIcon upLevelIconDisabled = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDisabledIcon(upLevelIcon, 45);
 
         upLevelButton = new javax.swing.JButton(upLevelIcon);
@@ -1938,11 +1931,11 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
         this.setLayout(new java.awt.BorderLayout());
         this.add(headerPanel, java.awt.BorderLayout.NORTH);
-        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(objectPanel, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        this.add(scrollPane, java.awt.BorderLayout.CENTER);
+        objectPanelScrollPane = new JScrollPane(objectPanel, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.add(objectPanelScrollPane, java.awt.BorderLayout.CENTER);
         
         //Aik Min added this to make scroll bar scroll more
-        scrollPane.getHorizontalScrollBar().setUnitIncrement(44);
+        objectPanelScrollPane.getHorizontalScrollBar().setUnitIncrement(44);
         
         this.setPreferredSize(new java.awt.Dimension(Integer.MAX_VALUE, 250));
         this.setMinimumSize(new java.awt.Dimension(100, 250));
@@ -2748,6 +2741,10 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     	}
     	if(leftIndex == -1) return;
     	components[leftIndex].requestFocusInWindow();
+    	objectPanelScrollPane.getHorizontalScrollBar().setValue(
+    			objectPanelScrollPane.getHorizontalScrollBar().getValue() -
+    			components[startingIndex].getWidth()
+    	);
     	((GalleryObject)components[startingIndex]).galleryMouseExited();
     	((GalleryObject)components[leftIndex]).galleryMouseEntered();
     }
@@ -2774,6 +2771,10 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     	}
     	if(rightIndex == -1) return;
     	components[rightIndex].requestFocusInWindow();
+    	objectPanelScrollPane.getHorizontalScrollBar().setValue(
+    			objectPanelScrollPane.getHorizontalScrollBar().getValue() +
+    			components[startingIndex].getParent().getWidth()
+    	);
     	((GalleryObject)components[startingIndex]).galleryMouseExited();
     	((GalleryObject)components[rightIndex]).galleryMouseEntered();
     }
