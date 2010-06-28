@@ -2175,11 +2175,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         DirectoryStructure oldDir = directoryOnDisplay;
         boolean oldIsInWebGallery = isInWebGallery;
         if (setAsCurrent){
-//        	System.out.println("ok, we're building the current dir");
             directoryOnDisplay = newDir;
             
             if (!stopBuildingGallery){
-//            	System.out.println("we haven't been cancelled");
 				javax.swing.SwingUtilities.invokeLater( new Runnable(){
 					public void run(){
 		                createDirectoryButtons();
@@ -2208,25 +2206,19 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
                     buildNewDirectory(newDir.secondLocalDirectory, false);
                 }
             }
-//            System.out.println("done building local equivalents");
             updatePanelsWhileLoading = oldUpdateValue;
             long tempTimeStamp = -1;
             if (newDir.data != null){
-//            	System.out.println("able to pull the timestamp from the data");
                if (newDir.data.timeStamp == -1){
                    newDir.data.timeStamp = getURLTimeStamp(newDir.rootNode.rootPath+newDir.path);
                    tempTimeStamp = newDir.data.timeStamp;
-//					System.out.println("ooops, new time stamp");
                }
             }
             else{
-//				System.out.println("new time stamp");
                 tempTimeStamp = getURLTimeStamp(newDir.rootNode.rootPath+newDir.path);
             }
             xml = getXML(newDir.rootNode.rootPath, newDir.path, WEB, tempTimeStamp, cacheDir, false);
-//            System.out.println("just got the xml, wheh!");
             if (xml == null){
-//            	System.out.println("it's null?!");
                 if (setAsCurrent){
                     isInWebGallery = oldIsInWebGallery;
                     directoryOnDisplay = oldDir;
@@ -2234,7 +2226,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
                 }
                 return;
             }
-//			System.out.println("yay, not null!");
         }
         else{
             if (directoryOnDisplay.name.equals(localGalleryName) || directoryOnDisplay.name.equals(cdGalleryName)){
@@ -2245,9 +2236,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         int totalInside = -1;
         try{
             if (xml != null){
-//				System.out.println("wow, now we gotta go init the whole thing");
                 totalInside = newDir.initSelf(xml);
-//				System.out.println("yahtzee! inited it just fine!");
             }
             else if (newDir.rootNode.type != WEB){
                 totalInside = newDir.initSelf(new java.io.File(newDir.rootNode.rootPath + newDir.path));
@@ -2397,14 +2386,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         DirectoryStructure temp = null;
         if (toChangeTo != null){
             temp = toChangeTo.directoryToUse;
-//			System.out.println("switch to "+toChangeTo.name);
-        }
-        else{
-//        	System.out.println("switch to null");
         }
         final DirectoryStructure actualToChangeTo = temp;
         if (actualToChangeTo == directoryOnDisplay){
-//            System.out.println("already there");
             return;
         }
         Runnable toRun = null;
@@ -2412,20 +2396,19 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
             toRun = new Runnable() {
                 public void run(){
                     updatePanelsWhileLoading = true;
-//                    System.out.println("gotta build it");
                     buildNewDirectory(actualToChangeTo, true);
                     updatePanelsWhileLoading = false;
                 }
             };
         }
-        else{
+        else {
             toRun = new Runnable() {
-                public void run(){
+                public void run() {
                     directoryOnDisplay = actualToChangeTo;
                     if (directoryOnDisplay == null){
                         isInWebGallery = false;
                     }
-                    else{
+                    else {
                         if (directoryOnDisplay.name.equals(localGalleryName) || directoryOnDisplay.name.equals(cdGalleryName)){
                             isInWebGallery = false;
                         }
@@ -2447,10 +2430,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         }
         if (changingThread != null && changingThread.isAlive()){
             stopBuildingGallery = true;
-//			System.out.println("trying to kill old build");
             while (changingThread.isAlive()){
                 try{
-//                	System.out.println("trying to kill old build");
                     Thread.sleep(10);
                 }
                 catch (Exception e){}
@@ -2479,7 +2460,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				};
 			}
 		});
-        //attributeLabel.revalidate();
     }
 
     protected static String cleanUpName(String name){
@@ -2654,6 +2634,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				  for (int p=0; p< builderButtonsVector.size(); p++){
 					count++;
 					GenericBuilderButton builderButton = (GenericBuilderButton)builderButtonsVector.get(p);
+					builderButton.setFocusable(true);
+					builderButton.requestFocusInWindow();
+					builderButton.addKeyListener(new GalleryKeyScroll(this, builderButton));
 					objectPanel.add(builderButton);
 					builderButton.updateGUI();
 				}
@@ -2782,7 +2765,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     	((GalleryObject)components[rightIndex]).galleryMouseEntered();
     }
 
-    protected void goUpOneLevel(){
+    public void goUpOneLevel(){
         if (directoryOnDisplay != null){
             changeDirectory(directoryOnDisplay.parent);
         }

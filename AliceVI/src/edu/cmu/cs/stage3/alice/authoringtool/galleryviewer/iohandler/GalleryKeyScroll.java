@@ -1,7 +1,5 @@
 package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.iohandler;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -22,9 +20,14 @@ public class GalleryKeyScroll extends KeyAdapter {
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 			galleryViewer.moveFocusLeft(galleryObject);
-		} else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		} 
+		else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			galleryViewer.moveFocusRight(galleryObject);
-		} else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+		} 
+		else if(e.getKeyCode() == KeyEvent.VK_UP) {
+			galleryViewer.goUpOneLevel();
+		} 
+		else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			galleryObject.respondToMouse();
 		}
 	}
