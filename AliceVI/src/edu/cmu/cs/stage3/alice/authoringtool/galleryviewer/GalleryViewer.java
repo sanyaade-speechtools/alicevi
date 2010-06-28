@@ -2743,8 +2743,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     	if(leftIndex == -1) return;
     	components[leftIndex].requestFocusInWindow();
     	objectPanelScrollPane.getHorizontalScrollBar().setValue(
-    			objectPanelScrollPane.getHorizontalScrollBar().getValue() -
-    			components[startingIndex].getWidth()
+    			leftIndex *
+    			components[leftIndex].getWidth() -
+    			10
     	);
     	((GalleryObject)components[startingIndex]).galleryMouseExited();
     	((GalleryObject)components[leftIndex]).galleryMouseEntered();
@@ -2773,8 +2774,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     	if(rightIndex == -1) return;
     	components[rightIndex].requestFocusInWindow();
     	objectPanelScrollPane.getHorizontalScrollBar().setValue(
-    			objectPanelScrollPane.getHorizontalScrollBar().getValue() +
-    			components[startingIndex].getParent().getWidth()
+    			rightIndex *
+    			components[rightIndex].getWidth() -
+    			10
     	);
     	((GalleryObject)components[startingIndex]).galleryMouseExited();
     	((GalleryObject)components[rightIndex]).galleryMouseEntered();
