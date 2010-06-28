@@ -1891,6 +1891,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
         add3DTextButton = new TextBuilderButton();
         add3DTextButton.set(add3DTextData, add3DTextIcon, null);
+        add3DTextButton.addKeyListener(new GalleryKeyScroll(this, add3DTextButton));
 
         java.util.Vector builderVector = edu.cmu.cs.stage3.caitlin.personbuilder.PersonBuilder.getAllBuilders();
         builderButtonsVector = new java.util.Vector();
