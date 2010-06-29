@@ -86,20 +86,4 @@ public class WebGalleryDirectory extends WebGalleryObject {
         	}
         }
     }
-
-
-    public void galleryMouseExited(){
-       /* if (mouseOver){
-            mouseOver = false;
-            this.repaint();
-        }*/
-    }
-
-    public void galleryMouseEntered(){
-       /* if (!mouseOver){
-            mouseOver = true;
-            this.repaint();
-        }*/
-    }
-
 }

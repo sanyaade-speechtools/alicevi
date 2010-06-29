@@ -35,8 +35,8 @@ public class DnDGroupingPanel extends GroupingPanel {
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.DragWindow dragWindow;
 	protected edu.cmu.cs.stage3.awt.SemitransparentWindow dragWindow2;
 	protected java.awt.Point dragOffset;
-	protected int arcWidth = 12;
-	protected int arcHeight = 10;
+	protected int arcWidth = 24;
+	protected int arcHeight = 20;
 	protected GroupingPanelDragGestureListener dragGestureListener = new GroupingPanelDragGestureListener();
 	protected java.util.LinkedList dragGestureRecognizers = new java.util.LinkedList(); //MEMFIX
 	protected boolean dragEnabled = true;

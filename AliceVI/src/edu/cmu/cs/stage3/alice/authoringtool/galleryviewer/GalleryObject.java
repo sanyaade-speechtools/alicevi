@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+
 /**
  * @author David Culyba
  *
@@ -82,13 +85,8 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 
     public void setToolTipText(String text){
         super.setToolTipText(text);
-       // nameLabel.setToolTipText(text);
-       // imageLabel.setToolTipText(text);
-      //  sizeLabel.setToolTipText(text);
-      //  locationLabel.setToolTipText(text);
         containingPanel.setToolTipText(text);
         grip.setToolTipText(text);
-        //image.setToolTipText(text);
     }
 
     public GalleryObject(){
@@ -305,7 +303,6 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 		containingPanel.add(classLabel, new java.awt.GridBagConstraints(1,0,2,1,0,0,java.awt.GridBagConstraints.NORTH,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,0,0,0), 0,0 ));
         containingPanel.add(nameLabel, new java.awt.GridBagConstraints(1,1,2,1,0,0,java.awt.GridBagConstraints.NORTH,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,0,0,0), 0,0 ));
         containingPanel.add(imageLabel, new java.awt.GridBagConstraints(1,2,2,1,0,0,java.awt.GridBagConstraints.NORTH,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,0,0,0), 0,0 ));
-        //this.add(grip, new java.awt.GridBagConstraints(0,0,1,3,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,0,0,0), 0,0 ));
 		classLabel.setText(getClassName());
         nameLabel.setText(getDisplayName(displayName));
         sizeColor = getSizeColor(data.size);
@@ -316,9 +313,9 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
         if (data.size > 0 && data.type == GalleryViewer.WEB){
             sizeLabel.setText((String.valueOf(data.size)+"kb"));
             sizeLabel.setForeground(sizeColor);
-            containingPanel.add(sizeLabel, new java.awt.GridBagConstraints(1,3,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,0,0,0), 0,0 ));
+            containingPanel.add(sizeLabel, new java.awt.GridBagConstraints(1,4,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,6,0,0), 0,0 ));
         }
-        containingPanel.add(locationLabel, new java.awt.GridBagConstraints(2,3,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,0,0,0), 0,0 ));
+        containingPanel.add(locationLabel, new java.awt.GridBagConstraints(1,4,2,1,0,0,java.awt.GridBagConstraints.NORTHEAST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,0,4,6), 0,0 ));
         containingPanel.revalidate();
         containingPanel.repaint();
     }
@@ -359,10 +356,10 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
                 ((java.awt.Graphics2D)g).addRenderingHints( new java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON ) );
             }
             java.awt.Rectangle bounds = getBounds();
-            for (int i=1; i<=2; i++){
-                g.setColor( new java.awt.Color(HIGHLITE.getRed(), HIGHLITE.getGreen(), HIGHLITE.getBlue(), (255 - (i-1)*60)));
-                g.drawRoundRect( i, i, bounds.width - 2*i, bounds.height - 2*i, arcWidth, arcHeight );
-            }
+            if(g instanceof Graphics2D)
+            	((Graphics2D) g).setStroke(new BasicStroke(8));
+            g.setColor( new java.awt.Color(HIGHLITE.getRed(), HIGHLITE.getGreen(), HIGHLITE.getBlue(), 255));
+            g.drawRoundRect( 3, 3, bounds.width - 6, bounds.height - 6, arcWidth, arcHeight );
             if( g instanceof java.awt.Graphics2D ) {
                 ((java.awt.Graphics2D)g).addRenderingHints( new java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing ) );
             }
