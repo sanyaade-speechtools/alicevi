@@ -23,6 +23,12 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
+import java.awt.Color;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+import javax.swing.JButton;
+
 /**
  * @author culyba, dennisc
  *
@@ -125,6 +131,29 @@ public class ModelInfoContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 		detailsPanel.add(javax.swing.Box.createVerticalGlue(), new java.awt.GridBagConstraints(0, count, 1, 1, 1.0D, 1.0D, 18, 1, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 	}
+	
+	private JButton createButton(String label) {
+		JButton ret = new JButton(label);
+		ret.setForeground(new Color(1f, 1f, 1f));
+		ret.setBackground(new Color(0f, 0f, 0f));
+		ret.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				JButton target = (JButton) arg0.getSource();
+				target.setBackground(new Color(1f, 1f, 1f));
+				target.setForeground(new Color(0f, 0f, 0f));
+			}
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				JButton target = (JButton) arg0.getSource();
+				target.setForeground(new Color(1f, 1f, 1f));
+				target.setBackground(new Color(0f, 0f, 0f));
+			}
+			
+		});
+		return ret;
+	}
 
 	private void guiInit() {
 		setBackground(GalleryObject.BACKGROUND);
@@ -134,8 +163,8 @@ public class ModelInfoContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		detailsPanel = new javax.swing.JPanel();
 		detailsPanel.setOpaque(false);
 		detailsPanel.setLayout(new java.awt.GridBagLayout());
-		addObjectButton = new javax.swing.JButton("Add instance to world");
-		cancelButton = new javax.swing.JButton("Cancel");
+		addObjectButton = createButton("Add instance to world");
+		cancelButton = createButton("Cancel");
 		setLayout(new java.awt.GridBagLayout());
 		add(nameLabel, new java.awt.GridBagConstraints(0, 0, 1, 1, 0.0D, 0.0D, 10, 0, new java.awt.Insets(2, 0, 0, 0), 0, 0));
 		add(imageLabel, new java.awt.GridBagConstraints(0, 1, 1, 1, 0.0D, 0.0D, 10, 0, new java.awt.Insets(0, 20, 20, 20), 0, 0));
