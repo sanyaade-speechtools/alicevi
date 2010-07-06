@@ -23,103 +23,158 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool;
 
-import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener;
-import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent;
-import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
-
-// Added by Brett Snare RIT
-
-import javax.swing.JMenu;
-import javax.swing.AbstractButton;
-import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.JSlider;
-import javax.swing.text.JTextComponent;
-import javax.swing.JTabbedPane;
-import javax.swing.JTree;
-import javax.swing.JTable;
-
-import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController;
-import edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.BehaviorGroupsEditor;
-import edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.SceneEditor;
-import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryViewer;
-import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.AWTEventListener;
-import java.awt.Component;
 import java.awt.AWTEvent;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeExpansionEvent;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FileDialog;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Point;
-
 import java.awt.Rectangle;
-
 import java.awt.Toolkit;
-
 import java.awt.datatransfer.ClipboardOwner;
-import org.python.core.*;
-import java.io.*;
+import java.awt.event.AWTEventListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowListener;
+import java.beans.PropertyVetoException;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Vector;
+
+import javax.speech.AudioException;
+import javax.speech.Central;
+import javax.speech.EngineException;
+import javax.speech.EngineStateError;
+import javax.speech.synthesis.JSMLException;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
+import javax.speech.synthesis.Voice;
+import javax.swing.AbstractButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.UIManager;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.basic.BasicBorders;
+import javax.swing.text.JTextComponent;
 
 import movieMaker.SoundStorage;
 
-import edu.cmu.cs.stage3.alice.scenegraph.renderer.*;
-import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
+import org.python.core.Py;
+import org.python.core.PyException;
+import org.python.core.PyFile;
 
-import edu.cmu.cs.stage3.alice.authoringtool.EditorManager;
-
-import edu.cmu.cs.stage3.alice.authoringtool.dialog.*;
-import edu.cmu.cs.stage3.alice.authoringtool.util.*;
-import edu.cmu.cs.stage3.alice.authoringtool.util.event.*;
-
-import edu.cmu.cs.stage3.alice.core.util.WorldListener;
-
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.AboutContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.Add3DTextPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.CaptureContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.CapturedImageContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.ErrorContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.ExportCodeForPrintingContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.LoadElementProgressPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.NewVariableContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.OutputComponent;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.PreferencesContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.RenderContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.SaveForWebContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.SimulationExceptionPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.SoundRecorder;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.StartUpContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.StdErrOutContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.StoreElementProgressPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.WorldInfoContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.BehaviorGroupsEditor;
+import edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.SceneEditor;
+import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent;
+import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener;
+import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject;
+import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryViewer;
+import edu.cmu.cs.stage3.alice.authoringtool.util.CollectionEditorPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
+import edu.cmu.cs.stage3.alice.authoringtool.util.DefaultScheduler;
+import edu.cmu.cs.stage3.alice.authoringtool.util.DnDClipboard;
+import edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ExpandablePanel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ExtensionFileFilter;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ExtensionGroupFileFilter;
+import edu.cmu.cs.stage3.alice.authoringtool.util.GUIEffects;
+import edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory;
+import edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ImagePanel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.OneShotScheduler;
+import edu.cmu.cs.stage3.alice.authoringtool.util.OneShotSimpleBehavior;
+import edu.cmu.cs.stage3.alice.authoringtool.util.OneShotUndoableRedoable;
+import edu.cmu.cs.stage3.alice.authoringtool.util.PointOfViewUndoableRedoable;
+import edu.cmu.cs.stage3.alice.authoringtool.util.PostImportRunnable;
+import edu.cmu.cs.stage3.alice.authoringtool.util.RectangleAnimator;
+import edu.cmu.cs.stage3.alice.authoringtool.util.StencilStateCapsule;
+import edu.cmu.cs.stage3.alice.authoringtool.util.TrashComponent;
+import edu.cmu.cs.stage3.alice.authoringtool.util.WatcherPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.WorldDifferencesCapsule;
+import edu.cmu.cs.stage3.alice.authoringtool.util.WorldTreeModel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent;
+import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener;
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController;
+import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.Property;
+import edu.cmu.cs.stage3.alice.core.RenderTarget;
+import edu.cmu.cs.stage3.alice.core.Variable;
 import edu.cmu.cs.stage3.alice.core.World;
 import edu.cmu.cs.stage3.alice.core.clock.DefaultClock;
-
-import edu.cmu.cs.stage3.alice.core.RenderTarget;
+import edu.cmu.cs.stage3.alice.core.event.ChildrenEvent;
+import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent;
+import edu.cmu.cs.stage3.alice.core.event.PropertyEvent;
+import edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty;
+import edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion;
+import edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion;
+import edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse;
+import edu.cmu.cs.stage3.alice.core.response.CompositeResponse;
+import edu.cmu.cs.stage3.alice.core.response.DoInOrder;
+import edu.cmu.cs.stage3.alice.core.response.DoTogether;
+import edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation;
+import edu.cmu.cs.stage3.alice.core.response.PropertyAnimation;
+import edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse;
+import edu.cmu.cs.stage3.alice.core.response.Wait;
+import edu.cmu.cs.stage3.alice.core.util.WorldListener;
+import edu.cmu.cs.stage3.alice.scenegraph.renderer.DefaultRenderTargetFactory;
+import edu.cmu.cs.stage3.alice.scenegraph.renderer.OffscreenRenderTarget;
+import edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory;
 import edu.cmu.cs.stage3.alice.scripting.ScriptingFactory;
-
-import javax.swing.JFileChooser;
-import java.awt.FileDialog;
-import javax.swing.JPanel;
-import javax.swing.filechooser.FileFilter;
-import java.awt.event.WindowListener;
-import edu.cmu.cs.stage3.alice.core.response.*;
-import edu.cmu.cs.stage3.alice.core.question.userdefined.*;
+import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
+import edu.cmu.cs.stage3.caitlin.stencilhelp.client.StencilManager;
+import edu.cmu.cs.stage3.scheduler.AbstractScheduler;
+import edu.cmu.cs.stage3.scheduler.Scheduler;
+import edu.cmu.cs.stage3.scheduler.SchedulerThread;
+import edu.cmu.cs.stage3.swing.DialogManager;
+import edu.cmu.cs.stage3.util.Criterion;
 import edu.cmu.cs.stage3.util.HowMuch;
 
-import edu.cmu.cs.stage3.util.*;
-import edu.cmu.cs.stage3.alice.core.event.*;
-
-import edu.cmu.cs.stage3.alice.core.Property;
-import edu.cmu.cs.stage3.alice.core.Element;
-import edu.cmu.cs.stage3.alice.core.Variable;
-
-import edu.cmu.cs.stage3.alice.core.property.*;
-import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
-
-import javax.swing.UIManager;
-import javax.swing.plaf.BorderUIResource;
-import javax.swing.plaf.basic.BasicBorders; //import javax.swing.UIManager;
-import javax.swing.JOptionPane;
-
-import java.awt.Insets;
-import java.awt.Font;
-
-import edu.cmu.cs.stage3.swing.DialogManager;
-import edu.cmu.cs.stage3.scheduler.*;
-
-import edu.cmu.cs.stage3.caitlin.stencilhelp.client.StencilManager;
-
-/**
- * @author Jason Pratt
- * @author Brett Snare bws7783@rit.edu
- */
 public class AuthoringTool implements ClipboardOwner, StencilApplication {
 	// file extensions
 	public static final String CHARACTER_EXTENSION = "a2c";
@@ -468,10 +523,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 
-			// UIManager.put( "Button.focus", new java.awt.Color(
-			// 255, 255, 255, 0 ) ); // don't show focus // makes printing slow,
-			// unfortunately
-
 			class CustomButtonBorder extends javax.swing.border.AbstractBorder
 			implements javax.swing.plaf.UIResource {
 				protected Insets insets = new Insets(3, 3, 3, 3);
@@ -491,13 +542,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 				.createCompoundBorder(javax.swing.BorderFactory
 						.createCompoundBorder(line, loweredBevel),
 						spacer);
-
-				// protected javax.swing.border.Border raisedBorder =
-				// javax.swing.BorderFactory.createCompoundBorder( raisedBevel,
-				// spacer );
-				// protected javax.swing.border.Border loweredBorder =
-				// javax.swing.BorderFactory.createCompoundBorder( loweredBevel,
-				// spacer );
 
 				public void paintBorder(Component c, java.awt.Graphics g,
 						int x, int y, int w, int h) {
@@ -523,8 +567,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 					new BorderUIResource.CompoundBorderUIResource(
 							new CustomButtonBorder(),
 							new BasicBorders.MarginBorder()));
-
-			// necessary for 1.4
 
 			UIManager.put("Label.font", new Font("SansSerif", Font.BOLD, 12));
 			UIManager.put("Label.foreground", AuthoringToolResources
@@ -630,7 +672,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		undoRedoInit();
 		miscInit();
 		importInit();
-		// preCacheCommonEditors();
 		worldInit(worldToLoad);
 		stencilInit();
 
@@ -638,17 +679,12 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 			protected void handleCaughtThowable(Runnable source, Throwable t) {
 				markEachFrameRunnableForRemoval(source);
 				showErrorDialog(source.toString(), t);
-
-				// todo?
-				// addEachFrameRunnable( source );
 			}
 		};
 		s.addEachFrameRunnable(scheduler);
 		s.addEachFrameRunnable(oneShotScheduler);
 
 		SchedulerThread schedulerThread = new SchedulerThread(s);
-		// schedulerThread.setSleepMillis( 1 );
-		// schedulerThread.setPriority( Thread.MAX_PRIORITY );
 		schedulerThread.start();
 
 		jAliceFrame.setVisible(true);
@@ -827,12 +863,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		addCharacterFileChooser = new JFileChooser();
 
 		browseFileChooser = new JFileChooser();
-		// browseFileChooser.setApproveButtonText( "Set Directory" );
-		// browseFileChooser.setDialogTitle( "Choose Directory..." );
-		// browseFileChooser.setDialogType( JFileChooser.OPEN_DIALOG
-		// );
-		// browseFileChooser.setFileSelectionMode(
-		// JFileChooser.DIRECTORIES_ONLY );
 
 		saveCharacterFileDialog = new FileDialog(jAliceFrame, "Save Object",
 				FileDialog.SAVE);
@@ -959,9 +989,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 			public void run() {
 				try {
 					worldClock.schedule();
-					// double time = AuthoringToolResources.getCurrentTime() -
-					// AuthoringTool.this.timeDifferential;
-					// AuthoringTool.this.world.schedule( time );
 				} catch (Throwable t) {
 					stopWorldAndShowDialog(t);
 				}
@@ -1141,14 +1168,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 				false);
 		javax.swing.ToolTipManager.sharedInstance().setDismissDelay(
 				Integer.MAX_VALUE);
-
-		// sound format TEST
-		// System.out.println( AuthoringToolResources.formatTime( .123 ) );
-		// System.out.println( AuthoringToolResources.formatTime( 45.123 ) );
-		// System.out.println( AuthoringToolResources.formatTime( 54.0 ) );
-		// System.out.println( AuthoringToolResources.formatTime( 63.123 ) );
-		// System.out.println( AuthoringToolResources.formatTime( 927.123 ) );
-		// System.out.println( AuthoringToolResources.formatTime( 32729.123 ) );
 	}
 
 	private void importInit() {
@@ -1190,27 +1209,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		importFileChooser.setFileFilter(importFileChooser
 				.getAcceptAllFileFilter());
 	}
-
-	// private void preCacheCommonEditors() {
-	// editorManager.preloadEditor(
-	// edu.cmu.cs.stage3.alice.authoringtool.editors.evaluationgroupeditor.EvaluationGroupEditor.class
-	// );
-	// editorManager.preloadEditor(
-	// edu.cmu.cs.stage3.alice.authoringtool.editors.miscgroupeditor.MiscGroupEditor.class
-	// );
-	// editorManager.preloadEditor(
-	// SceneEditor.class
-	// );
-	// editorManager.preloadEditor(
-	// edu.cmu.cs.stage3.alice.authoringtool.editors.soundgroupeditor.SoundGroupEditor.class
-	// );
-	// editorManager.preloadEditor(
-	// edu.cmu.cs.stage3.alice.authoringtool.editors.texturemapgroupeditor.TextureMapGroupEditor.class
-	// );
-	// editorManager.preloadEditor(
-	// edu.cmu.cs.stage3.alice.authoringtool.editors.variablegroupeditor.VariableGroupEditor.class
-	// );
-	// }
 
 	private void worldInit(File worldToLoad) {
 		if (worldToLoad != null) {
@@ -2775,6 +2773,52 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		}
 		return character;
 	}
+	
+	public void speak(Element element)
+	{
+		SynthesizerModeDesc desc = new SynthesizerModeDesc(
+                null,          // engine name
+                "general",     // mode name
+                Locale.US,     // locale
+                null,          // running
+                null);         // voice
+		try 
+		{
+			Synthesizer synth = Central.createSynthesizer(desc);
+			synth.allocate();
+			synth.resume();
+			desc = (SynthesizerModeDesc)synth.getEngineModeDesc();
+			Voice[] voices = desc.getVoices();
+			synth.getSynthesizerProperties().setVoice(voices[0]);
+
+			synth.speak("<?xml version=\"1.0\"?><jsml>" + element.getKey() + 
+					"<break size=\"large\"/> has been added" + "</jsml>", null);
+		}
+		catch(IllegalArgumentException e)
+		{
+			e.printStackTrace();
+		} 
+		catch (EngineException e)
+		{
+			e.printStackTrace();
+		} 
+		catch (AudioException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (EngineStateError e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (PropertyVetoException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (JSMLException e) 
+		{
+			e.printStackTrace();
+		} 
+	}
 
 	public void addCharacter(Element element,
 			edu.cmu.cs.stage3.math.Matrix44 targetTransformation,
@@ -2782,6 +2826,8 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		if (element != null) {
 			element.name.set(AuthoringToolResources.getNameForNewChild(
 					element.name.getStringValue(), world));
+			
+			speak(element);
 
 			world.addChild(element);
 			world.sandboxes.add(element);
@@ -6687,12 +6733,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 
 	public void setWorldSpeed(double newSpeed) {
 		worldClock.setSpeed(newSpeed);
-		// double oldMultiplier = speedMultiplier;
-		// speedMultiplier = newSpeed;
-		// // renderContentPane.updateSpeed(speedMultiplier);
-		// double oldSpeed = world.speedMultiplier.doubleValue();
-		// double trueSpeed = oldSpeed / oldMultiplier;
-		// world.speedMultiplier.set(new Double(trueSpeed * speedMultiplier));
 	}
 
 	public void takePicture() {
