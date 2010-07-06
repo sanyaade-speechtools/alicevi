@@ -3045,12 +3045,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 			edu.cmu.cs.stage3.alice.core.camera.SymmetricPerspectiveCamera camera) {
 		if (transformable instanceof edu.cmu.cs.stage3.alice.core.Model) {
 			boolean shouldAnimateCamera = (camera != null);
-			// if (camera == null){
-			// camera =
-			// (edu.cmu.cs.stage3.alice.core.camera.SymmetricPerspectiveCamera)
-			// getCurrentCamera();
-			// shouldAnimateCamera = true;
-			// }
 			edu.cmu.cs.stage3.alice.core.Model model = (edu.cmu.cs.stage3.alice.core.Model) transformable;
 
 			HashMap opacityMap = new HashMap();
@@ -3079,8 +3073,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 			undoRedoStack.setIsListening(false);
 			model.opacity.set(new Double(0.0),
 					HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
-			// javax.vecmath.Matrix4d goodLook =
-			// AuthoringToolResources.getAGoodLookAtMatrix( model, camera );
 			javax.vecmath.Matrix4d goodLook = null;
 			if (shouldAnimateCamera) {
 				model.vehicle.set(vehicle);

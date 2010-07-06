@@ -444,15 +444,6 @@ public abstract class Element {
     }
 
     private void addChildrenThatHaveNoReplacement( Element[] originals, Element[] replacements, Element[] childrenThatHaveNoReplacements ) {
-/*
-        for( int i=0; i<childrenThatHaveNoReplacements.length; i++ ) {
-            Element childThatHasNoReplacement = childrenThatHaveNoReplacements[ i ];
-            Element originalParent = childThatHasNoReplacement.getParent();
-            int index = originalParent.indexIn( originals );
-            Element replacementParent = replacements[ index ];
-        }
-    }
-*/
         for( int i=0; i<originals.length; i++ ) {
             Element original = originals[ i ];
             Element replacement = replacements[ i ];
@@ -520,7 +511,6 @@ public abstract class Element {
             } else {
                 Property property = propertyReference.getProperty();
                 property.set( null );
-                //System.out.println( "null->"+property );
             }
         }
         Element coercedElement;

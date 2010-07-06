@@ -352,15 +352,6 @@ public class Matrix44 extends javax.vecmath.Matrix4d implements Interpolable {
 		m20 = axes.m20; m21 = axes.m21; m22 = axes.m22;
 	}
 
-	/*
-	public Vector3 getScale() {
-		//assuming their is no projection or shear
-		double x = Vector3.getLength( m00, m01, m02 );
-		double y = Vector3.getLength( m10, m11, m12 );
-		double z = Vector3.getLength( m20, m21, m22 );
-		return new Vector3( x, y, z );
-	}
-	*/
 	public void translate( javax.vecmath.Vector3d vector ) {
 		if( vector.x!=0 ) {
 			m00 += m03*vector.x;

@@ -44,15 +44,6 @@ public class Transformable extends ReferenceFrame {
 		m_pivotDecorator.setTransformable( this );
 	}
 
-
-//	public void HACK_copyPoseNamed( String poseName, Transformable dst ) {
-//		Pose pose = (Pose)getChildNamed( poseName );
-//		Pose dstPose = (Pose)pose.createCopyNamed( null, null, null );
-//		dstPose.setParent( dst );
-//		dstPose.name.set( poseName );
-//		dst.poses.add( dstPose );
-//	}
-
     public edu.cmu.cs.stage3.alice.scenegraph.Visual[] getAllSceneGraphVisuals( edu.cmu.cs.stage3.util.HowMuch howMuch ) {
         final java.util.Vector v = new java.util.Vector();
         visit( new edu.cmu.cs.stage3.util.VisitListener() {
