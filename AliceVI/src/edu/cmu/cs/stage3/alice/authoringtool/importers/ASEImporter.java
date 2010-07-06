@@ -310,16 +310,13 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 			for( java.util.Iterator iter = rootModels.iterator(); iter.hasNext(); ) {
 				edu.cmu.cs.stage3.alice.core.Transformable root = (edu.cmu.cs.stage3.alice.core.Transformable)iter.next();
-				//System.out.println( "root: " + root );
 				edu.cmu.cs.stage3.alice.core.response.DoTogether rootAnim = new edu.cmu.cs.stage3.alice.core.response.DoTogether();
 				rootAnim.name.set( "keyframeAnimation" );
 				for( java.util.Iterator jter = models.iterator(); jter.hasNext(); ) {
 					edu.cmu.cs.stage3.alice.core.Transformable trans = (edu.cmu.cs.stage3.alice.core.Transformable)jter.next();
-					//System.out.println( "trans: " + trans );
 					if( trans.isDescendantOf( root ) || trans.equals( root ) ) {
 						java.util.ArrayList anims = (java.util.ArrayList)modelsToKeyframeAnims.get( trans );
 						if( anims != null ) {
-							//System.out.println( trans + " has anims" );
 							String prefix = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue( trans );
 							prefix = prefix.replace( '.', '_' );
 							for( java.util.Iterator kter = anims.iterator(); kter.hasNext(); ) {
@@ -330,7 +327,6 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 								anim.subject.set( trans );
 								rootAnim.addChild( anim );
 								rootAnim.componentResponses.add( anim );
-								//System.out.println( "adding " + anim );
 							}
 						}
 					}

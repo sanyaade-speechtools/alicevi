@@ -562,7 +562,6 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 	public void update() {
 		if (getIsShowing()) {
-			//System.out.println("update");
 			this.announceLayoutChange();
 		}
 	}
@@ -741,14 +740,12 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 	protected void announceLayoutChange() {
 		boolean error = false;
-		//System.out.println("LAYOUT CHANGE");
 		for (int i = 0; i < layoutChangeListeners.size(); i++) {
 			LayoutChangeListener lcListener = (LayoutChangeListener) layoutChangeListeners.elementAt(i);
 			if (!(lcListener instanceof Note))
 				error = (!(lcListener.layoutChanged()));
 			if (error) {
 				StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
-				//          System.out.println("something is missing");
 				currentStencil.setErrorStencil(true);
 			}
 		}

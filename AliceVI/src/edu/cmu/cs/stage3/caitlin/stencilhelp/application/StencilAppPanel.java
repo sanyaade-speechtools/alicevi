@@ -82,9 +82,6 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 
     public String getIDForPoint( java.awt.Point p, boolean dropSite ){
         Component c = getComponentAtPoint( p );
-        //System.out.println( "Deepest" + c );
-        //System.out.println( "Parent" + c.getParent() );
-        //System.out.println(c);
         if (c != null) {
           Object value = compToName.get(c);
           if (value != null) return (String) value;
@@ -128,7 +125,6 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
     public void handleMouseEvent( java.awt.event.MouseEvent e ){
         Point stencilComponentPoint = e.getPoint();
         if (e.getWhen() == lastEventTime) {
-          //System.out.println("repeat event");
         } else {
           lastEventTime = e.getWhen();
           Point containerPoint = SwingUtilities.convertPoint(
@@ -140,10 +136,6 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
               this,
               containerPoint.x,
               containerPoint.y);
-
-          /*while ((component != null) &&(compToName.get(component) == null)) {
-            component = component.getParent();
-          }*/
 
           Point componentPoint = SwingUtilities.convertPoint(
               stencilComponent, //this,

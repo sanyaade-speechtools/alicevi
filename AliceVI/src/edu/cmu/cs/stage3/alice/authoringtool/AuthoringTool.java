@@ -1238,14 +1238,14 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 			AuthoringTool.pyStdOut = new PyFile(System.out);
 		} else {
 			PrintStream stdOutStream = stdOutOutputComponent.getStdOutStream();
-			System.setOut(stdOutStream);
+			//System.setOut(stdOutStream);
 			AuthoringTool.pyStdOut = new PyFile(stdOutStream);
 		}
 		if (stdErrToConsole) {
 			AuthoringTool.pyStdErr = new PyFile(System.err);
 		} else {
 			PrintStream stdErrStream = stdErrOutputComponent.getStdErrStream();
-			System.setErr(stdErrStream);
+			//System.setErr(stdErrStream);
 			AuthoringTool.pyStdErr = new PyFile(stdErrStream);
 		}
 	}

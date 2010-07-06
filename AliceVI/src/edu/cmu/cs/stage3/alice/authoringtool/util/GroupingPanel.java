@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 /**
  * @author Jason Pratt
  */
@@ -103,8 +106,6 @@ public class GroupingPanel extends javax.swing.JPanel implements java.awt.dnd.Dr
 		setBorder( border );
 		setDoubleBuffered( true );
 
-		//setOpaque( false );
-
 		setDropTarget( new java.awt.dnd.DropTarget( this, this ) );
 
 		addContainerListener(
@@ -123,18 +124,23 @@ public class GroupingPanel extends javax.swing.JPanel implements java.awt.dnd.Dr
 			}
 		);
 		addContainerListener( GUIElementContainerListener.getStaticListener() );
+		this.setFocusable(true);
+		this.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				System.out.println("Gained focus: " + arg0.getSource());
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}});
 	}
 
 	public void release() {
 		removeAll(); //MEMFIX
-//		java.awt.Component[] components = getComponents();
-//		if( components != null ) {
-//			for( int i = 0; i < components.length; i++ ) {
-//				if( components[i] instanceof edu.cmu.cs.stage3.alice.authoringtool.util.Releasable ) {
-//					((edu.cmu.cs.stage3.alice.authoringtool.util.Releasable)components[i]).release();
-//				}
-//			}
-//		}
 	}
 
 	public void paintBackground( java.awt.Graphics g ) {

@@ -89,7 +89,6 @@ public class ASFImporter extends AbstractImporter {
         // **************************************
         // **    Parse the :units section      **
         // **************************************
-            //System.out.println("Parsing :units ...");
             while (tokenizer.ttype!=StreamTokenizer.TT_WORD || tokenizer.sval.charAt(0)!=':') {
                 if (tokenizer.ttype!=StreamTokenizer.TT_WORD) {
                     tokenizer.nextToken();
@@ -118,7 +117,6 @@ public class ASFImporter extends AbstractImporter {
         // **************************************
         // **     Parse the :root section      **
         // **************************************
-        //System.out.println("Parsing :root ...");
 
         skel.bones.addElement(new ASFBone("root"));
         skel.bones_dict.put("root",skel.bones.lastElement());
@@ -173,7 +171,6 @@ public class ASFImporter extends AbstractImporter {
         // **************************************
         // **  Parse the :bonedata section     **
         // **************************************
-        //System.out.println("Parsing :bonedata ...");
 
         while (tokenizer.ttype!=StreamTokenizer.TT_WORD || tokenizer.sval.charAt(0)!=':') {
             // find a bone
@@ -184,7 +181,6 @@ public class ASFImporter extends AbstractImporter {
                 break;
             tokenizer.nextToken();
 
-            //System.out.print("Parsing Bone ");
             // parse the bone
             bone = new ASFBone();
 
@@ -214,7 +210,6 @@ public class ASFImporter extends AbstractImporter {
                 } else if (tokenizer.sval.equals("name")) {
                     tokenizer.nextToken();
                     bone.name = tokenizer.sval;
-                    //System.out.println(bone.name);
                 } else if (tokenizer.sval.equals("dof")) {
                     while (tokenizer.nextToken()!=StreamTokenizer.TT_EOL) {
                         if(tokenizer.sval.equals("tx")) {

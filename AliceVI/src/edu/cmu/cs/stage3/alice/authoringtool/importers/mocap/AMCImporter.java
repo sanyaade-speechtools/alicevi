@@ -201,7 +201,6 @@ public class AMCImporter extends AbstractImporter {
         }
         skel.setBasePose(applyTo);
 
-        //System.out.println("Parsing Motion...");
         tokenizer.nextToken();
         while (tokenizer.ttype!=StreamTokenizer.TT_EOF) {
             samplenumber = (int)tokenizer.nval;

@@ -17,8 +17,6 @@ public class Batch0 extends Batch {
 		batch0.forEachElement( srcDirectory, new ElementHandler() {
 			private java.util.Dictionary m_poseKeyMap = null;
 			private void outln( String s ) {
-				//System.out.println( s );
-				//System.out.flush();
 			}
 			private void store( edu.cmu.cs.stage3.alice.core.Element element, java.io.File src ) {
 				String dstPath = dstRootPath + src.getAbsolutePath().substring( srcRootPath.length() );

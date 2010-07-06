@@ -83,14 +83,11 @@ public class StencilParser { //extends org.xml.sax.helpers.DefaultHandler{
           Node textColor = textAttr.getNamedItem("color");
           if (textColor != null) {
             colors.addElement(textColor.getNodeValue());
-            //System.out.println("adding color");
           } else {
             colors.addElement(null);
-            //System.out.println("adding color");
           }
         } else {
           colors.addElement(null);
-          //System.out.println("adding color");
         }
       }
     }

@@ -162,21 +162,16 @@ public class RenderTargetModelManipulator extends RenderTargetPickManipulator {
 							if( Math.abs( cameraForward.y ) < Math.abs( cameraUp.y ) ) { // if we're looking mostly level
 								cameraForward.y = 0.0;
 								helper.setOrientation( cameraForward, cameraUp, sgScene );
-								//System.out.println( "helper.setOrientation( " + cameraForward + ", " + cameraUp + ", " + sgScene + " );" );
 							} else { // if we're looking mostly up or down
 								cameraUp.y = 0.0;
 								cameraForward.negate();
 								helper.setOrientation( cameraUp, cameraForward, sgScene );
-								//System.out.println( "helper.setOrientation( " + cameraUp + ", " + cameraForward + ", " + sgScene + " );" );
 							}
 
 							tempVec.x = dx*deltaFactor;
 							tempVec.y = 0.0;
 							tempVec.z = -dy*deltaFactor;
 							sgPickedTransformable.translate( tempVec, helper );
-							//System.out.println( "helper: " + helper.getAbsoluteTransformation() );
-							//System.out.println( "cameraTransformation: " + cameraTransformation );
-							//System.out.println( "cameraTransformable: " + sgCameraTransformable );
 						}
 					} else if( mode == CAMERA_PLANE_MODE ) {
 						if( controlDown ) {

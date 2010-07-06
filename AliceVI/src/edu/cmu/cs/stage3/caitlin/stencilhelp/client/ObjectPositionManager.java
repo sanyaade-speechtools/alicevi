@@ -36,16 +36,12 @@ public class ObjectPositionManager {
     return null;
   }
   public Rectangle getBoxForID(String ID) {
-    //System.out.println("getBox: " + ID);
     try {
       if (!(stencilApp.isIDVisible(ID))) {
         stencilApp.makeIDVisible(ID);
       }
-      //System.out.println("\treturning " + stencilApp.getBoxForID(ID));
       return stencilApp.getBoxForID(ID);
     } catch (IDDoesNotExistException idne) {
-      //System.out.println("Could not get id: " + ID);
-     // idne.printStackTrace();
     }
     return null;
   }

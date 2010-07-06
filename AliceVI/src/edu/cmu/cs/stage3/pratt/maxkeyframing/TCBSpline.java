@@ -89,7 +89,6 @@ public class TCBSpline extends Spline {
 		edu.cmu.cs.stage3.math.Matrix33 lastRot = null;
 		TCBKey[] keys = (TCBKey[])getKeyArray( new TCBKey[0] );
 		for( int i = 0; i < keys.length; i++ ) {
-			//System.out.println( i );
 			edu.cmu.cs.stage3.math.Quaternion thisQ = (edu.cmu.cs.stage3.math.Quaternion)keys[i].createSample( keys[i].getValueComponents() );
 			if( i > 0 ) {
 				edu.cmu.cs.stage3.math.Quaternion realQ = edu.cmu.cs.stage3.math.Matrix33.multiply( lastRot, thisQ.getMatrix33() ).getQuaternion();
@@ -135,21 +134,4 @@ public class TCBSpline extends Spline {
 		}
 		return null;
 	}
-
-	// until Matrix33 actually has this...
-//	public static edu.cmu.cs.stage3.math.Matrix33 multiply( edu.cmu.cs.stage3.math.Matrix33 a, edu.cmu.cs.stage3.math.Matrix33 b ) {
-//		edu.cmu.cs.stage3.math.Matrix33 m = new edu.cmu.cs.stage3.math.Matrix33();
-//		m.rc00 = a.rc00 * b.rc00 + a.rc01 * b.rc10 + a.rc02 * b.rc20;
-//		m.rc01 = a.rc00 * b.rc01 + a.rc01 * b.rc11 + a.rc02 * b.rc21;
-//		m.rc02 = a.rc00 * b.rc02 + a.rc01 * b.rc12 + a.rc02 * b.rc22;
-//
-//		m.rc10 = a.rc10 * b.rc00 + a.rc11 * b.rc10 + a.rc12 * b.rc20;
-//		m.rc11 = a.rc10 * b.rc01 + a.rc11 * b.rc11 + a.rc12 * b.rc21;
-//		m.rc12 = a.rc10 * b.rc02 + a.rc11 * b.rc12 + a.rc12 * b.rc22;
-//
-//		m.rc20 = a.rc20 * b.rc00 + a.rc21 * b.rc10 + a.rc22 * b.rc20;
-//		m.rc21 = a.rc20 * b.rc01 + a.rc21 * b.rc11 + a.rc22 * b.rc21;
-//		m.rc22 = a.rc20 * b.rc02 + a.rc21 * b.rc12 + a.rc22 * b.rc22;
-//		return m;
-//	}
 }

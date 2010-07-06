@@ -73,8 +73,6 @@ public class ViStyleFontPanel extends JPanel {
 				foregroundColor = style.getForgroundColor();
 
 				saveAsBtn.setBackground(foregroundColor);
-				//System.out.println("Changing bk color to: " + color);
-
 			}
 
 		});

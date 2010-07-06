@@ -50,13 +50,11 @@ public class Hole implements StencilObject, MouseEventListener, KeyEventListener
   public Rectangle getPreviousRectangle(){
     if (previousRect != null) {
       return previousRect.union(rect.getBounds());
-      //return previousRect;
     }
     else if (rect != null) {
       return rect.getBounds();
     }
     else {
-      //System.out.println("Nothing reasonable to return for hole bounds");
       return null;
     }
   }
@@ -108,11 +106,7 @@ public class Hole implements StencilObject, MouseEventListener, KeyEventListener
   }
   public boolean mousePressed(MouseEvent e){
     stencilApp.handleMouseEvent(e);
-    //System.out.println("mouse pressed " + autoAdvance + " " + advanceEvent + " ?= 1");
     if ((autoAdvance) && (advanceEvent == ADVANCE_ON_PRESS) && ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == MouseEvent.BUTTON1_MASK) ) {
-      //try {
-       // Thread.sleep(700);
-      //} catch (Exception ex){}
       this.stencilManager.showNextStencil();
       return true;
     } else return false;

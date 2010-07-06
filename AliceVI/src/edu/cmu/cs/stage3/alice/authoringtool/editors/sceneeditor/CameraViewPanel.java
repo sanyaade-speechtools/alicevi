@@ -381,21 +381,16 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 					if( Math.abs( cameraForward.y ) < Math.abs( cameraUp.y ) ) { // if we're looking mostly level
 						cameraForward.y = 0.0;
 						helper.setOrientation( cameraForward, cameraUp, sgScene );
-						//System.out.println( "helper.setOrientation( " + cameraForward + ", " + cameraUp + ", " + sgScene + " );" );
 					} else { // if we're looking mostly up or down
 						cameraUp.y = 0.0;
 						cameraForward.negate();
 						helper.setOrientation( cameraUp, cameraForward, sgScene );
-						//System.out.println( "helper.setOrientation( " + cameraUp + ", " + cameraForward + ", " + sgScene + " );" );
 					}
 
 					tempVec.x = dx*deltaFactor;
 					tempVec.y = 0.0;
 					tempVec.z = -dy*deltaFactor;
 					sgPickedTransformable.translate( tempVec, helper );
-					//System.out.println( "helper: " + helper.getAbsoluteTransformation() );
-					//System.out.println( "cameraTransformation: " + cameraTransformation );
-					//System.out.println( "cameraTransformable: " + sgCameraTransformable );
 				}
 //			} else if( mode == CAMERA_PLANE_MODE ) {
 			} else if( false ) {
@@ -478,13 +473,12 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 							java.awt.Rectangle rect = renderTarget.getActualViewport(renderCamera.getSceneGraphCamera());
 							if (myPoint2 != null && rect != null && panelLocation != null){
 								myPoint2.x -= rect.x + panelLocation.x;
-								myPoint2.y -= rect.y + panelLocation.y;
-							}
+								myPoint2.y -= rect.y + panelLocation.y;				}
 							try{
 								edu.cmu.cs.stage3.math.Ray ray = renderTarget.getRayAtPixel(renderCamera.getSceneGraphCamera(), myPoint2.x, myPoint2.y);
 								edu.cmu.cs.stage3.math.Matrix44 cameraToGround = renderCamera.getTransformation((edu.cmu.cs.stage3.alice.core.ReferenceFrame)ground);
 								ray.transform(cameraToGround);
-								double intersection = pickingPlane.intersect(ray);
+							double intersection = pickingPlane.intersect(ray);
 								javax.vecmath.Vector3d intersectionPoint = ray.getPoint(intersection);
 								javax.vecmath.Vector3d oldLocation = pickFeedbackTransformable.getPosition();
 								pickFeedbackTransformable.setPositionRightNow(intersectionPoint);

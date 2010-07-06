@@ -45,17 +45,14 @@ public class StringPropertySetter extends JPanel implements javax.swing.event.Do
 	}
 
 	public void changedUpdate(javax.swing.event.DocumentEvent de) {
-		//System.out.println("changed: ");
 		modelWrapper.setProperty(propertyName, valueField.getText(), labelText);
 	}
 
 	public void insertUpdate(javax.swing.event.DocumentEvent de) {
-		//System.out.println("insert: ");
 		modelWrapper.setProperty(propertyName, valueField.getText(), labelText);
 	}
 
 	public void removeUpdate(javax.swing.event.DocumentEvent de) {
-		//System.out.println("remove: ");
 		String value = valueField.getText();
 		if (value.equals("")) {
 			value = "noname";

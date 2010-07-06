@@ -156,7 +156,6 @@ public class ElementTreeCellEditor extends ElementTreeCellRenderer implements ja
 
 	public void selectText() {
 		initializeIfNecessary();
-		//System.out.println( "selectAll" );
 		textField.selectAll();
 	}
 

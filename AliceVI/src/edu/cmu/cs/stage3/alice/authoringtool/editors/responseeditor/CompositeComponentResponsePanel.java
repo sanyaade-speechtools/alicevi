@@ -374,7 +374,6 @@ public class CompositeComponentResponsePanel extends  CompositeComponentElementP
                     Class<?> animationClass;
                     Property property = (Property)transferable.getTransferData( PropertyReferenceTransferable.propertyReferenceFlavor );
                     if (property instanceof VehicleProperty){
-                        //System.out.println("new vehicle animation");
                         StringObjectPair[] newKnown = {new StringObjectPair("element", property.getOwner()), new StringObjectPair("propertyName", property.getName()), new StringObjectPair("duration", new Double(0))};
                         known = newKnown;
                         animationClass = VehiclePropertyAnimation.class;

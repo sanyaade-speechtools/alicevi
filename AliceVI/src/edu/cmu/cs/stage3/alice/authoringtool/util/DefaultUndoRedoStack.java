@@ -27,7 +27,6 @@ public class DefaultUndoRedoStack extends java.util.LinkedList implements UndoRe
 	private int currentIndex = -1;
 
 	synchronized public void push( UndoableRedoable ur ) {
-		//System.out.println( "push" );
 		if( currentIndex < (size() - 1) ) { //is the current index the last item added
 			removeRange( currentIndex + 1, size() );
 		}
@@ -46,7 +45,6 @@ public class DefaultUndoRedoStack extends java.util.LinkedList implements UndoRe
 		//DEBUG System.out.println( "undo" );
 		if( currentIndex > -1 ) {
 			UndoableRedoable ur = (UndoableRedoable)get( currentIndex );
-			//System.out.println( "DefaultUndoRedoStack.undo( " + ur + " )" );
 			ur.undo();
 			currentIndex--;
 			return ur;
@@ -56,11 +54,9 @@ public class DefaultUndoRedoStack extends java.util.LinkedList implements UndoRe
 	}
 
 	synchronized public UndoableRedoable redo() {
-		//System.out.println( "redo" );
 		if( currentIndex < (size() - 1) ) {
 			currentIndex++;
 			UndoableRedoable ur = (UndoableRedoable)get( currentIndex );
-			//System.out.println( "DefaultUndoRedoStack.redo( " + ur + " )" );
 			ur.redo();
 			return ur;
 		} else {

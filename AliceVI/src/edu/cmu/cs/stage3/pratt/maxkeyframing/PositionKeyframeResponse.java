@@ -31,18 +31,9 @@ public class PositionKeyframeResponse extends edu.cmu.cs.stage3.pratt.maxkeyfram
 
 			try {
 				javax.vecmath.Vector3d pos = (javax.vecmath.Vector3d)runtimeSpline.getSample( splineTimeElapsed );
-				/*
-				System.out.println( "timeElapsed: " + timeElapsed );
-				System.out.println( "timeFactor: " + timeFactor );
-				System.out.println( "splineDuration: " + splineDuration );
-				System.out.println( "splineTimeElapsed: " + splineTimeElapsed );
-				System.out.println( "pos: " + pos );
-				System.out.println( "m_transformable: " + m_transformable );
-				*/
 				if( pos != null ) {
 					m_transformable.setPositionRightNow( pos );
 				}
-				//System.out.println( "getPosition: " + m_transformable.getPosition() );
 			} catch( ClassCastException e ) {
 				System.err.println( "Incorrect sample type from spline " + runtimeSpline + ".  Vector3 expected.  Instead, got: " + runtimeSpline.getSample( splineTimeElapsed ) );
 			} catch( Exception e ) {

@@ -241,9 +241,6 @@ public class ASFBone {
         point = MathUtilities.multiply(coordSys,new javax.vecmath.Vector4d(width/2,-width/2,0,1));
         vertices[7] = Vertex3d.createXYZIJKUV(point.x,point.y,point.z,   normal.x,normal.y,normal.z, 0,0);
 
-        //System.out.println(endPoint);
-        //System.out.println(Vector3.interpolate(new Vector3(Vector4.multiply(new Vector4(width/2,width/2,length,1),coordSys)),new Vector3(Vector4.multiply(new Vector4(-width/2,-width/2,length,1),coordSys)),.5));
-
         point = MathUtilities.multiply(coordSys,new javax.vecmath.Vector4d(width/2,width/2,length,1));
         normal = MathUtilities.multiply(coordSys,new javax.vecmath.Vector4d(0,0,1,0));
         vertices[8] =  Vertex3d.createXYZIJKUV(point.x,point.y,point.z,   normal.x,normal.y,normal.z, 0,0);

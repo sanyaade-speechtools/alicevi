@@ -348,7 +348,6 @@ public class InterestCalculator2 extends StencilAppPanel implements ActionListen
 
     // More Show Me junk....
     public void actionPerformed( ActionEvent ae ) {
-        //System.out.println("start show me");
         this.launchControl();
     }
 

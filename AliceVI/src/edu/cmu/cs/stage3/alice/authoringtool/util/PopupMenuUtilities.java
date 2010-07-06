@@ -366,7 +366,6 @@ public class PopupMenuUtilities {
 	public static java.util.Vector makeElementStructure( Element root, final edu.cmu.cs.stage3.util.Criterion criterion, final PopupItemFactory factory, final edu.cmu.cs.stage3.alice.core.Element context, final Object currentValue ) {
 		DelayedBindingPopupItem delayedBindingPopupItem;
 		java.util.Vector structure = new java.util.Vector();
-		//System.out.println("making structure: root: "+root+", context: "+context);
 		if( criterion.accept( root ) ) {
 			if( root.equals( currentValue ) ) {
 				structure.addElement( new StringObjectPair(  "the entire " + (String)root.name.getValue(), new PopupItemWithIcon( factory.createItem( root ), currentValueIcon ) ) );
@@ -781,7 +780,6 @@ public class PopupMenuUtilities {
 							//	System.out.println("token: "+token);
 								if( token.startsWith( "<<<" ) && token.endsWith( ">>>" ) ) {
 									String propertyName = token.substring( token.lastIndexOf( "<" ) + 1, token.indexOf( ">" ) );
-									//System.out.println("property name: "+propertyName+", element "+element);
 									known.add( new edu.cmu.cs.stage3.util.StringObjectPair( propertyName, element ) );
 								}
 							}

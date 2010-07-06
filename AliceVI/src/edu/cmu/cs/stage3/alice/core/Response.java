@@ -172,7 +172,6 @@ public abstract class Response extends Code {
 			
 			// TODO: Print Out / Say what the response is doing.
 			//       Need some form of text-to-audio converter.
-			//System.out.println(this);
 			Synth.speakPlainText(this.toString(), null);
 		}
 		public void stop( double t ) {

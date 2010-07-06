@@ -112,9 +112,6 @@ public class XMLHelper {
 		int r= Integer.parseInt(tok.nextToken(), 16);
 		int  b= Integer.parseInt(tok.nextToken(), 16);
 		int g= Integer.parseInt(tok.nextToken(), 16);
-		
-		//Color color =Color.decode(colorString);
-		System.out.println("decoded color is: "+ new Color(r,g,b));
 
 		//Create a new Employee with the value read from the xml nodes
 		Style style = new Style(name,size, new Color(r,g,b), new Color(r,g,b));

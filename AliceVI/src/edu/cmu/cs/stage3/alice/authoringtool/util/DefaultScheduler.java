@@ -91,7 +91,6 @@ public class DefaultScheduler implements Runnable {
 			try {
 				runnable.run();
 			} catch( org.python.core.PyException e ) {
-				//System.out.println( "PyException: " + e );
 				if( org.python.core.Py.matchException( e, org.python.core.Py.SystemExit ) ) {
 					//TODO
 				} else {
@@ -114,7 +113,6 @@ public class DefaultScheduler implements Runnable {
 			try {
 				runnable.run();
 			} catch( org.python.core.PyException e ) {
-				//System.out.println( "PyException: " + e );
 				if( org.python.core.Py.matchException( e, org.python.core.Py.SystemExit ) ) {
 					//TODO
 				} else {

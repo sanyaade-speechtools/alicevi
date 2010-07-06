@@ -235,7 +235,6 @@ public class FileChooser
        appProperties.store(out, 
                      "Properties for the Simple Picture class");
        out.close();
-       //System.out.println("The media directory is now " + directory);
      } catch (Exception ex) {
        System.err.println("Couldn't save media path to a file");
      }

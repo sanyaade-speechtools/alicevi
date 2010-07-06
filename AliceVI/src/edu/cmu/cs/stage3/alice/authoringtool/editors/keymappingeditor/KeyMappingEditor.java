@@ -434,7 +434,6 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
                     setKey(action,0);
                 else
                     setKey(action,ke.getKeyCode());
-                //System.out.println(ke.getKeyCode());
                 ((JButton)e.getSource()).removeKeyListener( this );
             }
         });

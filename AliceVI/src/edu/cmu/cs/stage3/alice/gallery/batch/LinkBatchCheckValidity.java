@@ -9,7 +9,6 @@ public class LinkBatchCheckValidity extends LinkBatch {
 			public void handleLink( java.io.File src, String name ) {
 				java.io.File dst = new java.io.File( srcRootPath + "/" + name );
 				if( dst.exists() ) {
-					//System.out.println( src + " --> " + dst );
 				} else {
 					System.err.println( src + " --> " + dst );
 				}

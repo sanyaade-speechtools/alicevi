@@ -91,7 +91,6 @@ class ElementTreeModel implements javax.swing.tree.TreeModel {
 		return getChildCount( node ) == 0;
 	}
 	public void valueForPathChanged( javax.swing.tree.TreePath path, Object newValue ) {
-		//System.out.println( "*** valueForPathChanged : " + path + " --> " + newValue );
 	}
 	
 	public void removeDescendant( edu.cmu.cs.stage3.alice.core.Element descendant ) {

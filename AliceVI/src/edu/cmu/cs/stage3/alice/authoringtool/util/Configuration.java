@@ -422,26 +422,10 @@ public final class Configuration {
 						Key subKey = loadKey( childElement );
 						if( (subKey != null) && (subKey.name != null) ) {
 							root.subKeys.put( subKey.name, subKey );
-							//System.out.println( "loaded subKey: " + subKey );
 						}
 					}
 				}
 			}
-//		} catch( org.xml.sax.SAXParseException spe ) {
-//			if( spe.getException() != null ) {
-//				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "Error parsing preferences file; line " + spe.getLineNumber() + ", uri " + spe.getSystemId() + "\nmessage: " + spe.getMessage(), spe.getException() );
-//			} else {
-//				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "Error parsing preferences file; line " + spe.getLineNumber() + ", uri " + spe.getSystemId() + "\nmessage: " + spe.getMessage(), spe );
-//			}
-//		} catch( org.xml.sax.SAXException sxe ) {
-//			if( sxe.getException() != null ) {
-//				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "Error parsing preferences file.", sxe.getException() );
-//			} else {
-//				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "Error parsing preferences file.", sxe );
-//			}
-//		} catch( javax.xml.parsers.ParserConfigurationException pce ) {
-//			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "Error parsing preferences file.", pce );
-//		}
 		}catch (Exception e){
 			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
 				"Alice had trouble reading your preferences but will continue to run normally",
