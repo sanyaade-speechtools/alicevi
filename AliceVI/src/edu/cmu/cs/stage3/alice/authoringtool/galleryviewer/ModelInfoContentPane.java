@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 /**
@@ -143,6 +144,7 @@ public class ModelInfoContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				JButton target = (JButton) arg0.getSource();
 				target.setBackground(new Color(1f, 1f, 1f));
 				target.setForeground(new Color(0f, 0f, 0f));
+				target.setBorder(BorderFactory.createLineBorder(new Color(0f, 0f, 0f), 4));
 			}
 			@Override
 			public void focusLost(FocusEvent arg0) {
