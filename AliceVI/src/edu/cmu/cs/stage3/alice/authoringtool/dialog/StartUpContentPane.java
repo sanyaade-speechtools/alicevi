@@ -23,10 +23,29 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
 import javax.swing.text.BadLocationException;
 
 /**
@@ -75,9 +94,8 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private static final String OPEN_STRING = "Open a world";
 	private static final String TEMPLATES_STRING = "Templates";
 
-	private final int WIDTH = 480;
-	private final int HEIGHT = 500;
-	private final int INSET = 14;
+	private static final int WIDTH = 480;
+	private static final int HEIGHT = 500;
 
 	private static final java.awt.Color SELECTED_COLOR = new edu.cmu.cs.stage3.alice.scenegraph.Color(new java.awt.Color(10, 10, 100)).createAWTColor();
 	private static final java.awt.Color SELECTED_TEXT_COLOR = new edu.cmu.cs.stage3.alice.scenegraph.Color(new java.awt.Color(255, 255, 255)).createAWTColor();
@@ -128,14 +146,11 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private JPanel exampleWorldsDirectoryContainer = new JPanel();
 	private JPanel textbookExampleWorldsDirectoryContainer = new JPanel();
 	private JPanel templateWorldsDirectoryContainer = new JPanel();
-	private JPanel tutorialWorldsDirectoryContainer = new JPanel();
-	private JPanel recentWorldsDirectoryContainer = new JPanel();
 
 	private JLabel exampleWorldsDirLabel = new JLabel();
 	private JLabel textbookExampleWorldsDirLabel = new JLabel();
 	private JLabel templateWorldsDirLabel = new JLabel();
 	private JLabel tutorialWorldsDirLabel = new JLabel();
-	private JLabel recentWorldsDirLabel = new JLabel();
 
 	private JButton openButton = new JButton();
 	private JButton cancelButton = new JButton();
@@ -195,9 +210,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		worldFilter = authoringTool.getWorldFileFilter();
 		aliceFilter = new AliceWorldFilter(worldFilter);
 
-		if(System.getProperty("os.name").contains("Window"))
-			isWindows = true;
-		else isWindows = false;
+		isWindows = System.getProperty("os.name").contains("Window");
 		
 		jbInit();
 		guiInit();
@@ -500,11 +513,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 
 	private int buildPanel(javax.swing.JPanel toBuild, java.util.Vector toAdd, boolean needToSave, java.io.File parentDir, int type) {
-//		int width = 0;
-//		int currentRow = 0;
-//		int currentColumn = 0;
 		int count = 0;
-//		int maxWidth = WIDTH - 20;
 		if (parentDir != null || toAdd != null) {
 			toBuild.removeAll();
 		}
@@ -554,14 +563,13 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		mainTabPane.remove(fileChooser);
 		java.io.File currentDir = fileChooser.getCurrentDirectory();
 		fileChooser = new JFileChooser() {
+			private static final long serialVersionUID = 1L;
+
 			public void setSelectedFile( java.io.File file ) {
 				super.setSelectedFile( file );
 				StartUpContentPane.this.handleFileSelectionChange( file );
 			}
 		};
-		/*for (int i = 0; i < fileChooser.getComponentCount(); i++) {
-			setButtonBackgroundColors(fileChooser.getComponent(i), fileChooser.getBackground());
-		}*/
 		try {
 			if (currentDir.exists()) {
 				fileChooser.setCurrentDirectory(currentDir);
@@ -590,6 +598,8 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		headerLabel.setIcon(headerImage);
 		startTutorialButton.setIcon(tutorialButtonIcon);
 		startTutorialButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		startTutorialButton.setFocusable(true);
+		addListenersToStartTutorialButton();
 		exampleWorldsContainer.setBorder(null);
 		tutorialWorldsContainer.setBorder(null);
 		recentWorldsContainer.setBorder(null);
@@ -607,45 +617,29 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 			  initAwtOpen();
 		}	
 		else initializeFileChooser();
+	}
 
-		
+	private void addListenersToStartTutorialButton() {
+		PanelSelectableListener psl = new PanelSelectableListener(startTutorialButton);
+		startTutorialButton.addFocusListener(psl);
+		startTutorialButton.addMouseListener(psl);
+		startTutorialButton.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					startTutorial(null);
+			}
+		});
+		startTutorialButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				startTutorial(e);
+			}
+		});
 	}
 	
-//	private static void updateDescendants( java.awt.Component component, Class cls, java.util.Vector v ) {
-//		if( cls.isAssignableFrom( component.getClass() ) ) {
-//			v.addElement( component );
-//		}
-//		if( component instanceof java.awt.Container ) {
-//			java.awt.Container container = (java.awt.Container)component;
-//			for( int i=0; i<container.getComponentCount(); i++ ) {
-//				updateDescendants( container.getComponent( i ), cls, v );
-//			}
-//		}
-//	}
-//	private static java.awt.Component[] getDescendants( java.awt.Container root, Class cls ) {
-//		java.util.Vector v = new java.util.Vector();
-//		updateDescendants( root, cls, v );
-//		Object[] array = (Object[])java.lang.reflect.Array.newInstance( cls, v.size() );
-//		v.copyInto( array );
-//		return (java.awt.Component[])array;
-//	}
-
-	private void setButtonBackgroundColors(java.awt.Component c, java.awt.Color color) {
-		if (!(c instanceof java.awt.Button)) {
-			c.setBackground(color);
-		}
-		if (c instanceof java.awt.Container) {
-			java.awt.Container cont = (java.awt.Container) c;
-			for (int i = 0; i < cont.getComponentCount(); i++) {
-				setButtonBackgroundColors(cont.getComponent(i), color);
-			}
-		}
-	}
-
 	private void jbInit() {
 		setLayout(new GridBagLayout());
 
-		java.awt.Component component1 = Box.createGlue();
 		java.awt.Component component2 = Box.createGlue();
 		buttonPanel.setLayout(new GridBagLayout());
 		setBackground(Color.white);
@@ -656,9 +650,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				mainTabPane_stateChanged(e);
 			}
 		});
-//		buttonPanel.setMinimumSize(new Dimension(480, 50));
 		buttonPanel.setOpaque(false);
-//		buttonPanel.setPreferredSize(new Dimension(480, 50));
 		openButton.setMaximumSize(new Dimension(95, 27));
 		openButton.setMinimumSize(new Dimension(95, 27));
 		openButton.setPreferredSize(new Dimension(95, 27));
@@ -746,11 +738,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		startTutorialButton.setMinimumSize(new Dimension(120, 90));
 		startTutorialButton.setPreferredSize(new Dimension(120, 90));
 		startTutorialButton.setToolTipText("Start the Alice tutorial");
-		startTutorialButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				startTutorialButton_actionPerformed(e);
-			}
-		});
 		tutorialTopContainer.setLayout(borderLayout1);
 		tutorialTopContainer.setBackground(Color.white);
 		tutorialTopContainer.setOpaque(false);
@@ -848,11 +835,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		openButton.setEnabled(true);
 	}
 	
-	private void handlePathChange(){
-	
-	// check that set to open remove from handle Browse
-	}
-	
 	private void matchSizes(){
 		tutorialWorldsContainer.setSize(recentScrollPane.getVisibleRect().width, tutorialWorldsContainer.getHeight());
 		recentWorldsContainer.setSize(recentScrollPane.getVisibleRect().width, recentWorldsContainer.getHeight());
@@ -863,19 +845,10 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 	private void setFileChooserButtons(){
 		add(refreshButton, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE, new Insets(0, 2, 1, 1), 0, 0));
-//		buttonPanel.remove(openButton);
-//		buttonPanel.remove(cancelButton);
-//		buttonPanel.add(refreshButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(4, 0, 0, 4), 0, 0));
-////		buttonPanel.add(cancelButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(4, 0, 0, 4), 0, 0));
-//		buttonPanel.add(Box.createGlue(), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		remove(buttonPanel);
 	}
 	
 	private void setRegularButtons(){
-//		buttonPanel.remove(refreshButton);
-//		buttonPanel.add(openButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(4, 0, 0, 4), 0, 0));
-//		buttonPanel.add(cancelButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(4, 0, 0, 4), 0, 0));
-//		buttonPanel.add(Box.createGlue(), new GridBagConstraints(0, 1, 1, 2, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		remove(refreshButton);
 		add(buttonPanel, new GridBagConstraints(0, 2, 2, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 	}
@@ -919,12 +892,13 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 	}
 	
-	private void startTutorialButton_actionPerformed(ActionEvent e) {
-		openButton.setEnabled( true );
+	private void startTutorial(ActionEvent e) {
+		openButton.setEnabled(true);
 		openButton.doClick();
 	}
 
-	protected class StartUpIcon extends javax.swing.JLabel implements java.awt.event.MouseListener {
+	protected class StartUpIcon extends JLabel implements Selectable {
+		private static final long serialVersionUID = 6713472648560550492L;
 		protected static final int STANDARD = 1;
 		protected static final int TUTORIAL = 2;
 		protected static final int DIRECTORY = 3;
@@ -933,9 +907,11 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		protected boolean needToSave = false;
 		protected int type;
 		protected java.awt.Component owner;
+		protected String name;
 
 		public StartUpIcon(String name, javax.swing.ImageIcon icon, String file, boolean needToSave, int type, java.awt.Component owner) {
 			super(name, icon, javax.swing.JLabel.CENTER);
+			this.name = name;
 			this.file = file;
 			this.needToSave = needToSave;
 			this.type = type;
@@ -953,7 +929,11 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
 			}
 			this.setOpaque(false);
-			this.addMouseListener(this);
+			this.setFocusable(true);
+			PanelSelectableListener psl = new PanelSelectableListener(this);
+			this.addFocusListener(psl);
+			this.addMouseListener(psl);
+			this.addKeyListener(psl);
 		}
 
 		protected javax.swing.JPanel getContainer(java.awt.Component topLevelOwner) {
@@ -992,8 +972,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				return exampleWorlds.getAbsolutePath();
 			} else if (topLevelOwner == templateScrollPane) {
 				return templateWorlds.getAbsolutePath();
-				// }else if (topLevelOwner == textbookExampleScrollPane){
-				// return textbookExampleWorlds.getAbsolutePath();
 			} else {
 				return null;
 			}
@@ -1034,7 +1012,8 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 			}
 		}
 
-		public void mouseClicked(java.awt.event.MouseEvent e) {
+		@Override
+		public void select() {
 			if (type == DIRECTORY) {
 				changeDirectory(file);
 			} else {
@@ -1052,18 +1031,8 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 					currentlySelected = this;
 					currentlySelected.repaint();
 				}
-				if (e.getClickCount() == 2) {
-					openButton.doClick();
-				}
+				openButton.doClick();
 			}
-		}
-		public void mouseReleased(java.awt.event.MouseEvent e) {
-		}
-		public void mousePressed(java.awt.event.MouseEvent e) {
-		}
-		public void mouseExited(java.awt.event.MouseEvent e) {
-		}
-		public void mouseEntered(java.awt.event.MouseEvent e) {
 		}
 	}
 	
