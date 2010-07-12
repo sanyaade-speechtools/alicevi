@@ -25,10 +25,12 @@ package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -36,6 +38,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -130,18 +133,12 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private JScrollPane recentScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private JScrollPane templateScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	private JPanel exampleWorldsContainer = new JPanel();
-	private JPanel recentWorldsContainer = new JPanel();
-	private JPanel textbookExampleWorldsContainer = new JPanel();
-	private JPanel templateWorldsContainer = new JPanel();
-	private JPanel tutorialWorldsContainer = new JPanel();
+	private JPanel exampleWorldsContainer = new JPanel(new GridLayout(0,3));
+	private JPanel recentWorldsContainer = new JPanel(new GridLayout(0,3));
+	private JPanel textbookExampleWorldsContainer = new JPanel(new GridLayout(0,3));
+	private JPanel templateWorldsContainer = new JPanel(new GridLayout(0,3));
+	private JPanel tutorialWorldsContainer = new JPanel(new GridLayout(0,3));
 	private JPanel awtOpenWorldContainer = new JPanel();
-	
-	private edu.cmu.cs.stage3.awt.DynamicFlowLayout examplePanelLayout = new edu.cmu.cs.stage3.awt.DynamicFlowLayout(java.awt.FlowLayout.LEFT, null, javax.swing.JPanel.class, 20);
-	private edu.cmu.cs.stage3.awt.DynamicFlowLayout recentPanelLayout = new edu.cmu.cs.stage3.awt.DynamicFlowLayout(java.awt.FlowLayout.LEFT, null, javax.swing.JPanel.class, 20);
-	private edu.cmu.cs.stage3.awt.DynamicFlowLayout templatePanelLayout = new edu.cmu.cs.stage3.awt.DynamicFlowLayout(java.awt.FlowLayout.LEFT, null, javax.swing.JPanel.class, 20);
-	private edu.cmu.cs.stage3.awt.DynamicFlowLayout tutorialPanelLayout = new edu.cmu.cs.stage3.awt.DynamicFlowLayout(java.awt.FlowLayout.LEFT, null, javax.swing.JPanel.class, 20);
-	private edu.cmu.cs.stage3.awt.DynamicFlowLayout textbookPanelLayout = new edu.cmu.cs.stage3.awt.DynamicFlowLayout(java.awt.FlowLayout.LEFT, null, javax.swing.JPanel.class, 20);
 
 	private JPanel exampleWorldsDirectoryContainer = new JPanel();
 	private JPanel textbookExampleWorldsDirectoryContainer = new JPanel();
@@ -262,17 +259,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				matchSizes();
 			}
 		} );
-		tutorialPanelLayout.setHgap(21);
-		tutorialPanelLayout.setVgap(10);
-		examplePanelLayout.setHgap(21);
-		examplePanelLayout.setVgap(10);
-		recentPanelLayout.setHgap(21);
-		recentPanelLayout.setVgap(10);
-		templatePanelLayout.setHgap(21);
-		templatePanelLayout.setVgap(10);
-		textbookPanelLayout.setHgap(21);
-		textbookPanelLayout.setVgap(10);
-
 	}
 
 	public void preDialogShow( javax.swing.JDialog dialog ) {
@@ -483,7 +469,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		return icon;
 	}
 
-	protected java.awt.Component getTopContainer(java.awt.Component innerContainer) {
+	protected java.awt.Component getTopContainer(Component innerContainer) {
 		if (innerContainer == tutorialWorldsContainer) {
 			return tutorialTopContainer;
 		} else if (innerContainer == exampleWorldsContainer) {
@@ -495,7 +481,20 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		} else {
 			return null;
 		}
-
+	}
+	
+	protected JScrollPane getScrollPane(Component innerContainer) {
+		if (innerContainer == tutorialWorldsContainer) {
+			return tutorialScrollPane;
+		} else if (innerContainer == exampleWorldsContainer) {
+			return exampleScrollPane;
+		} else if (innerContainer == templateWorldsContainer) {
+			return templateScrollPane;
+		} else if (innerContainer == textbookExampleWorldsContainer) {
+			return textbookExampleScrollPane;
+		} else {
+			return null;
+		}
 	}
 
 	protected String getBaseDirString(java.awt.Component topLevelOwner) {
@@ -511,6 +510,19 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 			return "";
 		}
 	}
+	
+	private StartUpIcon buildStartUpIcon(JPanel target, String name, ImageIcon icon, String file, 
+			boolean needToSave, int type, Component owner) {
+		StartUpIcon sui = new StartUpIcon(name, icon, file, needToSave, type, owner);
+		JScrollPane scroller = getScrollPane(target);
+		sui.setFocusable(true);
+		PanelSelectableListener psl = new PanelSelectableListener(sui, scroller);
+		sui.addFocusListener(psl);
+		sui.addMouseListener(psl);
+		sui.addKeyListener(psl);
+		target.add(sui);
+		return sui;
+	}
 
 	private int buildPanel(javax.swing.JPanel toBuild, java.util.Vector toAdd, boolean needToSave, java.io.File parentDir, int type) {
 		int count = 0;
@@ -519,8 +531,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		}
 		if (parentDir != null) {
 			String parentDirName = "Back";
-			StartUpIcon parentDirIcon = new StartUpIcon(parentDirName, upDirectoryIcon, parentDir.getAbsolutePath(), false, StartUpIcon.DIRECTORY, getTopContainer(toBuild));
-			toBuild.add(parentDirIcon);
+			buildStartUpIcon(toBuild, parentDirName, upDirectoryIcon, parentDir.getAbsolutePath(), false, StartUpIcon.DIRECTORY, getTopContainer(toBuild));
 			count++;
 		}
 		if (toAdd != null) {
@@ -533,8 +544,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				if (file.exists() && file.canRead()) {
 					filename = file.getAbsolutePath();
 					if (file.isDirectory()) {
-						StartUpIcon dirIcon = new StartUpIcon(name, directoryIcon, filename, false, StartUpIcon.DIRECTORY, getTopContainer(toBuild));
-						toBuild.add(dirIcon);
+						buildStartUpIcon(toBuild, name, directoryIcon, filename, false, StartUpIcon.DIRECTORY, getTopContainer(toBuild));
 						count++;
 					} else {
 						boolean worldIsThere = true;
@@ -547,8 +557,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 							worldIsThere = false;
 						}
 						if (worldIsThere) {
-							StartUpIcon sui = new StartUpIcon(name, icon, filename, needToSave, type, getTopContainer(toBuild));
-							toBuild.add(sui);
+							buildStartUpIcon(toBuild, name, icon, filename, needToSave, type, getTopContainer(toBuild));
 							count++;
 						}
 					}
@@ -620,7 +629,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 
 	private void addListenersToStartTutorialButton() {
-		PanelSelectableListener psl = new PanelSelectableListener(startTutorialButton);
+		PanelSelectableListener psl = new PanelSelectableListener(startTutorialButton, null);
 		startTutorialButton.addFocusListener(psl);
 		startTutorialButton.addMouseListener(psl);
 		startTutorialButton.addKeyListener(new KeyAdapter() {
@@ -687,8 +696,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		});
 		int value = 43; // Scroll value for scrollbar. Aik Min added this.
 		
-		exampleWorldsContainer.setLayout(examplePanelLayout);
-		recentWorldsContainer.setLayout(recentPanelLayout);
 		exampleScrollPane.setBackground(Color.white);
 		exampleScrollPane.setBorder(null);
 		exampleScrollPane.setOpaque(false);
@@ -709,7 +716,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		recentWorldsContainer.setAlignmentY((float) 0.0);
 
 
-		templateWorldsContainer.setLayout(templatePanelLayout);
 		templateScrollPane.getViewport().setBackground(Color.white);
 		templateScrollPane.setOpaque(false);
 		templateScrollPane.setBorder(null);
@@ -720,7 +726,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		templateWorldsContainer.setAlignmentY((float) 0.0);
 
 		
-		textbookExampleWorldsContainer.setLayout(textbookPanelLayout);
 		textbookExampleScrollPane.getViewport().setBackground(Color.white);
 		textbookExampleScrollPane.setOpaque(false);
 		textbookExampleScrollPane.setBorder(null);
@@ -744,8 +749,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		tutorialScrollPane.getViewport().setBackground(Color.white);
 		tutorialScrollPane.setBorder(BorderFactory.createLineBorder(Color.black));
 		tutorialScrollPane.setOpaque(false);
-		tutorialScrollPane.getVerticalScrollBar().setUnitIncrement(value); // Aik Min added this
-		tutorialWorldsContainer.setLayout(tutorialPanelLayout);
+		tutorialScrollPane.getVerticalScrollBar().setUnitIncrement(value);
 		tutorialWorldsContainer.setBackground(Color.white);
 		tutorialWorldsContainer.setAlignmentX((float) 0.0);
 		tutorialWorldsContainer.setAlignmentY((float) 0.0);
@@ -929,11 +933,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
 			}
 			this.setOpaque(false);
-			this.setFocusable(true);
-			PanelSelectableListener psl = new PanelSelectableListener(this);
-			this.addFocusListener(psl);
-			this.addMouseListener(psl);
-			this.addKeyListener(psl);
 		}
 
 		protected javax.swing.JPanel getContainer(java.awt.Component topLevelOwner) {
