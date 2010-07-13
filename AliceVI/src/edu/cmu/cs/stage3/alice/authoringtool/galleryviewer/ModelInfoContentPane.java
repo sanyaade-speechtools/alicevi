@@ -23,12 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
-import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
+
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author culyba, dennisc
@@ -134,27 +131,7 @@ public class ModelInfoContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 	
 	private JButton createButton(String label) {
-		JButton ret = new JButton(label);
-		ret.setForeground(new Color(1f, 1f, 1f));
-		ret.setBackground(new Color(0f, 0f, 0f));
-		ret.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				JButton target = (JButton) arg0.getSource();
-				target.setBackground(new Color(1f, 1f, 1f));
-				target.setForeground(new Color(0f, 0f, 0f));
-				target.setBorder(BorderFactory.createLineBorder(new Color(0f, 0f, 0f), 4));
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				JButton target = (JButton) arg0.getSource();
-				target.setForeground(new Color(1f, 1f, 1f));
-				target.setBackground(new Color(0f, 0f, 0f));
-			}
-			
-		});
-		return ret;
+		return new AccessibleButton(label);
 	}
 
 	private void guiInit() {

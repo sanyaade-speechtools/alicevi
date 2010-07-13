@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -50,6 +51,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.BadLocationException;
+
+import edu.cmu.cs.stage3.awt.DynamicFlowLayout;
 
 /**
  * @author David Culyba, Dennis Cosgrove
@@ -133,11 +136,11 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private JScrollPane recentScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private JScrollPane templateScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	private JPanel exampleWorldsContainer = new JPanel(new GridLayout(0,3));
-	private JPanel recentWorldsContainer = new JPanel(new GridLayout(0,3));
-	private JPanel textbookExampleWorldsContainer = new JPanel(new GridLayout(0,3));
-	private JPanel templateWorldsContainer = new JPanel(new GridLayout(0,3));
-	private JPanel tutorialWorldsContainer = new JPanel(new GridLayout(0,3));
+	private JPanel exampleWorldsContainer = new JPanel(new DynamicFlowLayout(FlowLayout.LEFT, null, JPanel.class, 20)); 
+	private JPanel recentWorldsContainer = new JPanel(new DynamicFlowLayout(FlowLayout.LEFT, null, JPanel.class, 20));
+	private JPanel textbookExampleWorldsContainer = new JPanel(new DynamicFlowLayout(FlowLayout.LEFT, null, JPanel.class, 20));
+	private JPanel templateWorldsContainer = new JPanel(new DynamicFlowLayout(FlowLayout.LEFT, null, JPanel.class, 20));
+	private JPanel tutorialWorldsContainer = new JPanel(new DynamicFlowLayout(FlowLayout.LEFT, null, JPanel.class, 20));
 	private JPanel awtOpenWorldContainer = new JPanel();
 
 	private JPanel exampleWorldsDirectoryContainer = new JPanel();
