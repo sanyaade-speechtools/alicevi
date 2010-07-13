@@ -107,7 +107,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		cameraViewPanel.controlPanel.add( makeSceneEditorSmallButton, new java.awt.GridBagConstraints( 0, 9, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets( 0, 0, 8, 8 ), 0, 0 ) );
 
 		// tooltips
-		makeSceneEditorBigButton.setToolTipText( "<html><font face=arial size=-1>Open the Object Gallery and Layout Tool.<p><p>Objects are added to the world from the Gallery.<p>The Layout Tool has tools that will help you position objects in the world.<p>You will not be able to edit Methods or Events while the Gallery is open.</font></html>" );
+		makeSceneEditorBigButton.setToolTipText( "<html><font face=arial size=-1>Open the Object Gallery and Layout Tool.<p></font></html>" );
 		makeSceneEditorSmallButton.setToolTipText( "<html><font face=arial size=-1>Close the Gallery and Layout Tool.<p><p>Closes the gallery and returns<p>to the Method and Event editors.</font></html>" );
 	}
 

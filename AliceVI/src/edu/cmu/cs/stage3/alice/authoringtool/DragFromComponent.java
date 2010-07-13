@@ -328,28 +328,24 @@ public class DragFromComponent extends JPanel implements
 				+ AuthoringToolResources.QUESTION_STRING.substring(1);
 
 		comboPanel
-				.setToolTipText("<html><font face=arial size=-1>This area displays the details"
-						+ "<p>of the Selected Object.</font></html>");
+				.setToolTipText("<html><font face=arial size=-1>Details of the"
+						+ "<p>Selected Object.</font></html>");
 
 		tabbedPane.setToolTipTextAt(PROPERTIES_TAB,
-				"<html><font face=arial size=-1>Open the "
-						+ "Properties Tab<p>of the Selected Object.<p><p>Use "
-						+ "this tab to view and edit<p>the Properties of the "
+				"<html><font face=arial size=-1>"
+						+ "<p>View and edit<p>the Properties of the "
 						+ "Selected Object.</font></html>");
 
 		tabbedPane
 				.setToolTipTextAt(
 						ANIMATIONS_TAB,
-						"<html><font face=arial size=-1>Open the "
-								+ "Methods Tab<p>of the Selected Object.<p><p>Use this "
-								+ "tab to view and edit<p>the Methods of the Selected "
+						"<html><font face=arial size=-1>"
+								+ "<p>View and edit<p>the Methods of the Selected "
 								+ "Object.</font></html>");
 
 		tabbedPane.setToolTipTextAt(QUESTIONS_TAB,
-				"<html><font face=arial size=-1>Open the "
-						+ cappedQuestionString + "s"
-						+ " Tab<p>of the Selected Object.<p>"
-						+ "<p>Use this tab to view and edit<p>the "
+				"<html><font face=arial size=-1>"
+						+ "<p>View and edit<p>the "
 						+ cappedQuestionString + "s"
 						+ " of the Selected Object." + "</font></html>");
 
@@ -364,18 +360,15 @@ public class DragFromComponent extends JPanel implements
 						+ "</font></html>");
 
 		propertiesPanel
-				.setToolTipText("<html><font face=arial size=-1>Properties Tab<p><p>This tab "
-						+ "allows you to view and edit<p>the Properties of the Selected "
+				.setToolTipText("<html><font face=arial size=-1>View and edit<p>the Properties of the Selected "
 						+ "Object.</font></html>");
 
 		animationsPanel
-				.setToolTipText("<html><font face=arial size=-1>Methods Tab<p><p>Methods are "
-						+ "the actions that an object knows how to do.<p>Most objects "
-						+ "come with default methods, and you can<p>create your own "
-						+ "methods as well.</font></html>");
+				.setToolTipText("<html><font face=arial size=-1><p>Methods are "
+						+ "the actions that an object knows how to do.</font></html>");
 
 		questionsPanel.setToolTipText("<html><font face=arial size=-1>"
-				+ cappedQuestionString + "s" + " Tab<p><p>"
+				+ "<p>"
 				+ cappedQuestionString + "s"
 				+ " are the things that an object can<p>answer about "
 				+ "themselves or the world.</font></html>");

@@ -420,7 +420,7 @@ public class Actions {
 		playAction.putValue( Action.ACTION_COMMAND_KEY, "play" );
 		//playAction.putValue( Action.MNEMONIC_KEY, new Integer( 'P' ) );
 		playAction.putValue( Action.NAME, "Play" );
-		playAction.putValue( Action.SHORT_DESCRIPTION, "<html><font face=arial size=-1>Play the world.<p><p>Opens the play window and<p>starts the world running.</font></html>" );
+		playAction.putValue( Action.SHORT_DESCRIPTION, "<html><font face=arial size=-1>Starts the world running.</font></html>" );
 		playAction.putValue( Action.SMALL_ICON, AuthoringToolResources.getIconForString( "play" ) );
 		applicationActions.add( playAction );
 

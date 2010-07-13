@@ -561,10 +561,9 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
             }
         };
         String toolTipText = "<html><body>"+
-                             "<p>Events</p>"+
                              "<p>Events run Methods when certain things happen</p>"+
-                             "<p>(like when the mouse is clicked on an Object or</p>"+
-                             "<p>when a certain key is pressed)</p></body></html>";
+                             "</body></html>";
+        
         containingPanelLayout = new java.awt.GridBagLayout();
         m_containingPanel.setLayout(containingPanelLayout);
         m_containingPanel.setBorder(null);

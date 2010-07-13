@@ -55,7 +55,7 @@ public class WorldTree extends javax.swing.JTree {
 		dropLinesActive = false;
 		getSelectionModel().setSelectionMode( javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION );
 
-		setToolTipText( "<html><font face=arial size=-1>Object Tree<p><p>The Object Tree shows all<p>of the objects in the world.<p>Some objects have parts.</font></html>" );
+		setToolTipText( "<html><font face=arial size=-1><p>The Object Tree shows all<p>of the objects in the world.</font></html>" );
 		javax.swing.ToolTipManager.sharedInstance().registerComponent( this );
 	}
 
