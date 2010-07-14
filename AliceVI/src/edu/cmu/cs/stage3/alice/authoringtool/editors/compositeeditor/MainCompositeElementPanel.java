@@ -484,11 +484,8 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
             });
             newParameterButton.setDropTarget(new java.awt.dnd.DropTarget(newParameterButton, parameterDropHandler));
             newParameterButton.setToolTipText("<html><body>"+
-                             "<p>Open the New Parameter Dialogue Box</p>"+
                              "<p>Parameters allow you to send information</p>"+
-                             "<p>to a method when you run it. You may choose</p>"+
-                             "<p>among several types of information to send</p>"+
-                             "<p>(like numbers, objects, and Booleans).</p>"+
+                             "<p>to a method when you run it."+
                              "</body></html>");
         }
         if (newVariableButton == null){
@@ -519,11 +516,8 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
             });
             newVariableButton.setDropTarget(new java.awt.dnd.DropTarget(newVariableButton, variableDropHandler));
             newVariableButton.setToolTipText("<html><body>"+
-                             "<p>Open the New Variable Dialogue Box</p>"+
-                             "<p>Variables allow you to store information</p>"+
-                             "<p>in a method when it runs. You may choose</p>"+
-                             "<p>among several types of information (like</p>"+
-                             "<p>numbers, objects, and Booleans).</p>"+
+                             "Variables allow you to store information</p>"+
+                             "<p>in a method when it runs." +
                              "</body></html>");
         }
         if (scrollPane == null){

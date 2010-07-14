@@ -114,7 +114,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 		// tooltips
 		makeSceneEditorBigButton.setToolTipText( "<html><font face=arial size=-1>Open the Object Gallery and Layout Tool.<p></font></html>" );
-		makeSceneEditorSmallButton.setToolTipText( "<html><font face=arial size=-1>Close the Gallery and Layout Tool.<p><p>Closes the gallery and returns<p>to the Method and Event editors.</font></html>" );
+		makeSceneEditorSmallButton.setToolTipText( "<html><font face=arial size=-1>Close the Gallery and Layout Tool.</font></html>" );
 	}
 
 	// big hack for now.  need to consolidate CameraViewPanel and LayoutViewPanel
