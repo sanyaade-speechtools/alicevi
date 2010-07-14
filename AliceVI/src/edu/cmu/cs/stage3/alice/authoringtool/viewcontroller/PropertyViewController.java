@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 
@@ -59,7 +60,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 	protected boolean editingEnabled = true;
 	protected boolean sleeping = false;
 	protected java.util.Vector popupStructure;
-	protected javax.swing.JButton popupButton = new javax.swing.JButton( new javax.swing.ImageIcon( edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getResource( "images/popupArrow.gif" ) ) );
+	protected javax.swing.JButton popupButton = new AccessibleButton( new javax.swing.ImageIcon( edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getResource( "images/popupArrow.gif" ) ) );
 	protected edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener = new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {
 		protected long lastTime = System.currentTimeMillis();
 		public void propertyChanging( edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev ) {

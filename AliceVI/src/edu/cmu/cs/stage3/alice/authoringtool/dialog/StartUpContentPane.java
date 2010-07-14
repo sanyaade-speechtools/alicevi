@@ -31,7 +31,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -52,6 +51,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.BadLocationException;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.awt.DynamicFlowLayout;
 
 /**
@@ -84,6 +84,7 @@ class TutorialWorldFilter implements java.io.FileFilter {
 }
 
 public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane { 
+	private static final long serialVersionUID = 343389010283921660L;
 	public static final int DO_NOT_CHANGE_TAB_ID = -1;
 	public static final int OPEN_TAB_ID = 1;
 	public static final int TUTORIAL_TAB_ID = 2;
@@ -152,21 +153,23 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private JLabel templateWorldsDirLabel = new JLabel();
 	private JLabel tutorialWorldsDirLabel = new JLabel();
 
-	private JButton openButton = new JButton();
-	private JButton cancelButton = new JButton();
-	private JButton refreshButton = new JButton();
+	private JButton openButton = new AccessibleButton();
+	private JButton cancelButton = new AccessibleButton();
+	private JButton refreshButton = new AccessibleButton();
 	private JCheckBox stopShowingCheckBox = new JCheckBox();
-	private JButton browseButton = new JButton();
+	private JButton browseButton = new AccessibleButton();
 
 	private JLabel headerLabel = new JLabel();
 
 	private JPanel tutorialButtonPanel = new JPanel();
-	private JButton startTutorialButton = new JButton();
+	private JButton startTutorialButton = new AccessibleButton();
 	private JPanel tutorialTopContainer = new JPanel();
 	private BorderLayout borderLayout1 = new BorderLayout();
 	private JScrollPane tutorialScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 	private JFileChooser fileChooser = new JFileChooser() {
+		private static final long serialVersionUID = 3785998608153962381L;
+
 		public void setSelectedFile( java.io.File file ) {
 			super.setSelectedFile( file );
 			StartUpContentPane.this.handleFileSelectionChange( file );
@@ -385,7 +388,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 	private String makeNameFromFilename(String filename) {
 		String name = filename.substring(0, (filename.length() - 4));
-		int count = 0;
 		int last = name.lastIndexOf(java.io.File.separator);
 		if (last >= 0 && last < name.length()) {
 			name = name.substring(last + 1);
@@ -395,7 +397,6 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 	private String makeDirectoryNameFromFilename(String filename) {
 		String name = new String(filename);
-		int count = 0;
 		if (filename.endsWith(java.io.File.separator)) {
 			filename = filename.substring(filename.length());
 		}
@@ -738,9 +739,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		textbookExampleWorldsContainer.setAlignmentX((float) 0.0);
 		textbookExampleWorldsContainer.setAlignmentY((float) 0.0);
 		
-		tutorialButtonPanel.setBackground(Color.white);
 		tutorialButtonPanel.setLayout(new GridBagLayout());
-		startTutorialButton.setBackground(Color.white);
 		startTutorialButton.setBorder(null);
 		startTutorialButton.setMaximumSize(new Dimension(120, 90));
 		startTutorialButton.setMinimumSize(new Dimension(120, 90));
@@ -815,7 +814,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		
 		textFilePath.getDocument().addDocumentListener( new FilePathDocumentListener() );
 		
-		browseButton = new javax.swing.JButton( "Browse..." );
+		browseButton = new AccessibleButton( "Browse..." );
 		
 		browseButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.player;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+
 public class PlayerApplet extends java.applet.Applet {
 	private AbstractPlayer m_player = new AbstractPlayer() {
 		protected boolean isPreserveAndRestoreRequired() {
@@ -33,10 +35,10 @@ public class PlayerApplet extends java.applet.Applet {
 		}
 	};
 	
-	private javax.swing.JButton m_pauseButton = new javax.swing.JButton( "pause" );
-	private javax.swing.JButton m_resumeButton = new javax.swing.JButton( "resume" );
-	private javax.swing.JButton m_startButton = new javax.swing.JButton( "restart" );
-	private javax.swing.JButton m_stopButton = new javax.swing.JButton( "stop" );
+	private javax.swing.JButton m_pauseButton = new AccessibleButton( "pause" );
+	private javax.swing.JButton m_resumeButton = new AccessibleButton( "resume" );
+	private javax.swing.JButton m_startButton = new AccessibleButton( "restart" );
+	private javax.swing.JButton m_stopButton = new AccessibleButton( "stop" );
 	
 	private java.awt.Color decodeColorParam( String name, java.awt.Color valueIfNull ) {
 		//String value = getParameter( name );

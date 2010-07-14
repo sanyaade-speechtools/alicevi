@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 /**
@@ -457,18 +458,14 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         java.awt.Component anchor = getAnchor(this);
         int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
         if (newParameterButton == null){
-            newParameterButton = new javax.swing.JButton("create new parameter");
-            newParameterButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());
+            newParameterButton = new AccessibleButton("create new parameter");
+            //newParameterButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());
             newParameterButton.setMargin(new java.awt.Insets(2,2,2,2));
             if (fontSize == 12){
 	            newParameterButton.setMinimumSize(new java.awt.Dimension(buttonWidth, buttonHeight));
 	            newParameterButton.setPreferredSize(new java.awt.Dimension(buttonWidth, buttonHeight));
 	            newParameterButton.setMaximumSize(new java.awt.Dimension(buttonWidth, buttonHeight));
             }
-       /*     newParameterButton.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-                    javax.swing.BorderFactory.createLineBorder(java.awt.Color.lightGray),
-                    javax.swing.BorderFactory.createEmptyBorder(2,2,2,2)
-                    ));*/
             newParameterButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed( java.awt.event.ActionEvent ev ) {
                     edu.cmu.cs.stage3.alice.core.Variable variable = authoringTool.showNewVariableDialog("Create New Parameter",  requiredParameters.getOwner(), false, false );
@@ -476,7 +473,6 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
 						if( requiredParameters != null ) {
 							authoringTool.getUndoRedoStack().startCompound();
 							try {
-//								variable.value.set( null ); //How dow we deal with parameters? They need a value to work as drops, but it shows up in the behavior
 								requiredParameters.getOwner().addChild( variable );
 								requiredParameters.add( variable );
 							} finally {
@@ -496,8 +492,8 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
                              "</body></html>");
         }
         if (newVariableButton == null){
-            newVariableButton = new javax.swing.JButton("create new variable");
-            newVariableButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());//TODO
+            newVariableButton = new AccessibleButton("create new variable");
+            //newVariableButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());//TODO
             newVariableButton.setMargin(new java.awt.Insets(2,2,2,2));
             if (fontSize == 12){
 	            newVariableButton.setMinimumSize(new java.awt.Dimension(buttonWidth, buttonHeight));
@@ -505,10 +501,6 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
 	            newVariableButton.setMaximumSize(new java.awt.Dimension(buttonWidth, buttonHeight));
             }
             
-       /*     newVariableButton.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-                    javax.swing.BorderFactory.createLineBorder(java.awt.Color.lightGray),
-                    javax.swing.BorderFactory.createEmptyBorder(2,2,2,2)
-                    ));*/
             newVariableButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed( java.awt.event.ActionEvent ev ) {
 					edu.cmu.cs.stage3.alice.core.Variable variable = authoringTool.showNewVariableDialog("Create New Local Variable", localVariables.getOwner(), false, true);

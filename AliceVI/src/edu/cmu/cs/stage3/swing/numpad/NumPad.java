@@ -26,6 +26,8 @@ package edu.cmu.cs.stage3.swing.numpad;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+
 /**
  * @author Jason Pratt, Dennis Cosgrove
  */
@@ -48,7 +50,7 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 	public void removeCancelActionListener(java.awt.event.ActionListener l) {
 		cancelButton.removeActionListener(l);
 	}
-	private void doKey(javax.swing.JButton button, String imageString, java.awt.event.ActionListener onClick) {
+	private void doKey(AccessibleButton button, String imageString, java.awt.event.ActionListener onClick) {
 		button.addActionListener(onClick);
 
 		java.awt.Image image = null;
@@ -332,25 +334,25 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 	java.awt.GridBagLayout gridBagLayout1 = new java.awt.GridBagLayout();
 	javax.swing.JTextField numberTextField = new javax.swing.JTextField();
 	java.awt.GridBagLayout gridBagLayout2 = new java.awt.GridBagLayout();
-	javax.swing.JButton okayButton = new javax.swing.JButton();
-	javax.swing.JButton cancelButton = new javax.swing.JButton();
+	AccessibleButton okayButton = new AccessibleButton();
+	AccessibleButton cancelButton = new AccessibleButton();
 	javax.swing.JPanel keyWell = new javax.swing.JPanel();
 	java.awt.GridBagLayout gridBagLayout3 = new java.awt.GridBagLayout();
-	javax.swing.JButton sevenButton = new javax.swing.JButton();
-	javax.swing.JButton eightButton = new javax.swing.JButton();
-	javax.swing.JButton nineButton = new javax.swing.JButton();
-	javax.swing.JButton backspaceButton = new javax.swing.JButton();
-	javax.swing.JButton fourButton = new javax.swing.JButton();
-	javax.swing.JButton fiveButton = new javax.swing.JButton();
-	javax.swing.JButton sixButton = new javax.swing.JButton();
-	javax.swing.JButton clearButton = new javax.swing.JButton();
-	javax.swing.JButton oneButton = new javax.swing.JButton();
-	javax.swing.JButton twoButton = new javax.swing.JButton();
-	javax.swing.JButton threeButton = new javax.swing.JButton();
-	javax.swing.JButton plusMinusButton = new javax.swing.JButton();
-	javax.swing.JButton zeroButton = new javax.swing.JButton();
-	javax.swing.JButton decimalButton = new javax.swing.JButton();
-	javax.swing.JButton slashButton = new javax.swing.JButton();
+	AccessibleButton sevenButton = new AccessibleButton();
+	AccessibleButton eightButton = new AccessibleButton();
+	AccessibleButton nineButton = new AccessibleButton();
+	AccessibleButton backspaceButton = new AccessibleButton();
+	AccessibleButton fourButton = new AccessibleButton();
+	AccessibleButton fiveButton = new AccessibleButton();
+	AccessibleButton sixButton = new AccessibleButton();
+	AccessibleButton clearButton = new AccessibleButton();
+	AccessibleButton oneButton = new AccessibleButton();
+	AccessibleButton twoButton = new AccessibleButton();
+	AccessibleButton threeButton = new AccessibleButton();
+	AccessibleButton plusMinusButton = new AccessibleButton();
+	AccessibleButton zeroButton = new AccessibleButton();
+	AccessibleButton decimalButton = new AccessibleButton();
+	AccessibleButton slashButton = new AccessibleButton();
 
 	private void jbInit() {
 		setLayout(borderLayout1);

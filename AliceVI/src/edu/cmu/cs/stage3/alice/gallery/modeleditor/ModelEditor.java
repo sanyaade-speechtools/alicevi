@@ -1,6 +1,10 @@
 package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+
 public class ModelEditor extends javax.swing.JFrame {
+	private static final long serialVersionUID = -2573158046446492380L;
+
 	public static void main(String[] args) {
 		ModelEditor modelEditor = new ModelEditor();
 		modelEditor.setLocation( 0, 0 ); 
@@ -146,7 +150,6 @@ public class ModelEditor extends javax.swing.JFrame {
 
 		m_tree.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
 			public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
-				javax.swing.tree.TreePath treePath = e.getPath();
 				onSelect( (edu.cmu.cs.stage3.alice.core.Element)m_tree.getLastSelectedPathComponent() );
 			}
 		} );
@@ -215,13 +218,13 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_tree.setShowsRootHandles( true );
 		m_tree.setToggleClickCount( 0 );
 		
-		m_prev = new javax.swing.JButton();
+		m_prev = new AccessibleButton();
 		m_prev.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e) {
 				onPrev();
 			}
 		});
-		m_next = new javax.swing.JButton();
+		m_next = new AccessibleButton();
 		m_next.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e) {
 				onNext();
@@ -253,7 +256,7 @@ public class ModelEditor extends javax.swing.JFrame {
 			}
 		} );
 		
-		m_revert = new javax.swing.JButton( "Revert" );
+		m_revert = new AccessibleButton( "Revert" );
 		m_revert.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				onRevert();

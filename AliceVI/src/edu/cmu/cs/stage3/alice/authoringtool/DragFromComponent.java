@@ -23,93 +23,86 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool;
 
-import java.awt.*;
-import javax.swing.*; //import javax.swing.border.*;
-
-import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable;
-
-// Imports added by Brett Snare
-
-import edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener;
-
-import edu.cmu.cs.stage3.alice.authoringtool.editors.variablegroupeditor.VariableGroupEditor;
-
-import edu.cmu.cs.stage3.alice.authoringtool.dialog.NewResponseContentPane;
-import edu.cmu.cs.stage3.alice.authoringtool.dialog.NewQuestionContentPane;
-
-import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.SoundsPanel;
-import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.TextureMapsPanel;
-import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ObjectArrayPropertyPanel;
-
-import edu.cmu.cs.stage3.alice.core.Element;
-
-import edu.cmu.cs.stage3.alice.core.Pose;
-import edu.cmu.cs.stage3.alice.core.event.*;
-import edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse;
-import edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion;
-
-import edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty;
-
-import edu.cmu.cs.stage3.swing.DialogManager;
-import edu.cmu.cs.stage3.swing.ContentPane;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.BorderLayout;
 import java.awt.Color;
-
-import java.awt.event.ActionListener;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
-
+import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
+import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 
-import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
-import edu.cmu.cs.stage3.alice.core.Transformable;
-import edu.cmu.cs.stage3.alice.authoringtool.util.AliceTabbedPaneUI;
-import edu.cmu.cs.stage3.alice.core.World;
-import edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel;
-import edu.cmu.cs.stage3.alice.core.Variable;
-import edu.cmu.cs.stage3.alice.core.TextureMap;
-import edu.cmu.cs.stage3.alice.core.Property;
-import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable;
-import edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype;
 import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable;
 import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable;
-
-import java.awt.Component;
-import edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory;
-import edu.cmu.cs.stage3.alice.core.ReferenceFrame;
-import edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation;
-import edu.cmu.cs.stage3.alice.core.response.PropertyAnimation;
-import java.util.Iterator;
-import java.awt.GridBagLayout;
-import edu.cmu.cs.stage3.alice.authoringtool.util.ExpandablePanel;
-import edu.cmu.cs.stage3.util.StringObjectPair;
-import edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype;
-import edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory;
-import javax.swing.Box;
-import edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer;
+import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.NewQuestionContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.NewResponseContentPane;
+import edu.cmu.cs.stage3.alice.authoringtool.editors.variablegroupeditor.VariableGroupEditor;
+import edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener;
+import edu.cmu.cs.stage3.alice.authoringtool.util.AliceTabbedPaneUI;
 import edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype;
-import edu.cmu.cs.stage3.alice.authoringtool.util.Releasable;
+import edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype;
+import edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel;
 import edu.cmu.cs.stage3.alice.authoringtool.util.EditObjectButton;
-import edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion;
-import java.util.Vector;
-import java.util.LinkedList;
-import edu.cmu.cs.stage3.alice.core.question.PartKeyed;
-import edu.cmu.cs.stage3.alice.core.Question;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ExpandablePanel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer;
+import edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory;
+import edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory;
+import edu.cmu.cs.stage3.alice.authoringtool.util.Releasable;
 import edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype;
 import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.CallToUserDefinedResponsePrototypeDnDPanel;
-import edu.cmu.cs.stage3.alice.core.Response;
-import edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse;
-import javax.swing.JLabel;
-import edu.cmu.cs.stage3.alice.core.Sandbox;
 import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ElementDnDPanel;
-import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ObjectArrayPropertyPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.SoundsPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.TextureMapsPanel;
+import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.Pose;
+import edu.cmu.cs.stage3.alice.core.Property;
+import edu.cmu.cs.stage3.alice.core.Question;
+import edu.cmu.cs.stage3.alice.core.ReferenceFrame;
+import edu.cmu.cs.stage3.alice.core.Response;
+import edu.cmu.cs.stage3.alice.core.Sandbox;
 import edu.cmu.cs.stage3.alice.core.Sound;
+import edu.cmu.cs.stage3.alice.core.TextureMap;
+import edu.cmu.cs.stage3.alice.core.Transformable;
+import edu.cmu.cs.stage3.alice.core.Variable;
+import edu.cmu.cs.stage3.alice.core.World;
+import edu.cmu.cs.stage3.alice.core.event.ChildrenEvent;
+import edu.cmu.cs.stage3.alice.core.event.ChildrenListener;
+import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent;
+import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener;
+import edu.cmu.cs.stage3.alice.core.event.PropertyEvent;
+import edu.cmu.cs.stage3.alice.core.event.PropertyListener;
+import edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty;
+import edu.cmu.cs.stage3.alice.core.question.PartKeyed;
+import edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion;
+import edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion;
+import edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse;
+import edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation;
+import edu.cmu.cs.stage3.alice.core.response.PropertyAnimation;
+import edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse;
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import edu.cmu.cs.stage3.swing.ContentPane;
+import edu.cmu.cs.stage3.swing.DialogManager;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 // TODO
 
@@ -119,10 +112,6 @@ import edu.cmu.cs.stage3.alice.core.Sound;
  */
 public class DragFromComponent extends JPanel implements
 		ElementSelectionListener {
-
-	// //////////////////
-	// Autogenerated
-	// //////////////////
 
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel propertySubPanel = new JPanel();
@@ -210,10 +199,10 @@ public class DragFromComponent extends JPanel implements
 					+ "'s details");
 		}
 	};
-	protected JButton newAnimationButton = new JButton("create new method");
-	protected JButton newQuestionButton = new JButton("create new "
+	protected JButton newAnimationButton = new AccessibleButton("create new method");
+	protected JButton newQuestionButton = new AccessibleButton("create new "
 			+ AuthoringToolResources.QUESTION_STRING);
-	protected JButton capturePoseButton = new JButton("capture pose");
+	protected JButton capturePoseButton = new AccessibleButton("capture pose");
 	protected UserDefinedResponse newlyCreatedAnimation;
 	protected UserDefinedQuestion newlyCreatedQuestion;
 	protected Pose newlyCreatedPose;
@@ -237,7 +226,6 @@ public class DragFromComponent extends JPanel implements
 	}
 
 	private void guiInit() {
-		newAnimationButton.setBackground(new Color(240, 240, 255));
 		newAnimationButton.setMargin(new Insets(2, 4, 2, 4));
 		newAnimationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
@@ -260,7 +248,6 @@ public class DragFromComponent extends JPanel implements
 				}
 			}
 		});
-		newQuestionButton.setBackground(new Color(240, 240, 255));
 		newQuestionButton.setMargin(new Insets(2, 4, 2, 4));
 		newQuestionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
@@ -286,7 +273,6 @@ public class DragFromComponent extends JPanel implements
 			}
 		});
 
-		capturePoseButton.setBackground(new Color(240, 240, 255));
 		capturePoseButton.setMargin(new Insets(2, 4, 2, 4));
 		capturePoseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {

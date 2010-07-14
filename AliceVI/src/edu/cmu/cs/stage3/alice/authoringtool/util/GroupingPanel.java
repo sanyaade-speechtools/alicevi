@@ -125,18 +125,6 @@ public class GroupingPanel extends javax.swing.JPanel implements java.awt.dnd.Dr
 		);
 		addContainerListener( GUIElementContainerListener.getStaticListener() );
 		this.setFocusable(true);
-		this.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				System.out.println("Gained focus: " + arg0.getSource());
-			}
-
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}});
 	}
 
 	public void release() {

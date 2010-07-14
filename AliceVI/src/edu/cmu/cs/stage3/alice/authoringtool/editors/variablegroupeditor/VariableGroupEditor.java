@@ -23,12 +23,14 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.variablegroupeditor;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+
 /**
  * @author Jason Pratt
  */
 public class VariableGroupEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener, java.awt.dnd.DropTargetListener {
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty variables;
-	protected javax.swing.JButton newVariableButton = new javax.swing.JButton( "create new variable" );
+	protected javax.swing.JButton newVariableButton = new AccessibleButton( "create new variable" );
 	protected edu.cmu.cs.stage3.alice.authoringtool.dialog.NewVariableContentPane newVariableDialog;
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 
@@ -44,7 +46,7 @@ public class VariableGroupEditor extends javax.swing.JPanel implements edu.cmu.c
 	private void guiInit() {
 		setLayout( new java.awt.GridBagLayout() );
 		setBackground( java.awt.Color.white );
-		newVariableButton.setBackground( new java.awt.Color( 240, 240, 255 ) );
+		//newVariableButton.setBackground( new java.awt.Color( 240, 240, 255 ) );
 		newVariableButton.setMargin( new java.awt.Insets( 2, 4, 2, 4 ) );
 		newVariableButton.addActionListener(
 			new java.awt.event.ActionListener() {

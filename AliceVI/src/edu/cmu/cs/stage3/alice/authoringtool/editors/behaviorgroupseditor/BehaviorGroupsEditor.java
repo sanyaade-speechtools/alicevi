@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 
@@ -571,11 +572,11 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
         m_containingPanel.setToolTipText(toolTipText);
         scrollPane.setViewportView(m_containingPanel);
 
-        newBehaviorButton = new javax.swing.JButton("create new event");
+        newBehaviorButton = new AccessibleButton("create new event");
         newBehaviorButton.setToolTipText("Display Menu of New Event Types");
         newBehaviorButton.setMargin(new java.awt.Insets(2,2,2,2));
         newBehaviorButton.addActionListener(newBehaviorAction);
-        newBehaviorButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());
+        //newBehaviorButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());
         newBehaviorButton.setDropTarget(new java.awt.dnd.DropTarget( newBehaviorButton, this));
 
         m_header = new javax.swing.JPanel();

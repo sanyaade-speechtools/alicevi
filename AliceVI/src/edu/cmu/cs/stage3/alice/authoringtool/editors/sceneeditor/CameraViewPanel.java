@@ -23,11 +23,35 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
 
-import javax.swing.border.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 
 /**
@@ -37,18 +61,6 @@ import javax.swing.border.*;
 public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetListener, edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorListener {
 	private static final long serialVersionUID = 1L;
 	
-	// TODO: Analyze if this is dead or obsolete
-//	public final static java.awt.datatransfer.DataFlavor df = new java.awt.datatransfer.DataFlavor("text/plain; charset=unicode; class=java.io.InputStream", "Plain Text");
-//	static{
-//		final java.awt.datatransfer.SystemFlavorMap sfm = (java.awt.datatransfer.SystemFlavorMap)java.awt.datatransfer.SystemFlavorMap.getDefaultFlavorMap(); 
-//		java.awt.datatransfer.DataFlavor[] dave = {df};
-//		java.util.Map map = sfm.getNativesForFlavors(dave);
-//		java.util.Collection c = map.values();
-//		java.util.Iterator i = c.iterator();
-//		while (i.hasNext()){
-//			System.out.println(i.next());
-//		}
-//	}
 	
 	public final static int NAVIGATOR_TAB = 0;
 	public final static int MANIPULATOR_TAB = 1;
@@ -1811,17 +1823,17 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 	JComboBox aspectRatioComboBox = new JComboBox();
 	JPanel mousePanel = new JPanel();
 	JPanel markerPanel = new JPanel();
-	JButton objectDummyButton = new JButton();
+	JButton objectDummyButton = new AccessibleButton();
 	JCheckBox affectSubpartsCheckBox = new JCheckBox();
 	JRadioButton singleViewButton = new JRadioButton();
 	JLabel aspectRatioLabel = new JLabel();
 	JComboBox moveCameraCombo = new JComboBox();
 	JPanel controlPanel = new JPanel();
-	JButton cameraDummyButton = new JButton();
+	JButton cameraDummyButton = new AccessibleButton();
 	Component component1;
 	JLabel lensAngleLabel = new JLabel();
 	
-	private JButton moreFewerControlsButton = new JButton();
+	private JButton moreFewerControlsButton = new AccessibleButton();
 
 	private void jbInit() {
 		mouseInfoBorder.setTitleFont(new java.awt.Font("Dialog", 0, 11));

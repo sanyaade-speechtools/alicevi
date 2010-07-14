@@ -23,13 +23,22 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author Jason Pratt
  */
 public class ScriptScratchPad extends javax.swing.JPanel {
+	private static final long serialVersionUID = -9085568111272247887L;
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.ScriptEditorPane scriptEditorPane = new edu.cmu.cs.stage3.alice.authoringtool.util.ScriptEditorPane();
 	protected javax.swing.JScrollPane scriptScrollPane = new javax.swing.JScrollPane();
 
@@ -64,8 +73,8 @@ public class ScriptScratchPad extends javax.swing.JPanel {
 	GridBagLayout gridBagLayout1 = new GridBagLayout();
 	JPanel scriptPanel = new JPanel();
 	BorderLayout borderLayout1 = new BorderLayout();
-	JButton performAllButton = new JButton();
-	JButton performSelectedButton = new JButton();
+	JButton performAllButton = new AccessibleButton();
+	JButton performSelectedButton = new AccessibleButton();
 	JLabel scratchPadLabel = new JLabel();
 
 	private void jbInit() {

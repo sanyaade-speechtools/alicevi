@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 /**
@@ -225,7 +226,7 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
         this.setLayout(new java.awt.GridBagLayout());
         plus = new javax.swing.ImageIcon( edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel.class.getResource( "images/plus.gif" ) );
         minus = new javax.swing.ImageIcon( edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel.class.getResource( "images/minus.gif" ) );
-        expandButton = new javax.swing.JButton();
+        expandButton = new AccessibleButton();
         expandButton.setContentAreaFilled( false );
         expandButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
         expandButton.setFocusPainted( false );

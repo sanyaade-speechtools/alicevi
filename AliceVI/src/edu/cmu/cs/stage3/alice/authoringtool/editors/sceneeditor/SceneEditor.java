@@ -23,10 +23,18 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ComponentEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author Jason Pratt
@@ -47,8 +55,8 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 	protected java.awt.Image makeSceneEditorBigImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getImageForString( "makeSceneEditorBig" );
 	protected java.awt.Image makeSceneEditorSmallImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getImageForString( "makeSceneEditorSmall" );
-	protected javax.swing.JButton makeSceneEditorBigButton = new javax.swing.JButton( new javax.swing.ImageIcon( makeSceneEditorBigImage ) );
-	protected javax.swing.JButton makeSceneEditorSmallButton = new javax.swing.JButton( new javax.swing.ImageIcon( makeSceneEditorSmallImage ) );
+	protected javax.swing.JButton makeSceneEditorBigButton = new AccessibleButton( new javax.swing.ImageIcon( makeSceneEditorBigImage ) );
+	protected javax.swing.JButton makeSceneEditorSmallButton = new AccessibleButton( new javax.swing.ImageIcon( makeSceneEditorSmallImage ) );
 
 	//////////////////
 	// Constructor
@@ -100,8 +108,6 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 				authoringTool.getJAliceFrame().setGuiMode( edu.cmu.cs.stage3.alice.authoringtool.JAliceFrame.SCENE_EDITOR_SMALL_MODE );
 			}
 		} );
-		makeSceneEditorBigButton.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "makeSceneEditorBigBackground" ).createAWTColor() );
-		makeSceneEditorSmallButton.setBackground( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor( "makeSceneEditorSmallBackground" ).createAWTColor() );
 
 		cameraViewPanel.navPanel.add( makeSceneEditorBigButton, new java.awt.GridBagConstraints( 1, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets( 0, 0, 2, 2 ), 0, 0 ) );
 		cameraViewPanel.controlPanel.add( makeSceneEditorSmallButton, new java.awt.GridBagConstraints( 0, 9, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets( 0, 0, 8, 8 ), 0, 0 ) );
@@ -113,13 +119,11 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 	// big hack for now.  need to consolidate CameraViewPanel and LayoutViewPanel
 	public void setGuiMode( int guiMode ) {
-////		System.out.println("set gui: "+this.guiMode+" ?= "+guiMode);
 		if( this.guiMode != guiMode ) {
 			this.guiMode = guiMode;
 			cameraViewPanel.setTargetsDirty();
 			mainPanel.removeAll();
 			if( guiMode == SMALL_MODE ) {
-////				System.out.println("making gui small");
 				cameraViewPanel.setViewMode( CameraViewPanel.SINGLE_VIEW_MODE );
 				cameraViewPanel.navPanel.add( makeSceneEditorBigButton, new java.awt.GridBagConstraints( 1, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets( 0, 0, 2, 2 ), 0, 0 ) );
 				cameraViewPanel.guiNavigator.setImageSize( edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator.SMALL_IMAGES );
@@ -129,16 +133,9 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 				}
 				mainPanel.add( cameraViewPanel.superRenderPanel, java.awt.BorderLayout.CENTER );
 			} else if( guiMode == LARGE_MODE ) {
-////				System.out.println("making gui large");
 				cameraViewPanel.navPanel.remove( makeSceneEditorBigButton );
 				cameraViewPanel.singleViewButton.doClick();
 				cameraViewPanel.guiNavigator.setImageSize( edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator.LARGE_IMAGES );
-//				if( cameraViewPanel.quadViewButton.isSelected() ) {
-//					cameraViewPanel.setViewMode( CameraViewPanel.QUAD_VIEW_MODE );
-//					cameraViewPanel.guiNavigator.setImageSize( edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator.SMALL_IMAGES );
-//				} else {
-//					cameraViewPanel.guiNavigator.setImageSize( edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator.LARGE_IMAGES );
-//				}
 				cameraViewPanel.add( cameraViewPanel.superRenderPanel, java.awt.BorderLayout.CENTER);
 				cameraViewPanel.defaultMoveModeButton.doClick();
 				mainPanel.add( cameraViewPanel, java.awt.BorderLayout.CENTER );

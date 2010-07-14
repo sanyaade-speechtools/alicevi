@@ -23,10 +23,21 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.importers.mocap;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 
 /**
@@ -39,12 +50,13 @@ import edu.cmu.cs.stage3.alice.core.Element;
  */
 
 public class BoneSelectDialog extends javax.swing.JDialog {
-    GridBagLayout gridBagLayout1 = new GridBagLayout();
+	private static final long serialVersionUID = 9107195682681851859L;
+	GridBagLayout gridBagLayout1 = new GridBagLayout();
     JList partsList = new JList();
-    JButton selectButton = new JButton();
-    JButton skipButton = new JButton();
+    JButton selectButton = new AccessibleButton();
+    JButton skipButton = new AccessibleButton();
     JLabel promptLabel = new JLabel();
-    JButton limpButton = new JButton();
+    JButton limpButton = new AccessibleButton();
 
     public Element selectedPart = null;
     public boolean descend = false;

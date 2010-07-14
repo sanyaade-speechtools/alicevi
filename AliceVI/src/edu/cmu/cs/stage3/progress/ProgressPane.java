@@ -1,6 +1,9 @@
 package edu.cmu.cs.stage3.progress;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+
 public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane implements edu.cmu.cs.stage3.progress.ProgressObserver {
+	private static final long serialVersionUID = 2589725328539629433L;
 	private javax.swing.JLabel m_descriptionLabel;
 	private javax.swing.JProgressBar m_progressBar;
 	private javax.swing.JButton m_cancelButton;
@@ -11,7 +14,7 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 	private java.util.Vector m_okActionListeners = new java.util.Vector();
 	private java.util.Vector m_cancelActionListeners = new java.util.Vector();
 
-	private final int UNKNOWN_TOTAL_MAX = 100;
+	private static final int UNKNOWN_TOTAL_MAX = 100;
 	private int m_total;
 
 	private boolean m_isCanceled = false;
@@ -26,7 +29,7 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 		m_progressBar = new javax.swing.JProgressBar();
 		m_progressBar.setPreferredSize( new java.awt.Dimension( 240, 16 ) );
 		
-		m_cancelButton = new javax.swing.JButton( "Cancel" );
+		m_cancelButton = new AccessibleButton( "Cancel" );
 		m_cancelButton.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				onCancel();

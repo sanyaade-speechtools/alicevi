@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 /**
@@ -279,7 +280,7 @@ public abstract class LoopNElementPanel extends CompositeElementPanel  implement
 		simplePanel.setOpaque(false);
 		simplePanel.setBorder(null);
 		simplePanel.setLayout(new java.awt.GridBagLayout());
-		switchButton = new javax.swing.JButton();
+		switchButton = new AccessibleButton();
 		switchButton.setPreferredSize(new java.awt.Dimension(180,21));
 		switchButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());
 		switchButton.setMargin(new java.awt.Insets(2,2,2,2));

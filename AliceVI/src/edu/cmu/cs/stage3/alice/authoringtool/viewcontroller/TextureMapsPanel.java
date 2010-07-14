@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+
 /**
  * @author Jason Pratt
  */
@@ -30,7 +32,7 @@ public class TextureMapsPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty textureMaps;
 	protected javax.swing.JPanel contentPanel = new javax.swing.JPanel();
 	protected java.util.HashMap textureMapGuiCache = new java.util.HashMap();
-	protected javax.swing.JButton importTextureMapButton = new javax.swing.JButton( "import texture map" );
+	protected javax.swing.JButton importTextureMapButton = new AccessibleButton( "import texture map" );
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected RefreshListener refreshListener = new RefreshListener();
 
@@ -43,7 +45,6 @@ public class TextureMapsPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 		setTitle( "Texture Maps" );
 		contentPanel.setLayout( new java.awt.GridBagLayout() );
 		setContent( contentPanel );
-		importTextureMapButton.setBackground( new java.awt.Color( 240, 240, 255 ) );
 		importTextureMapButton.setMargin( new java.awt.Insets( 2, 4, 2, 4 ) );
 		importTextureMapButton.addActionListener(
 			new java.awt.event.ActionListener() {

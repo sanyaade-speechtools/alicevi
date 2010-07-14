@@ -23,14 +23,29 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.importers.mocap;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import edu.cmu.cs.stage3.alice.core.Element;
-import javax.swing.filechooser.FileFilter;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.io.File;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.filechooser.FileFilter;
+
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
+import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Sandbox;
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 
 /**
@@ -43,7 +58,9 @@ import edu.cmu.cs.stage3.alice.core.Sandbox;
  */
 
 public class MocapImporterOptionsDialog extends javax.swing.JDialog {
-    class ElementOrNullWrapper {
+	private static final long serialVersionUID = -2290635142067405972L;
+
+	class ElementOrNullWrapper {
         public Element obj=null;
         public String text = null;
 
@@ -73,11 +90,11 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
     JLabel jLabel1 = new JLabel();
     JLabel jLabel2 = new JLabel();
     JComboBox aliceFPSCombo = new JComboBox();
-    JButton okButton = new JButton();
+    JButton okButton = new AccessibleButton();
     JLabel jLabel3 = new JLabel();
     JTextField jSkelFile = new JTextField();
-    JButton jFileBoxButton = new JButton();
-    JButton cancelButton = new JButton();
+    JButton jFileBoxButton = new AccessibleButton();
+    JButton cancelButton = new AccessibleButton();
 
     public Element selectedPart = null;
     public double fps = 30;

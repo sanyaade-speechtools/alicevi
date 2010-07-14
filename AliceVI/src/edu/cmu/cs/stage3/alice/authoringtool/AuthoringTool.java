@@ -249,7 +249,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 
 	private boolean saveTabsEnabled = false;
 	private long worldLoadedTime;
-	private double speedMultiplier = 1.0;
 
 	private RectangleAnimator rectangleAnimator;
 

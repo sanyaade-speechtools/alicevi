@@ -1,6 +1,7 @@
 package edu.cmu.cs.stage3.alice.core.ui;
 
 import java.awt.Color;
+import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -15,12 +16,13 @@ public class AccessibleButton extends JButton implements FocusListener {
 
 	public static final int BORDER_THICKNESS = 4;
 	
-	public final static Color FOCUSED_BORDER_COLOR = new Color(0.2f, 0.2f, 1f);
+	public final static Color FOCUSED_BORDER_COLOR = new Color(0.2f, 0.2f, 0.2f);
 	public final static Color FOCUSED_BG_COLOR = new Color(1f, 1f, 1f);
 	public final static Color FOCUSED_FG_COLOR = new Color(0f, 0f, 0f);
 	
 	public final static Color UNFOCUSED_BG_COLOR = FOCUSED_FG_COLOR;
 	public final static Color UNFOCUSED_FG_COLOR = FOCUSED_BG_COLOR;
+	public final static Color UNFOCUSED_BORDER_COLOR = UNFOCUSED_BG_COLOR;
 
 	public AccessibleButton() {
 		init();
@@ -47,6 +49,7 @@ public class AccessibleButton extends JButton implements FocusListener {
 	}
 	
 	private void init() {
+		this.setMargin(new Insets(2,2,2,2));
 		this.addFocusListener(this);
 		this.setBackground(UNFOCUSED_BG_COLOR);
 		this.setForeground(UNFOCUSED_FG_COLOR);
@@ -63,7 +66,7 @@ public class AccessibleButton extends JButton implements FocusListener {
 	public void focusLost(FocusEvent e) {
 		this.setBackground(UNFOCUSED_BG_COLOR);
 		this.setForeground(UNFOCUSED_FG_COLOR);
-		this.setBorder(BorderFactory.createLineBorder(UNFOCUSED_BG_COLOR, BORDER_THICKNESS));
+		this.setBorder(BorderFactory.createLineBorder(UNFOCUSED_BORDER_COLOR, BORDER_THICKNESS));
 	}
 
 }
