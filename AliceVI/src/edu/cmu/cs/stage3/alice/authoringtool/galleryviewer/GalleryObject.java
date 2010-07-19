@@ -288,6 +288,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
         image = new javax.swing.ImageIcon();
         this.add(containingPanel, java.awt.BorderLayout.CENTER);
         //this.setToolTipText(getToolTipString());
+        this.setFocusable(true);
     }
     
     public static String getDisplayName(String toDisplay){

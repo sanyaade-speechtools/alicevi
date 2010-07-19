@@ -58,6 +58,7 @@ public class DnDGroupingPanel extends GroupingPanel {
 		add( grip, java.awt.BorderLayout.WEST );
 		addDragSourceComponent( grip );
 		addDragSourceComponent( this );
+		this.setFocusable(true);
 	}
 
 	public java.awt.datatransfer.Transferable getTransferable() {

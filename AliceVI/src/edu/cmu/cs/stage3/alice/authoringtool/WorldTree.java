@@ -126,9 +126,7 @@ public class WorldTree extends javax.swing.JTree {
 				lastRow--;
 			}
 
-			//DEBUG System.out.println( "lastRow: " + lastRow );
 			java.awt.Rectangle lastBounds = getRowBounds( lastRow );
-			//DEBUG System.out.println( "lastBounds: " + lastRow );
 			int bottomy = 0;
 			if( lastBounds != null ) {
 				bottomy = lastBounds.y + lastBounds.height;
@@ -152,7 +150,6 @@ public class WorldTree extends javax.swing.JTree {
 				} else {                                        // if it doesn't have children, then we can pick a higher level parent
 					pathToDrawFrom = pathToDrawTo; // start at the current depth
 					java.awt.Rectangle bounds = getRowBounds( cursorLocationRow );
-					//DEBUG System.out.println( "boundsToDrawTo: " + bounds );
 					if( ((bounds.y + bounds.height) - cursorLocation.y) < legBuffer ) { // if we're near the bottom of the current row, calculate propert parent based on cursor's horizontal location
 						int cursorLevel = (int)((cursorLocation.x - insets.left - 8 + (totalChildIndent/2.0))/totalChildIndent);
 						int maxLevel = pathToDrawTo.getPathCount() - 1; // don't go deeper than we already are

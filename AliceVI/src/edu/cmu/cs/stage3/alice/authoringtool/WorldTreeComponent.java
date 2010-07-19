@@ -24,6 +24,9 @@
 package edu.cmu.cs.stage3.alice.authoringtool;
 
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -161,7 +164,6 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 				if( o instanceof edu.cmu.cs.stage3.alice.core.Element ) {
 					selectedElement = (edu.cmu.cs.stage3.alice.core.Element)o;
 					if( selectedElement == worldTreeModel.HACK_getOriginalRoot() ) {
-						//pass
 					} else {
 						WorldTreeComponent.this.authoringTool.setSelectedElement( selectedElement );
 					}
@@ -191,15 +193,6 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			if( tree.isEditing() ) {
 				return;
 			}
-
-			/* do we need to avoid double-click drags?
-			java.awt.event.InputEvent triggerEvent = dge.getTriggerEvent();
-			if( triggerEvent instanceof java.awt.event.MouseEvent ) {
-				if( ((java.awt.event.MouseEvent)triggerEvent).getClickCount() > 1 ) {
-					return;
-				}
-			}
-			*/
 
 			java.awt.Point p = dge.getDragOrigin();
 			javax.swing.tree.TreePath path = tree.getPathForLocation( (int)p.getX(), (int)p.getY() );
@@ -252,13 +245,8 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 
 				if( child != null ) {
 					if( isAcceptableDrop( parent, child ) ) {
-//						worldTree.setSelectionPath( parentPath );
 						worldTree.setShowDropLines( true );
 					} else {
-						//TODO setCursor
-						//if( (!invalidCursorShown) && (invalidCursor != null) ) {
-						//	worldTree.setCursor( invalidCursor );
-						//}
 						worldTree.setShowDropLines( false );
 					}
 				} else {
@@ -277,7 +265,6 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 
 		public void drop( java.awt.dnd.DropTargetDropEvent dtde ) {
 			boolean succeeded = true;
-			//DEBUG System.out.println( "drop" );
 			worldTree.setCursorLocation( dtde.getLocation() );
 
 			try {
@@ -381,9 +368,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 
 				authoringTool.getUndoRedoStack().startCompound();
 
-//				child.removeFromParent();
 				child.removeFromParentsProperties();
-//				parent.addChild( child );
 				child.setParent( parent );
 				oap.add( index, child );
 

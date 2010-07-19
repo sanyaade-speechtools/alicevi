@@ -51,14 +51,6 @@ public class PropertyPanel extends javax.swing.JPanel {
 	}
 
 	public void setElement( edu.cmu.cs.stage3.alice.core.Element element ) {
-		/*
-		if( element instanceof edu.cmu.cs.stage3.alice.core.World ) { //TODO: more advanced handling
-			edu.cmu.cs.stage3.alice.core.Element[] scenes = element.getChildren( edu.cmu.cs.stage3.alice.core.Scene.class );
-			if( scenes.length > 0 ) {
-				element = scenes[0];
-			}
-		}*/
-
 		this.element = element;
 
 		refreshGUI();

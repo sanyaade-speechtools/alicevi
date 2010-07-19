@@ -545,5 +545,4 @@ public class CompositeComponentResponsePanel extends  CompositeComponentElementP
         }
         dtde.dropComplete(successful);
     }
-
 }
