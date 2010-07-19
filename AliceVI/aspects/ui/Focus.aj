@@ -21,18 +21,16 @@ public aspect Focus {
 
 		public void focusGained(FocusEvent fe) {
 			if(fe.getSource() == jc && prevBorder == null) {
-				JComponent src = ((JComponent) fe.getSource());
-				prevBorder = src.getBorder();
-				src.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
+				prevBorder = jc.getBorder();
+				jc.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
 				
 			}
 		}
 
 		public void focusLost(FocusEvent fe) {
-			if(fe.getSource() instanceof JComponent) {
-				JComponent src = ((JComponent) fe.getSource());
-				src.setBorder(null);
-				src.setBorder(prevBorder);
+			if(fe.getSource() == jc) {
+				jc.setBorder(null);
+				jc.setBorder(prevBorder);
 				prevBorder = null;
 			}
 		}
