@@ -23,10 +23,12 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+
 /**
  * @author Jason Pratt
  */
-public class FontPropertyViewController extends javax.swing.JButton implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+public class FontPropertyViewController extends AccessibleButton implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
 	protected edu.cmu.cs.stage3.alice.core.Property property;
 	protected boolean omitPropertyName;
 	protected edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener = new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {

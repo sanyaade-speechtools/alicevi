@@ -23,9 +23,16 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
+
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author Jason Pratt
@@ -378,7 +385,7 @@ public class EditorComponent extends javax.swing.JPanel {
 		}
 	}
 
-	class HighlightButton extends javax.swing.JButton {
+	class HighlightButton extends AccessibleButton {
 		protected javax.swing.border.Border highlightBorder = new HighlightBorder( true );
 		protected javax.swing.border.Border pressedBorder = new HighlightBorder( false );
 		protected java.awt.Insets insets = new java.awt.Insets( 4, 4, 4, 4 );

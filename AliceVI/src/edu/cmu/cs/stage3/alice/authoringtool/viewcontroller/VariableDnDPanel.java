@@ -144,22 +144,8 @@ public class VariableDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 		} catch( edu.cmu.cs.stage3.alice.core.IllegalNameValueException e ) {
 			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( e.getMessage(), "Error setting name", javax.swing.JOptionPane.ERROR_MESSAGE );
 			textField.setText( prevName );
-			//textField.selectAll();
 		}
 
-//		// begin HACK
-//		remove( textField );
-//		add( nameLabel, java.awt.BorderLayout.CENTER );
-//		nameLabel.requestFocus();
-//		// end HACK
-//		valueString = valueString.trim();
-//		if( ! valueString.equals( "" ) ) {
-//			try {
-//				variable.name.set( valueString );
-//			} catch( edu.cmu.cs.stage3.alice.core.IllegalNameValueException e ) {
-//				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( e.getMessage(), e );
-//			}
-//		}
 		revalidate();
 	}
 

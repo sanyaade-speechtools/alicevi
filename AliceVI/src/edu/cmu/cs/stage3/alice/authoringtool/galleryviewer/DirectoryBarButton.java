@@ -23,12 +23,14 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+
 /**
  * @author David Culyba
  *
  */
 
-public class DirectoryBarButton extends javax.swing.JButton {
+public class DirectoryBarButton extends AccessibleButton {
     GalleryViewer.DirectoryStructure directoryData;
     GalleryViewer mainViewer;
 

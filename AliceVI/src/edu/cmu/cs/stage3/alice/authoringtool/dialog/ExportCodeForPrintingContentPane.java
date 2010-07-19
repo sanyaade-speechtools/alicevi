@@ -29,6 +29,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
 import java.awt.GridBagConstraints;
 
+import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.ImageObserver{
@@ -84,13 +85,12 @@ class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.Ima
 	}
 }
 
-class CustomListButton extends javax.swing.JButton implements java.awt.event.ActionListener{
+class CustomListButton extends AccessibleButton implements java.awt.event.ActionListener{
 	private java.util.Vector checkBoxes = new java.util.Vector();
 	
 	public CustomListButton(){
 		this.addActionListener(this);
 		this.setHorizontalAlignment(javax.swing.JButton.LEFT);
-//			this.setBorder(null);
 	}
 
 	public void addCheckBox(CustomCheckBox c){
