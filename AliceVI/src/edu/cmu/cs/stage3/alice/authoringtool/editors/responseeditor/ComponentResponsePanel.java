@@ -33,8 +33,8 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
  */
 
 public class ComponentResponsePanel extends edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.ComponentElementPanel{
-
-    protected edu.cmu.cs.stage3.alice.core.Response m_response;
+	private static final long serialVersionUID = -4909229153948532647L;
+	protected edu.cmu.cs.stage3.alice.core.Response m_response;
 
     public ComponentResponsePanel(){
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));

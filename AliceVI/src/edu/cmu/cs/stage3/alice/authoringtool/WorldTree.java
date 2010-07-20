@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.authoringtool;
 
 public class WorldTree extends javax.swing.JTree {
+	private static final long serialVersionUID = -666095076127141962L;
 	protected java.awt.Point cursorLocation;
 	protected boolean dropLinesActive;
 	protected boolean showDropLines = false;

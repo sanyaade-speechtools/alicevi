@@ -107,15 +107,10 @@ public class CompositeComponentResponsePanel extends  CompositeComponentElementP
                     toAdd = new ComponentResponsePanel();
                     ((ComponentResponsePanel)toAdd).set(currentElement);
                 }
-                else{
-                    return null;
-                }
             }
-            return toAdd;
+            
         }
-        else{
-            return null;
-        }
+        return toAdd;
     }
 
     /**
@@ -226,7 +221,6 @@ public class CompositeComponentResponsePanel extends  CompositeComponentElementP
     public void drop( final DropTargetDropEvent dtde ) {
         HACK_started = false;
         boolean successful = true;
-        // Component sourceComponent = DnDManager.getCurrentDragComponent();
         int action = dtde.getDropAction();
         boolean isCopy = ((action & DnDConstants.ACTION_COPY) > 0 );
         boolean isMove = ((action & DnDConstants.ACTION_MOVE) > 0);
@@ -236,10 +230,9 @@ public class CompositeComponentResponsePanel extends  CompositeComponentElementP
                 return;
             }
         }
+        
         Transferable transferable = dtde.getTransferable();
 
-
-        //  System.out.println("checking to see what kind of drop: "+System.currentTimeMillis());
         if( AuthoringToolResources.safeIsDataFlavorSupported(transferable, CopyFactoryTransferable.copyFactoryFlavor ) ) {
             try {
                 CopyFactory copyFactory = (CopyFactory)transferable.getTransferData( CopyFactoryTransferable.copyFactoryFlavor );
@@ -247,7 +240,6 @@ public class CompositeComponentResponsePanel extends  CompositeComponentElementP
                 if (Response.class.isAssignableFrom(valueClass)){
                     dtde.acceptDrop( DnDConstants.ACTION_COPY);
                     successful = true;
-					//Response response = (Response)copyFactory.manufactureCopy(m_owner.getElement().getRoot());
 					Response response = (Response)copyFactory.manufactureCopy(m_owner.getElement().getRoot(), null, null, m_owner.getElement() );
                     if (response != null){
                         performDrop(response, dtde);
@@ -269,12 +261,9 @@ public class CompositeComponentResponsePanel extends  CompositeComponentElementP
             }
         }else if( AuthoringToolResources.safeIsDataFlavorSupported(transferable, ElementReferenceTransferable.responseReferenceFlavor ) ) {
             try {
-                //		System.out.println("getting response: "+System.currentTimeMillis());
                 Response response = (Response)transferable.getTransferData( ElementReferenceTransferable.responseReferenceFlavor );
                 if (response instanceof CompositeResponse){
-                    //		System.out.println("checking valid drop: "+System.currentTimeMillis());
                     if (!isCopy && !isValidDrop( s_currentComponentPanel.getElement(), (CompositeResponse)response)){
-                        //	System.err.println("Can't drop on self");
                         successful = false;
                     }
                 }
@@ -401,7 +390,6 @@ public class CompositeComponentResponsePanel extends  CompositeComponentElementP
                         }
                     };
                     String[] desired = {"value"};
-                    //   System.out.println("class: "+ animationClass +", known: "+known+", desired: "+desired);
                     ResponsePrototype rp = new ResponsePrototype(animationClass, known, desired);
                     Vector<?> structure = PopupMenuUtilities.makePrototypeStructure( rp, factory, componentElements.getOwner()  );
                     javax.swing.JPopupMenu popup = PopupMenuUtilities.makePopupMenu( structure );

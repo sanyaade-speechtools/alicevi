@@ -23,13 +23,11 @@ public aspect Focus {
 			if(fe.getSource() == jc && prevBorder == null) {
 				prevBorder = jc.getBorder();
 				jc.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
-				
 			}
 		}
 
 		public void focusLost(FocusEvent fe) {
 			if(fe.getSource() == jc) {
-				jc.setBorder(null);
 				jc.setBorder(prevBorder);
 				prevBorder = null;
 			}

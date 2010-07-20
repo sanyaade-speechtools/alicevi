@@ -255,7 +255,6 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 	private boolean stdOutToConsole;
 	private boolean stdErrToConsole;
 	public int numEncoded = 0;
-	// Madeleine added
 
 	private WorldListener userDefinedParameterListener = new WorldListener() {
 		private Object m_previousPropertyValue = null;
