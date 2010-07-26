@@ -37,7 +37,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import edu.cmu.cs.stage3.alice.core.Element;
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 
 /**
@@ -53,10 +52,10 @@ public class BoneSelectDialog extends javax.swing.JDialog {
 	private static final long serialVersionUID = 9107195682681851859L;
 	GridBagLayout gridBagLayout1 = new GridBagLayout();
     JList partsList = new JList();
-    JButton selectButton = new AccessibleButton();
-    JButton skipButton = new AccessibleButton();
+    JButton selectButton = new JButton();
+    JButton skipButton = new JButton();
     JLabel promptLabel = new JLabel();
-    JButton limpButton = new AccessibleButton();
+    JButton limpButton = new JButton();
 
     public Element selectedPart = null;
     public boolean descend = false;

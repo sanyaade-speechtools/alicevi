@@ -99,7 +99,6 @@ import edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse;
 import edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation;
 import edu.cmu.cs.stage3.alice.core.response.PropertyAnimation;
 import edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse;
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.swing.ContentPane;
 import edu.cmu.cs.stage3.swing.DialogManager;
 import edu.cmu.cs.stage3.util.StringObjectPair;
@@ -199,10 +198,10 @@ public class DragFromComponent extends JPanel implements
 					+ "'s details");
 		}
 	};
-	protected JButton newAnimationButton = new AccessibleButton("create new method");
-	protected JButton newQuestionButton = new AccessibleButton("create new "
+	protected JButton newAnimationButton = new JButton("create new method");
+	protected JButton newQuestionButton = new JButton("create new "
 			+ AuthoringToolResources.QUESTION_STRING);
-	protected JButton capturePoseButton = new AccessibleButton("capture pose");
+	protected JButton capturePoseButton = new JButton("capture pose");
 	protected UserDefinedResponse newlyCreatedAnimation;
 	protected UserDefinedQuestion newlyCreatedQuestion;
 	protected Pose newlyCreatedPose;

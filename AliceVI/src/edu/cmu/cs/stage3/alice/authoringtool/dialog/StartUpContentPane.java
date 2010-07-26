@@ -51,7 +51,6 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.text.BadLocationException;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 import edu.cmu.cs.stage3.awt.DynamicFlowLayout;
 
 /**
@@ -153,16 +152,16 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private JLabel templateWorldsDirLabel = new JLabel();
 	private JLabel tutorialWorldsDirLabel = new JLabel();
 
-	private JButton openButton = new AccessibleButton();
-	private JButton cancelButton = new AccessibleButton();
-	private JButton refreshButton = new AccessibleButton();
+	private JButton openButton = new JButton();
+	private JButton cancelButton = new JButton();
+	private JButton refreshButton = new JButton();
 	private JCheckBox stopShowingCheckBox = new JCheckBox();
-	private JButton browseButton = new AccessibleButton();
+	private JButton browseButton = new JButton();
 
 	private JLabel headerLabel = new JLabel();
 
 	private JPanel tutorialButtonPanel = new JPanel();
-	private JButton startTutorialButton = new AccessibleButton();
+	private JButton startTutorialButton = new JButton();
 	private JPanel tutorialTopContainer = new JPanel();
 	private BorderLayout borderLayout1 = new BorderLayout();
 	private JScrollPane tutorialScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -814,7 +813,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		
 		textFilePath.getDocument().addDocumentListener( new FilePathDocumentListener() );
 		
-		browseButton = new AccessibleButton( "Browse..." );
+		browseButton = new JButton( "Browse..." );
 		
 		browseButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {

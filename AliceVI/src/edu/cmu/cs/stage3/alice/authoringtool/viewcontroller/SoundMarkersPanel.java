@@ -23,13 +23,13 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
 
 /** @deprecated */
 public class SoundMarkersPanel extends javax.swing.JPanel {
 	protected edu.cmu.cs.stage3.alice.core.Media sound = null;
 	protected java.util.HashMap soundMarkersGuiCache = new java.util.HashMap();
-	protected javax.swing.JButton dropMarkerButton = new AccessibleButton( "Drop Marker" );
+	protected javax.swing.JButton dropMarkerButton = new JButton( "Drop Marker" );
 	protected RefreshListener refreshListener = new RefreshListener();
 
 	public SoundMarkersPanel() {

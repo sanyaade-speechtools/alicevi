@@ -51,8 +51,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
-
 
 /**
  * @author Jason Pratt
@@ -1823,17 +1821,17 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 	JComboBox aspectRatioComboBox = new JComboBox();
 	JPanel mousePanel = new JPanel();
 	JPanel markerPanel = new JPanel();
-	JButton objectDummyButton = new AccessibleButton();
+	JButton objectDummyButton = new JButton();
 	JCheckBox affectSubpartsCheckBox = new JCheckBox();
 	JRadioButton singleViewButton = new JRadioButton();
 	JLabel aspectRatioLabel = new JLabel();
 	JComboBox moveCameraCombo = new JComboBox();
 	JPanel controlPanel = new JPanel();
-	JButton cameraDummyButton = new AccessibleButton();
+	JButton cameraDummyButton = new JButton();
 	Component component1;
 	JLabel lensAngleLabel = new JLabel();
 	
-	private JButton moreFewerControlsButton = new AccessibleButton();
+	private JButton moreFewerControlsButton = new JButton();
 
 	private void jbInit() {
 		mouseInfoBorder.setTitleFont(new java.awt.Font("Dialog", 0, 11));

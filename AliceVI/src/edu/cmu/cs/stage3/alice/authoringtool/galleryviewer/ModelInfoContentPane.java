@@ -25,8 +25,6 @@ package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
 import javax.swing.JButton;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
-
 /**
  * @author culyba, dennisc
  *
@@ -131,7 +129,7 @@ public class ModelInfoContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 	
 	private JButton createButton(String label) {
-		return new AccessibleButton(label);
+		return new JButton(label);
 	}
 
 	private void guiInit() {

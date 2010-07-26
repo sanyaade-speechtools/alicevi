@@ -45,7 +45,6 @@ import javax.swing.filechooser.FileFilter;
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Sandbox;
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 
 /**
@@ -90,11 +89,11 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
     JLabel jLabel1 = new JLabel();
     JLabel jLabel2 = new JLabel();
     JComboBox aliceFPSCombo = new JComboBox();
-    JButton okButton = new AccessibleButton();
+    JButton okButton = new JButton();
     JLabel jLabel3 = new JLabel();
     JTextField jSkelFile = new JTextField();
-    JButton jFileBoxButton = new AccessibleButton();
-    JButton cancelButton = new AccessibleButton();
+    JButton jFileBoxButton = new JButton();
+    JButton cancelButton = new JButton();
 
     public Element selectedPart = null;
     public double fps = 30;

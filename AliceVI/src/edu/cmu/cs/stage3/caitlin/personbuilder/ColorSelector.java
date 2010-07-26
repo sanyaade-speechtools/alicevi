@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.stage3.caitlin.personbuilder;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
 
 
 public class ColorSelector extends javax.swing.JPanel implements java.awt.event.ActionListener, javax.swing.event.ChangeListener {
@@ -81,7 +81,7 @@ public class ColorSelector extends javax.swing.JPanel implements java.awt.event.
 		otherColorPanel.setBackground(new java.awt.Color(155, 159, 206));
 		otherColorPanel.setLayout(new java.awt.FlowLayout());
 
-		otherColorsButton = new AccessibleButton("Choose skin color...");
+		otherColorsButton = new JButton("Choose skin color...");
 		otherColorsButton.addActionListener(this);
 		otherColorsButton.setEnabled(false);
 

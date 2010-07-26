@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
 
 /**
  * @author Jason Pratt
@@ -32,8 +32,8 @@ public class SoundsPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.Expa
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty sounds;
 	protected javax.swing.JPanel contentPanel = new javax.swing.JPanel();
 	protected java.util.HashMap soundGuiCache = new java.util.HashMap();
-	protected javax.swing.JButton importSoundButton = new AccessibleButton( "import sound" );
-	protected javax.swing.JButton recordSoundButton = new AccessibleButton( "record sound" );
+	protected javax.swing.JButton importSoundButton = new JButton( "import sound" );
+	protected javax.swing.JButton recordSoundButton = new JButton( "record sound" );
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected RefreshListener refreshListener = new RefreshListener();
 

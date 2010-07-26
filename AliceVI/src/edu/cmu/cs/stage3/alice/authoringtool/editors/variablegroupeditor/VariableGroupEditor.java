@@ -23,14 +23,14 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.variablegroupeditor;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
 
 /**
  * @author Jason Pratt
  */
 public class VariableGroupEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener, java.awt.dnd.DropTargetListener {
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty variables;
-	protected javax.swing.JButton newVariableButton = new AccessibleButton( "create new variable" );
+	protected javax.swing.JButton newVariableButton = new JButton( "create new variable" );
 	protected edu.cmu.cs.stage3.alice.authoringtool.dialog.NewVariableContentPane newVariableDialog;
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 

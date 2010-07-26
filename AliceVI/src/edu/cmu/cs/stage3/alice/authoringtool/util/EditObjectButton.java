@@ -23,13 +23,14 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import javax.swing.JButton;
+
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author Jason Pratt
  */
-public class EditObjectButton extends AccessibleButton implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+public class EditObjectButton extends JButton implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected Object object;
 	protected javax.swing.JComponent animationSource;
@@ -40,8 +41,7 @@ public class EditObjectButton extends AccessibleButton implements edu.cmu.cs.sta
 		setText( "edit" );
 		int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
 		setFont( new java.awt.Font( "SansSerif", java.awt.Font.BOLD, (int)(11*fontSize/12.0) ) );
-		setFocusPainted( false );
-		setBorder( new javax.swing.plaf.BorderUIResource.CompoundBorderUIResource( new CustomButtonBorder(), new javax.swing.plaf.basic.BasicBorders.MarginBorder() ) );
+		//setBorder( new javax.swing.plaf.BorderUIResource.CompoundBorderUIResource( new CustomButtonBorder(), new javax.swing.plaf.basic.BasicBorders.MarginBorder() ) );
 		addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent ev ) {
 				if( authoringTool != null ) {

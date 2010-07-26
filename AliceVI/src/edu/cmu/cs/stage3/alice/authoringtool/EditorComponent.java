@@ -28,11 +28,10 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author Jason Pratt
@@ -385,7 +384,7 @@ public class EditorComponent extends javax.swing.JPanel {
 		}
 	}
 
-	class HighlightButton extends AccessibleButton {
+	class HighlightButton extends JButton {
 		protected javax.swing.border.Border highlightBorder = new HighlightBorder( true );
 		protected javax.swing.border.Border pressedBorder = new HighlightBorder( false );
 		protected java.awt.Insets insets = new java.awt.Insets( 4, 4, 4, 4 );

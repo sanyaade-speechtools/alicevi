@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
 
 /**
  * @author Jason Pratt, Dennis Cosgrove
@@ -163,7 +163,7 @@ public class SoundViewController extends javax.swing.JPanel implements edu.cmu.c
 		}
 	}
 
-	protected class SoundPlayStopToggleButton extends AccessibleButton {
+	protected class SoundPlayStopToggleButton extends JButton {
 		protected javax.swing.ImageIcon playIcon;
 		protected javax.swing.ImageIcon stopIcon;
 		protected java.awt.event.ActionListener buttonListener = new java.awt.event.ActionListener() {

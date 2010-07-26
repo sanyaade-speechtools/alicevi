@@ -23,7 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
+
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 /**
@@ -458,7 +459,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         java.awt.Component anchor = getAnchor(this);
         int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
         if (newParameterButton == null){
-            newParameterButton = new AccessibleButton("create new parameter");
+            newParameterButton = new JButton("create new parameter");
             //newParameterButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());
             newParameterButton.setMargin(new java.awt.Insets(2,2,2,2));
             if (fontSize == 12){
@@ -489,7 +490,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
                              "</body></html>");
         }
         if (newVariableButton == null){
-            newVariableButton = new AccessibleButton("create new variable");
+            newVariableButton = new JButton("create new variable");
             //newVariableButton.setBackground(new Color(new java.awt.Color( 240, 240, 255 )).createAWTColor());//TODO
             newVariableButton.setMargin(new java.awt.Insets(2,2,2,2));
             if (fontSize == 12){

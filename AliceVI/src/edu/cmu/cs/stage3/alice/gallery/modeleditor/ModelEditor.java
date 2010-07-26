@@ -1,6 +1,8 @@
 package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
+
+import ui.AccessibleButton;
 
 public class ModelEditor extends javax.swing.JFrame {
 	private static final long serialVersionUID = -2573158046446492380L;
@@ -218,13 +220,13 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_tree.setShowsRootHandles( true );
 		m_tree.setToggleClickCount( 0 );
 		
-		m_prev = new AccessibleButton();
+		m_prev = new JButton();
 		m_prev.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e) {
 				onPrev();
 			}
 		});
-		m_next = new AccessibleButton();
+		m_next = new JButton();
 		m_next.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e) {
 				onNext();
@@ -256,7 +258,7 @@ public class ModelEditor extends javax.swing.JFrame {
 			}
 		} );
 		
-		m_revert = new AccessibleButton( "Revert" );
+		m_revert = new JButton( "Revert" );
 		m_revert.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				onRevert();

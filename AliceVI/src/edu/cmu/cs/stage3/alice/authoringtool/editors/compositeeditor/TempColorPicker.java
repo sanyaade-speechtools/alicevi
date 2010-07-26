@@ -31,7 +31,9 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
+
+import ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 public class TempColorPicker extends javax.swing.JPanel {
@@ -55,7 +57,7 @@ public class TempColorPicker extends javax.swing.JPanel {
 			tile = new javax.swing.JLabel(name);
 			tile.setOpaque(true);
 			tile.setBackground(toChange.createAWTColor());
-			openPicker = new AccessibleButton("select color");
+			openPicker = new JButton("select color");
 			openPicker.addActionListener(new java.awt.event.ActionListener(){
 				public void actionPerformed( java.awt.event.ActionEvent ev ) {
 					javax.swing.JColorChooser colorChooser = new javax.swing.JColorChooser();
@@ -80,7 +82,7 @@ public class TempColorPicker extends javax.swing.JPanel {
 			this.foregroundNameKey = foregroundNameKey;
 			this.foregroundToChange = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor(foregroundNameKey);
 			tile.setForeground(this.foregroundToChange.createAWTColor());
-			openPicker2 = new AccessibleButton("select text color");
+			openPicker2 = new JButton("select text color");
 			openPicker2.addActionListener(new java.awt.event.ActionListener(){
 				public void actionPerformed( java.awt.event.ActionEvent ev ) {
 					javax.swing.JColorChooser colorChooser = new javax.swing.JColorChooser();

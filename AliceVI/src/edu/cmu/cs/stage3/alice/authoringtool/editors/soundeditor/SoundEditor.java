@@ -23,7 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.soundeditor;
 
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
+import javax.swing.JButton;
+
+import ui.AccessibleButton;
 
 /**
  * @author Ben Buchwald, Dennis Cosgrove
@@ -39,7 +41,7 @@ public class SoundEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 		public SoundMarkersPanel() {
 			m_label = new javax.swing.JLabel( "Markers:" );
-			m_dropMarkerButton = new AccessibleButton( "Drop Marker" );
+			m_dropMarkerButton = new JButton( "Drop Marker" );
 			m_dropMarkerButton.addActionListener( new java.awt.event.ActionListener() {
 				public void actionPerformed( java.awt.event.ActionEvent ev ) {
 					SoundMarkersPanel.this.onDropMarker();
@@ -245,28 +247,28 @@ public class SoundEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 			}
 		} );
 
-		m_playButton = new AccessibleButton( "Play" );
+		m_playButton = new JButton( "Play" );
 		m_playButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				onPlay();
 			}
 		} );
 
-		m_pauseButton = new AccessibleButton( "Pause" );
+		m_pauseButton = new JButton( "Pause" );
 		m_pauseButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				onPause();
 			}
 		} );
 
-		m_stopButton = new AccessibleButton( "Stop" );
+		m_stopButton = new JButton( "Stop" );
 		m_stopButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				onStop();
 			}
 		} );
 
-		m_prevMarkerButton = new AccessibleButton( "<< Skip to Previous Marker" );
+		m_prevMarkerButton = new JButton( "<< Skip to Previous Marker" );
 		m_prevMarkerButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				onPrevMarker();

@@ -42,13 +42,13 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
 
+import ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.authoringtool.util.DnDClipboard;
 import edu.cmu.cs.stage3.alice.authoringtool.util.InvisibleSplitPaneUI;
 import edu.cmu.cs.stage3.alice.authoringtool.util.TrashComponent;
 import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent;
 import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener;
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author Jason Pratt
@@ -526,15 +526,15 @@ public class JAliceFrame extends javax.swing.JFrame {
 	JPanel toolBarPanel = new JPanel();
 	GridBagLayout gridBagLayout1 = new GridBagLayout();
 	JPanel buttonPanel = new JPanel();
-	JButton playButton = new AccessibleButton();
+	JButton playButton = new JButton();
 	JPanel clipboardPanel = new JPanel();
 	JPanel trashPanel = new JPanel();
 	JPanel mainPanel = new JPanel();
 	GridBagLayout gridBagLayout2 = new GridBagLayout();
 	BorderLayout borderLayout2 = new BorderLayout();
 	GridBagLayout gridBagLayout4 = new GridBagLayout();
-	JButton undoButton = new AccessibleButton();
-	JButton redoButton = new AccessibleButton();
+	JButton undoButton = new JButton();
+	JButton redoButton = new JButton();
 	JPanel authoringPanel = new JPanel();
 	BorderLayout borderLayout3 = new BorderLayout();
 	BorderLayout borderLayout4 = new BorderLayout();
@@ -570,10 +570,10 @@ public class JAliceFrame extends javax.swing.JFrame {
 	Border border6;
 	Border border7;
 	Border border8;
-	JButton addObjectButton = new AccessibleButton();
+	JButton addObjectButton = new JButton();
 	JMenuItem add3DTextItem = new JMenuItem();
 	JMenuItem exportMovieItem = new JMenuItem();
-	JButton teachMeButton = new AccessibleButton();
+	JButton teachMeButton = new JButton();
 	JMenuItem selectTutorialMenuItem = new JMenuItem();
 	JMenuItem showStdOutItem = new JMenuItem();
 	JMenuItem showStdErrItem = new JMenuItem();

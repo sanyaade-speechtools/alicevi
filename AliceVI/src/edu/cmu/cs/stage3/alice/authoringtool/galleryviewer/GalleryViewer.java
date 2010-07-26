@@ -25,10 +25,10 @@ package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
 import java.awt.Component;
 
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.iohandler.GalleryKeyScroll;
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author David Culyba
@@ -1750,7 +1750,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
        // attributePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(1));
         attributePanel.add(attributeLabel, new java.awt.GridBagConstraints(0,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE, new java.awt.Insets(0,0,0,0), 0,0 ));
 
-        searchBrowseButton = new AccessibleButton(browseString);
+        searchBrowseButton = new JButton(browseString);
         searchBrowseButton.setMargin(new java.awt.Insets(2,2,2,2));
         searchBrowseButton.setMinimumSize(new java.awt.Dimension(100, 26));
         searchBrowseButton.setPreferredSize(new java.awt.Dimension(100, 26));
@@ -1792,7 +1792,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			}
 		} );
         
-        searchButton = new AccessibleButton(startSearchString);
+        searchButton = new JButton(startSearchString);
         searchButton.setMargin(new java.awt.Insets(2,2,2,2));
         searchButton.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent e){
@@ -1806,7 +1806,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
                 }
             }
         });
-		searchWebButton = new AccessibleButton(startSearchWebString);
+		searchWebButton = new JButton(startSearchWebString);
 		searchWebButton.setMargin(new java.awt.Insets(2,2,2,2));
 		searchWebButton.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent e){
@@ -1866,7 +1866,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         javax.swing.ImageIcon upLevelIconPressed = new javax.swing.ImageIcon( GalleryViewer.class.getResource( "images/upLevelIconPressed.png" ) );
         javax.swing.ImageIcon upLevelIconDisabled = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDisabledIcon(upLevelIcon, 45);
 
-        upLevelButton = new AccessibleButton(upLevelIcon);
+        upLevelButton = new JButton(upLevelIcon);
         upLevelButton.setToolTipText("Move Up a Level");
         upLevelButton.setOpaque(false);
         upLevelButton.setDisabledIcon(upLevelIconDisabled);

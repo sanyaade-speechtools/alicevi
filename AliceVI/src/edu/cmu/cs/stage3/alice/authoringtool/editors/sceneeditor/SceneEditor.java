@@ -30,11 +30,10 @@ import java.awt.FlowLayout;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-
-import edu.cmu.cs.stage3.alice.core.ui.AccessibleButton;
 
 /**
  * @author Jason Pratt
@@ -55,8 +54,8 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 	protected java.awt.Image makeSceneEditorBigImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getImageForString( "makeSceneEditorBig" );
 	protected java.awt.Image makeSceneEditorSmallImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getImageForString( "makeSceneEditorSmall" );
-	protected javax.swing.JButton makeSceneEditorBigButton = new AccessibleButton( new javax.swing.ImageIcon( makeSceneEditorBigImage ) );
-	protected javax.swing.JButton makeSceneEditorSmallButton = new AccessibleButton( new javax.swing.ImageIcon( makeSceneEditorSmallImage ) );
+	protected javax.swing.JButton makeSceneEditorBigButton = new JButton( new javax.swing.ImageIcon( makeSceneEditorBigImage ) );
+	protected javax.swing.JButton makeSceneEditorSmallButton = new JButton( new javax.swing.ImageIcon( makeSceneEditorSmallImage ) );
 
 	//////////////////
 	// Constructor
