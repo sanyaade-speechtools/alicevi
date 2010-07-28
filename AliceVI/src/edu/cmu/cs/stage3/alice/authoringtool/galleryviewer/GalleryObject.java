@@ -26,6 +26,8 @@ package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 
+import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.iohandler.GalleryKeyScroll;
+
 /**
  * @author David Culyba
  *
@@ -46,22 +48,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
     protected String location;
     protected boolean hasAttribution = true;
     protected String rootPath;
-    protected GalleryMouseAdapter mouseAdapter = new GalleryMouseAdapter();
-
-    protected class GalleryMouseAdapter extends edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter{
-        public void mouseExited(java.awt.event.MouseEvent m){
-            galleryMouseExited();
-        }
-
-        public void mouseEntered(java.awt.event.MouseEvent m){
-            galleryMouseEntered();
-        }
-
-        protected void singleClickResponse( java.awt.event.MouseEvent ev ) {
-            respondToMouse();
-        }
-    }
-
+    protected GalleryKeyScroll mouseAdapter = new GalleryKeyScroll(this);
 
     protected static final java.awt.Color HIGHLITE = new java.awt.Color(255, 255, 255);
     protected static final java.awt.Color BACKGROUND = new java.awt.Color(128, 128, 128);
@@ -91,6 +78,11 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 
     public GalleryObject(){
         guiInit();
+    }
+    
+    public GalleryViewer getMainViewer()
+    {
+    	return mainViewer;
     }
 
 	public javax.vecmath.Vector3d getBoundingBox(){
@@ -327,7 +319,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
         }
     }
 
-    public void galleryMouseExited(){
+    public void removeHighlight(){
         if (mouseOver){
             mouseOver = false;
             if (hasAttribution){
@@ -337,7 +329,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
         }
     }
 
-    public void galleryMouseEntered(){
+    public void highlight(){
         if (!mouseOver){
             mouseOver = true;
             if (hasAttribution){
@@ -369,10 +361,6 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
     
     public void repaint() {
     	super.repaint();
-    	if(this.displayName != null)
-    	{
-    		this.requestFocusInWindow();
-    	}
     }
 
 }

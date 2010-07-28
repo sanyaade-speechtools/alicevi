@@ -42,7 +42,6 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
 
-import ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.authoringtool.util.DnDClipboard;
 import edu.cmu.cs.stage3.alice.authoringtool.util.InvisibleSplitPaneUI;
@@ -54,6 +53,8 @@ import edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener;
  * @author Jason Pratt
  */
 public class JAliceFrame extends javax.swing.JFrame {
+	private static final long serialVersionUID = -5328931139359612209L;
+
 	protected AuthoringTool authoringTool;
 
 	// modes
@@ -97,6 +98,8 @@ public class JAliceFrame extends javax.swing.JFrame {
 	}
 
 	protected class ComponentImageFactory extends javax.swing.JPanel {
+		private static final long serialVersionUID = 3058186679515106275L;
+
 		public ComponentImageFactory() {
 			setPreferredSize(new java.awt.Dimension(0, 0));
 		}

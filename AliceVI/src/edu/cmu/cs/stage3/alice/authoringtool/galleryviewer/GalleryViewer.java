@@ -1889,7 +1889,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
         add3DTextButton = new TextBuilderButton();
         add3DTextButton.set(add3DTextData, add3DTextIcon, null);
-        add3DTextButton.addKeyListener(new GalleryKeyScroll(this, add3DTextButton));
+        GalleryKeyScroll gks = new GalleryKeyScroll(add3DTextButton);
+        add3DTextButton.addKeyListener(gks);
+        add3DTextButton.addFocusListener(gks);
 
         java.util.Vector builderVector = edu.cmu.cs.stage3.caitlin.personbuilder.PersonBuilder.getAllBuilders();
         builderButtonsVector = new java.util.Vector();
@@ -2041,7 +2043,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         catch (Exception e){
             return null;
         }
-        toReturn.addKeyListener(new GalleryKeyScroll(this, toReturn));
+        GalleryKeyScroll gks = new GalleryKeyScroll(toReturn);
+        toReturn.addKeyListener(gks);
+        toReturn.addFocusListener(gks);
         toReturn.loadImage();
         return toReturn;
     }
@@ -2054,7 +2058,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         catch (Exception e){
             return null;
         }
-        toReturn.addKeyListener(new GalleryKeyScroll(this, toReturn));
+        GalleryKeyScroll gks = new GalleryKeyScroll(toReturn);
+        toReturn.addKeyListener(gks);
+        toReturn.addFocusListener(gks);
         toReturn.loadImage();
         return toReturn;
     }
@@ -2633,8 +2639,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 					count++;
 					GenericBuilderButton builderButton = (GenericBuilderButton)builderButtonsVector.get(p);
 					builderButton.setFocusable(true);
-					builderButton.requestFocusInWindow();
-					builderButton.addKeyListener(new GalleryKeyScroll(this, builderButton));
+					GalleryKeyScroll gks = new GalleryKeyScroll(builderButton);
+					builderButton.addKeyListener(gks);
+					builderButton.addFocusListener(gks);
 					objectPanel.add(builderButton);
 					builderButton.updateGUI();
 				}
@@ -2655,7 +2662,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 					objectPanel.add(noObjectsLabel);
                 }
             }
-            objectPanel.requestFocusInWindow();
         }
     }
 
@@ -2687,7 +2693,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
                         continue;
                     }
                     if (toAdd != null){
-                    	toAdd.addKeyListener(new GalleryKeyScroll(this, toAdd));
+                    	GalleryKeyScroll gks = new GalleryKeyScroll(toAdd);
+                    	toAdd.addKeyListener(gks);
+                    	toAdd.addFocusListener(gks);
 						objectPanel.add(toAdd);
                         count++;
                     }
@@ -2728,8 +2736,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     			components[leftIndex].getWidth() -
     			10
     	);
-    	((GalleryObject)components[startingIndex]).galleryMouseExited();
-    	((GalleryObject)components[leftIndex]).galleryMouseEntered();
+    	((GalleryObject)components[startingIndex]).removeHighlight();
+    	((GalleryObject)components[leftIndex]).highlight();
     }
     
     public void moveFocusRight(GalleryObject startingPoint) {
@@ -2759,8 +2767,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     			components[rightIndex].getWidth() -
     			10
     	);
-    	((GalleryObject)components[startingIndex]).galleryMouseExited();
-    	((GalleryObject)components[rightIndex]).galleryMouseEntered();
+    	((GalleryObject)components[startingIndex]).removeHighlight();
+    	((GalleryObject)components[rightIndex]).highlight();
     }
 
     public void goUpOneLevel(){
