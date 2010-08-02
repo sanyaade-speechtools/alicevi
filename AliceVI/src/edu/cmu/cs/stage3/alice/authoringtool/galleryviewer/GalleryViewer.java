@@ -51,7 +51,6 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
     
     protected static boolean alreadyEnteredWebGallery = false;
     
-
     public static final String homeName = "Home";
     protected static final java.awt.Color backgroundColor = new java.awt.Color(118,128,128);
     protected static final java.awt.Color textColor = new java.awt.Color(255,255,255);
