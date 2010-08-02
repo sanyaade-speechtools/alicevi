@@ -519,10 +519,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		StartUpIcon sui = new StartUpIcon(name, icon, file, needToSave, type, owner);
 		JScrollPane scroller = getScrollPane(target);
 		sui.setFocusable(true);
-		PanelSelectableListener psl = new PanelSelectableListener(sui, scroller);
-		sui.addFocusListener(psl);
-		sui.addMouseListener(psl);
-		sui.addKeyListener(psl);
+		PanelSelectableListener psl = new PanelSelectableListener(sui, scroller, true);
 		target.add(sui);
 		return sui;
 	}
@@ -1033,6 +1030,16 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 				}
 				openButton.doClick();
 			}
+		}
+		
+		@Override
+		public void highlight() {
+			setBorder(BorderFactory.createLineBorder(new Color(0.2f, 0.2f, 1f), 4));
+		}
+		
+		@Override
+		public void removeHighlight() {
+			setBorder(null);
 		}
 	}
 	

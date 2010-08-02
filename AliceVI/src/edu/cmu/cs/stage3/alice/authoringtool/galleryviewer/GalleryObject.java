@@ -25,15 +25,21 @@ package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
+import java.awt.event.MouseListener;
 
-import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.iohandler.GalleryKeyScroll;
+import javax.swing.JScrollPane;
+
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.PanelSelectableListener;
+import edu.cmu.cs.stage3.alice.authoringtool.dialog.Selectable;
+import edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement;
 
 /**
  * @author David Culyba
  *
  */
 
-public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement{
+public abstract class GalleryObject extends DnDGroupingPanel implements GUIElement, Selectable {
 
     protected GalleryViewer.ObjectXmlData data;
     protected javax.swing.JLabel nameLabel;
@@ -48,7 +54,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
     protected String location;
     protected boolean hasAttribution = true;
     protected String rootPath;
-    protected GalleryKeyScroll mouseAdapter = new GalleryKeyScroll(this);
+    protected PanelSelectableListener psl = new PanelSelectableListener(this, null, false);
 
     protected static final java.awt.Color HIGHLITE = new java.awt.Color(255, 255, 255);
     protected static final java.awt.Color BACKGROUND = new java.awt.Color(128, 128, 128);
@@ -78,6 +84,10 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 
     public GalleryObject(){
         guiInit();
+    }
+    
+    public void setScrollPane(JScrollPane jsp) {
+    	psl.setScrollPane(jsp);
     }
     
     public GalleryViewer getMainViewer()
@@ -150,16 +160,20 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
     }
 
     public void goToSleep(){
-        this.removeMouseListener(mouseAdapter);
-        containingPanel.removeMouseListener(mouseAdapter);
-        grip.removeMouseListener(mouseAdapter);
+        this.removeMouseListener(psl);
+        this.addKeyListener(psl);
+        this.addFocusListener(psl);
+        containingPanel.removeMouseListener(psl);
+        grip.removeMouseListener(psl);
         this.removeDragSourceComponent(containingPanel);
     }
 
     public void wakeUp(){
-        this.addMouseListener(mouseAdapter);
-        containingPanel.addMouseListener(mouseAdapter);
-        grip.addMouseListener(mouseAdapter);
+        this.addMouseListener(psl);
+        this.addKeyListener(psl);
+        this.addFocusListener(psl);
+        containingPanel.addMouseListener(psl);
+        grip.addMouseListener(psl);
         this.addDragSourceComponent(containingPanel);
     }
 
@@ -313,7 +327,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
         containingPanel.repaint();
     }
 
-    public void respondToMouse(){
+    public void select(){
         if (mainViewer != null){
             mainViewer.displayModelDialog(data, image);
         }

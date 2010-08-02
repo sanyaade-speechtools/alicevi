@@ -25,8 +25,6 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.soundeditor;
 
 import javax.swing.JButton;
 
-import ui.AccessibleButton;
-
 /**
  * @author Ben Buchwald, Dennis Cosgrove
  */

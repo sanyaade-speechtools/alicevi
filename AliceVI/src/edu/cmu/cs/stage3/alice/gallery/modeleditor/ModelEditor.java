@@ -2,8 +2,6 @@ package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
 import javax.swing.JButton;
 
-import ui.AccessibleButton;
-
 public class ModelEditor extends javax.swing.JFrame {
 	private static final long serialVersionUID = -2573158046446492380L;
 

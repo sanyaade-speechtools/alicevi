@@ -69,7 +69,7 @@ public class WebGalleryDirectory extends WebGalleryObject {
         }
     }
 
-    public void respondToMouse(){
+    public void select(){
         if (mainViewer != null){
         	int dialogVal = -1;
         	if (!GalleryViewer.alreadyEnteredWebGallery && mainViewer.shouldShowWebWarning()){

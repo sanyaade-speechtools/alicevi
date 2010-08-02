@@ -1,7 +1,6 @@
 package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -24,22 +23,36 @@ public class PanelSelectableListener implements MouseListener, KeyListener, Focu
 		compScroller = s;
 	}
 	
-	public void selected() {
-		if(comp instanceof Selectable)
-			((Selectable) comp).select();
+	public PanelSelectableListener(JComponent c, JScrollPane s, boolean addListenersToAll)
+	{
+		this(c, s);
+		if(addListenersToAll)
+		{
+			comp.addMouseListener(this);
+			comp.addKeyListener(this);
+			comp.addFocusListener(this);
+		}
 	}
 	
-	private void addCompBorder() {
-		comp.setBorder(BorderFactory.createLineBorder(new Color(0.2f, 0.2f, 1f), 4));
+	public void setScrollPane(JScrollPane jsp) {
+		compScroller = jsp;
+	}
+	
+	public JScrollPane getScrollPane() {
+		return compScroller;
+	}
+	
+	public void selected() {
+		if(comp instanceof Selectable) ((Selectable) comp).select();
 	}
 	
 	private void scrollTo() {
 		if(scrollOn && compScroller != null)
+		{
+			System.out.println("scrolling");
 			compScroller.getVerticalScrollBar().setValue(comp.getY());
-	}
-	
-	private void removeCompBorder() {
-		comp.setBorder(null);
+			compScroller.getHorizontalScrollBar().setValue(comp.getX());
+		}
 	}
 	
 	@Override
@@ -66,13 +79,13 @@ public class PanelSelectableListener implements MouseListener, KeyListener, Focu
 
 	@Override
 	public void focusGained(FocusEvent e) {
-		addCompBorder();
+		if(comp instanceof Selectable) ((Selectable) comp).highlight();
 		scrollTo();
 	}
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		removeCompBorder();
+		if(comp instanceof Selectable) ((Selectable) comp).removeHighlight();
 	}
 
 	@Override

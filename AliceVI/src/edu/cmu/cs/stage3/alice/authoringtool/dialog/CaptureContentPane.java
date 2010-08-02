@@ -1437,19 +1437,6 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 			stdOutSplitPane.setDividerSize(0);
 		}
 		
-// Aik Min removed this
-		
-/*		if (authoringTool.getWatcherPanel().isThereSomethingToWatch()) {
-			watcherScrollPane.setPreferredSize(new java.awt.Dimension(
-					watcherWidth, renderHeight));
-			watcherSplitPane.setRightComponent(watcherScrollPane);
-			watcherSplitPane.setDividerSize(dividerSize);
-		} else {
-			watcherSplitPane.setRightComponent(null);
-			watcherSplitPane.setDividerLocation(0);
-			watcherSplitPane.setDividerSize(0);
-		}
-*/
 		watcherSplitPane.setRightComponent(null);
 		watcherSplitPane.setDividerLocation(0);
 		watcherSplitPane.setDividerSize(0);

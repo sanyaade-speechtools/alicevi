@@ -28,17 +28,14 @@ import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
-import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.iohandler.GalleryKeyScroll;
-
 /**
  * @author David Culyba
  *
  */
 
 public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel{
-
-
-    protected static final String FILENAME = "directoryIndex.xml";
+	private static final long serialVersionUID = 3898820158795220779L;
+	protected static final String FILENAME = "directoryIndex.xml";
     protected static final String FILENAME2 = "galleryIndex.xml";
     public static final int LOCAL = 1;
     public static final int WEB = 2;
@@ -816,7 +813,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				for (int p=0; p< builderButtonsVector.size(); p++){
 					final GenericBuilderButton builderButton = (GenericBuilderButton)builderButtonsVector.get(p);
 					javax.swing.SwingUtilities.invokeLater( new Runnable(){
-						public void run(){
+						public void run() {
 							objectPanel.add(builderButton);
 							builderButton.updateGUI();
 							objectPanel.repaint();
@@ -1889,9 +1886,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
         add3DTextButton = new TextBuilderButton();
         add3DTextButton.set(add3DTextData, add3DTextIcon, null);
-        GalleryKeyScroll gks = new GalleryKeyScroll(add3DTextButton);
-        add3DTextButton.addKeyListener(gks);
-        add3DTextButton.addFocusListener(gks);
+        add3DTextButton.setScrollPane(objectPanelScrollPane);
 
         java.util.Vector builderVector = edu.cmu.cs.stage3.caitlin.personbuilder.PersonBuilder.getAllBuilders();
         builderButtonsVector = new java.util.Vector();
@@ -2043,9 +2038,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         catch (Exception e){
             return null;
         }
-        GalleryKeyScroll gks = new GalleryKeyScroll(toReturn);
-        toReturn.addKeyListener(gks);
-        toReturn.addFocusListener(gks);
+        toReturn.setScrollPane(objectPanelScrollPane);
         toReturn.loadImage();
         return toReturn;
     }
@@ -2058,9 +2051,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
         catch (Exception e){
             return null;
         }
-        GalleryKeyScroll gks = new GalleryKeyScroll(toReturn);
-        toReturn.addKeyListener(gks);
-        toReturn.addFocusListener(gks);
+        toReturn.setScrollPane(objectPanelScrollPane);
         toReturn.loadImage();
         return toReturn;
     }
@@ -2639,9 +2630,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 					count++;
 					GenericBuilderButton builderButton = (GenericBuilderButton)builderButtonsVector.get(p);
 					builderButton.setFocusable(true);
-					GalleryKeyScroll gks = new GalleryKeyScroll(builderButton);
-					builderButton.addKeyListener(gks);
-					builderButton.addFocusListener(gks);
+					builderButton.setScrollPane(objectPanelScrollPane);
 					objectPanel.add(builderButton);
 					builderButton.updateGUI();
 				}
@@ -2693,9 +2682,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
                         continue;
                     }
                     if (toAdd != null){
-                    	GalleryKeyScroll gks = new GalleryKeyScroll(toAdd);
-                    	toAdd.addKeyListener(gks);
-                    	toAdd.addFocusListener(gks);
+                    	toAdd.setScrollPane(objectPanelScrollPane);
 						objectPanel.add(toAdd);
                         count++;
                     }

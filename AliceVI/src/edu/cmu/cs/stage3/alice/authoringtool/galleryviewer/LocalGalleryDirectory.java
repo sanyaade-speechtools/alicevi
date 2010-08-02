@@ -61,7 +61,7 @@ public class LocalGalleryDirectory extends LocalGalleryObject {
         this.remove(grip);
     }
 
-    public void respondToMouse(){
+    public void select(){
         if (mainViewer != null){
             mainViewer.changeDirectory(directoryData);
         }

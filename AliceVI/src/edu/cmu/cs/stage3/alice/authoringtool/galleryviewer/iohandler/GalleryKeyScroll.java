@@ -19,47 +19,28 @@ public class GalleryKeyScroll implements MouseListener, KeyListener, FocusListen
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-			galleryObject.getMainViewer().moveFocusLeft(galleryObject);
-		} 
-		else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			galleryObject.getMainViewer().moveFocusRight(galleryObject);
-		} 
-		else if(e.getKeyCode() == KeyEvent.VK_UP) {
-			galleryObject.getMainViewer().goUpOneLevel();
-		} 
-		else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			galleryObject.respondToMouse();
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_TAB) {
-			galleryObject.removeHighlight();
-		}
 	}
 	
 
 	@Override
 	public void focusGained(FocusEvent evt) {
-		galleryObject.highlight();
 	}
 
 	@Override
 	public void focusLost(FocusEvent evt) {
-		galleryObject.removeHighlight();
 	}
 	
 	@Override
-	public void mouseExited(MouseEvent m){}
+	public void mouseExited(MouseEvent m) {
+	}
 
 	@Override
     public void mouseEntered(MouseEvent m){
-    	galleryObject.highlight();
-    	galleryObject.requestFocusInWindow();
     }
 	
 	@Override
-	public void mouseClicked(MouseEvent m)
-	{
-		galleryObject.respondToMouse();
+	public void mouseClicked(MouseEvent m) {
+		System.out.println(galleryObject);
 	}
 
 	@Override

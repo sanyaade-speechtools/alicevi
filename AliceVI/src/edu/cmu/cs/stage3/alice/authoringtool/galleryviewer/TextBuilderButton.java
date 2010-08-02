@@ -51,7 +51,7 @@ public class TextBuilderButton extends GenericBuilderButton {
 	   this.authoringTool = authoringTool;
    }
 
-   public void respondToMouse()
+   public void select()
    {
 	   if(authoringTool != null)
 		   authoringTool.getActions().add3DTextAction.actionPerformed(null);

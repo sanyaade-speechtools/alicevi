@@ -29,7 +29,7 @@ public class PersonBuilderButton extends GenericBuilderButton {
 		return "Click to create your own custom character";
 	}
 
-	public void respondToMouse() {
+	public void select() {
 		if (mainViewer != null && PersonBuilderButton.this.isEnabled()) {
 			if (m_personBuilder == null) {
 				edu.cmu.cs.stage3.progress.ProgressPane progressPane = new edu.cmu.cs.stage3.progress.ProgressPane( "Progress", "Loading Character Builder..." ) {

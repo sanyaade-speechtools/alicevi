@@ -33,7 +33,6 @@ import java.awt.Insets;
 
 import javax.swing.JButton;
 
-import ui.AccessibleButton;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 public class TempColorPicker extends javax.swing.JPanel {
