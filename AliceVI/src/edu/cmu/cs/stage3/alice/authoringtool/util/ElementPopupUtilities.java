@@ -23,6 +23,11 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import javax.swing.JOptionPane;
+
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
+import edu.cmu.cs.stage3.swing.DialogManager;
+
 /**
  * @author Jason Pratt
  */
@@ -309,23 +314,19 @@ public class ElementPopupUtilities {
 
 		public void run() {
 			if( element instanceof edu.cmu.cs.stage3.alice.core.Camera ) {
-				String message = "The Camera is a critical part of the World.  Very bad things can happen if you delete the Camera.\nAre you sure you want to delete it?";
-				int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog( message, "Delete Camera?", javax.swing.JOptionPane.YES_NO_OPTION );
+				String message = "The Camera is a critical part of the World.  Very bad things can happen if you delete the Camera.";
+				DialogManager.showMessageDialog( message, "Action disallowed", JOptionPane.ERROR_MESSAGE);
+				return;
+			} else if( element instanceof edu.cmu.cs.stage3.alice.core.light.DirectionalLight &&
+					element.getRoot().getDescendants( edu.cmu.cs.stage3.alice.core.light.DirectionalLight.class ).length == 1) {
+				String message = "You are about to delete the last directional light in the World.  If you do this, everything will probably become very dark.\nAre you sure you want to delete it?";
+				int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog( message, "Delete Light?", javax.swing.JOptionPane.YES_NO_OPTION );
 				if( result != javax.swing.JOptionPane.YES_OPTION ) {
 					return;
 				}
-			} else if( element instanceof edu.cmu.cs.stage3.alice.core.light.DirectionalLight ) {
-				if( element.getRoot().getDescendants( edu.cmu.cs.stage3.alice.core.light.DirectionalLight.class ).length == 1 ) {
-					String message = "You are about to delete the last directional light in the World.  If you do this, everything will probably become very dark.\nAre you sure you want to delete it?";
-					int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog( message, "Delete Light?", javax.swing.JOptionPane.YES_NO_OPTION );
-					if( result != javax.swing.JOptionPane.YES_OPTION ) {
-						return;
-					}
-				}
 			}
 
-
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = element.getRoot().getPropertyReferencesTo( element, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true );
+			PropertyReference[] references = element.getRoot().getPropertyReferencesTo( element, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true );
 
 			if( references.length > 0 ) {
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.garbageCollectIfPossible( references );

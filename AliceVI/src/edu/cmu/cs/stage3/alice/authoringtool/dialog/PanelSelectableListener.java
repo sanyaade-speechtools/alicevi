@@ -49,7 +49,6 @@ public class PanelSelectableListener implements MouseListener, KeyListener, Focu
 	private void scrollTo() {
 		if(scrollOn && compScroller != null)
 		{
-			System.out.println("scrolling");
 			compScroller.getVerticalScrollBar().setValue(comp.getY());
 			compScroller.getHorizontalScrollBar().setValue(comp.getX());
 		}
