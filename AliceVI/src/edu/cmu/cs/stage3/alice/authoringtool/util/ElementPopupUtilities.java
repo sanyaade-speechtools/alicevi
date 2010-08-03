@@ -23,8 +23,12 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
-import javax.swing.JOptionPane;
+import java.util.Vector;
 
+import javax.swing.JOptionPane;
+import javax.swing.tree.TreePath;
+
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 import edu.cmu.cs.stage3.swing.DialogManager;
 
@@ -155,6 +159,8 @@ public class ElementPopupUtilities {
 			return getDefaultResponseStructure( (edu.cmu.cs.stage3.alice.core.Response)element );
 		} else if( element instanceof edu.cmu.cs.stage3.alice.core.Question ) {
 			return getDefaultQuestionStructure( (edu.cmu.cs.stage3.alice.core.Question)element );
+		} else if( element instanceof edu.cmu.cs.stage3.alice.core.camera.SymmetricPerspectiveCamera ) {
+			return getDefaultCameraStructure(element, elementEnabled, authoringTool, jtree, treePath);
 		} else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.characterCriterion.accept( element ) ) {
 			return getDefaultCharacterStructure( element, elementEnabled, authoringTool, jtree, treePath );
 		} else if( element instanceof edu.cmu.cs.stage3.alice.core.World ) {
@@ -165,13 +171,22 @@ public class ElementPopupUtilities {
 			return getDefaultElementStructure( element, jtree, treePath );
 		}
 	}
+	
+	public static Vector getDefaultCameraStructure(edu.cmu.cs.stage3.alice.core.Element element, boolean elementEnabled, AuthoringTool authoringTool, javax.swing.JTree jtree, TreePath treePath) {
+		Vector popupStructure = new java.util.Vector();
+		popupStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue( element ), null ) );
+		popupStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( "separator", javax.swing.JSeparator.class ) );
+		popupStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( "methods", edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makeDefaultOneShotStructure( element ) ) );
+		Runnable renameRunnable = new RenameRunnable( element, jtree, treePath );
+		popupStructure.add( renameRunnable );
+		popupStructure.add( SaveCharacterRunnable.class );
+		return popupStructure;
+	}
 
 	public static java.util.Vector getDefaultCharacterStructure( edu.cmu.cs.stage3.alice.core.Element element, boolean elementEnabled, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool, javax.swing.JTree jtree, javax.swing.tree.TreePath treePath ) {
 		java.util.Vector popupStructure = new java.util.Vector();
 		popupStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue( element ), null ) );
 		popupStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( "separator", javax.swing.JSeparator.class ) );
-//		popupStructure.add( MakeCopyRunnable.class );
-//		popupStructure.add( MakeSharedCopyRunnable.class );
 		if( elementEnabled ) {
 			popupStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( "methods", edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.makeDefaultOneShotStructure( element ) ) );
 		}
@@ -182,7 +197,6 @@ public class ElementPopupUtilities {
 		if( (element instanceof edu.cmu.cs.stage3.alice.core.Sandbox) && authoringToolConfig.getValue( "enableScripting" ).equalsIgnoreCase( "true" ) ) {
 			popupStructure.add( edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.EditScriptRunnable.class );
 		}
-//		popupStructure.add( PrintStatisticsRunnable.class );
 		
 		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.characterCriterion.accept( element ) ) {
 			if( element instanceof edu.cmu.cs.stage3.alice.core.Transformable ) {
@@ -191,22 +205,12 @@ public class ElementPopupUtilities {
 					popupStructure.add( StorePoseRunnable.class );
 				}
 			}
-			//popupStructure.add( EditCharacterRunnable.class );
 			popupStructure.add( DeleteRunnable.class );
 			popupStructure.add( SaveCharacterRunnable.class );
-			//if( authoringTool != null ) {
-			//	Runnable setScopeRunnable = new SetElementScopeRunnable( element, authoringTool );
-			//	popupStructure.add( setScopeRunnable );
-			//}
 		}
 		else{
 			popupStructure.add( DeleteRunnable.class );
 		}
-		//TODO: get this in for BVW
-//		java.util.Vector copyOverStructure = new java.util.Vector();
-//		copyOverStructure.add( CopyOverFromCharacterLoadRunnable.class );
-//		copyOverStructure.add( CopyOverFromImportLoadRunnable.class );
-//		popupStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( "copy over", copyOverStructure ) );
 
 
 		return popupStructure;
@@ -235,7 +239,6 @@ public class ElementPopupUtilities {
 		java.util.Vector structure =  new java.util.Vector();
 		structure.add( MakeCopyRunnable.class );
 		structure.add( DeleteRunnable.class );
-	//	structure.add( ToggleCommentingRunnable.class );
 		java.util.Vector coerceToStructure = makeCoerceToStructure( question );
 		if( coerceToStructure != null ) {
 			structure.addAll( coerceToStructure );
