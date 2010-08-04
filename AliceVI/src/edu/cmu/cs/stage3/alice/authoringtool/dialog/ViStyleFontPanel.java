@@ -18,12 +18,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SpringLayout;
 
 import edu.cmu.cs.stage3.awt.SpringUtilities;
+import edu.cmu.cs.stage3.swing.DialogManager;
 import edu.cmu.cs.stage3.xml.Style;
 import edu.cmu.cs.stage3.xml.XMLHelper;
 
@@ -137,7 +137,7 @@ public class ViStyleFontPanel extends JPanel {
 		saveAsBtn.setText("Save As a Custom Style. . .");
 		saveAsBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				String name = JOptionPane.showInputDialog(this, "mesaage");
+				String name = DialogManager.showInputDialog("mesaage");
 				String fontSize = fontSizeCmb.getSelectedItem().toString();
 
 				// System.out.println("color is : "+ color.getRGB());
@@ -147,8 +147,7 @@ public class ViStyleFontPanel extends JPanel {
 				customStyleCmb.setModel(new javax.swing.DefaultComboBoxModel(
 						XMLHelper.getStyleNameList().toArray()));
 
-				JOptionPane.showMessageDialog(null,
-						"style saved successfully. . .");
+				DialogManager.showMessageDialog("style saved successfully. . .");
 
 			}
 		});

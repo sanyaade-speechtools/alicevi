@@ -1,7 +1,10 @@
 package movieMaker;
 
-import javax.swing.*;
-import java.text.*;
+import java.text.BreakIterator;
+
+import javax.swing.JOptionPane;
+
+import edu.cmu.cs.stage3.swing.DialogManager;
 
 /**
  * Class to make it easy to do output to the user
@@ -20,7 +23,7 @@ public class SimpleOutput
   public static void showWarning(String message)
   {
     message = addNewLines(message);
-    JOptionPane.showMessageDialog(null,message,"Warning Display",
+    DialogManager.showMessageDialog(message,"Warning Display",
                                   JOptionPane.WARNING_MESSAGE);
   }
   
@@ -31,7 +34,7 @@ public class SimpleOutput
   public static void showError(String message)
   {
     message = addNewLines(message);
-    JOptionPane.showMessageDialog(null,message,"Error Display",
+    DialogManager.showMessageDialog(message,"Error Display",
                                   JOptionPane.ERROR_MESSAGE);
   }
   
@@ -42,7 +45,7 @@ public class SimpleOutput
   public static void showInformation(String message)
   {
     message = addNewLines(message);
-    JOptionPane.showMessageDialog(null, message, "Information Display",
+    DialogManager.showMessageDialog(message, "Information Display",
                                   JOptionPane.INFORMATION_MESSAGE);
   }
   

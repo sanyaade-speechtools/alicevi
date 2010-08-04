@@ -7,9 +7,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import Jama.Matrix;
+import edu.cmu.cs.stage3.swing.DialogManager;
 
 /**
  * Converts images to color-blind friendly images based on theoretical values
@@ -55,7 +55,7 @@ public class ColorblindConverter {
 			image = ImageIO.read(sourceimage);
 
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Invalid image type!");
+			DialogManager.showMessageDialog("Invalid image type!");
 		}
 
 		return image; 

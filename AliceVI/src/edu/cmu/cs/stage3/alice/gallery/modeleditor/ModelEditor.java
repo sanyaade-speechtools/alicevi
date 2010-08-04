@@ -2,6 +2,8 @@ package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
 import javax.swing.JButton;
 
+import edu.cmu.cs.stage3.swing.DialogManager;
+
 public class ModelEditor extends javax.swing.JFrame {
 	private static final long serialVersionUID = -2573158046446492380L;
 
@@ -182,9 +184,9 @@ public class ModelEditor extends javax.swing.JFrame {
 									}
 									sb.append( '\n' );
 								}
-								javax.swing.JOptionPane.showMessageDialog( ModelEditor.this, sb.toString() );
+								DialogManager.showMessageDialog( sb.toString() );
 							} else {
-								int result = javax.swing.JOptionPane.showConfirmDialog( ModelEditor.this, "Would you like to delete: " + m_element.getTrimmedKey() );
+								int result = DialogManager.showConfirmDialog( "Would you like to delete: " + m_element.getTrimmedKey() );
 								if( result == javax.swing.JOptionPane.YES_OPTION ) {
 									m_treeModel.removeDescendant( m_element );
 									setIsDirty( true );
@@ -443,7 +445,7 @@ public class ModelEditor extends javax.swing.JFrame {
 
 	private boolean isContinueAppropriateAfterCheckingForSave() {
 		if( m_isDirty ) {
-			int option = javax.swing.JOptionPane.showConfirmDialog( this, "Changes have been made.  Would you like to save before continuing?", "Check for save", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.PLAIN_MESSAGE );
+			int option = DialogManager.showConfirmDialog("Changes have been made.  Would you like to save before continuing?", "Check for save", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.PLAIN_MESSAGE );
 			switch( option ) {
 			case javax.swing.JOptionPane.YES_OPTION:
 				onFileSave();
