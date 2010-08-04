@@ -59,4 +59,9 @@ public aspect Focus {
 	after() returning(JComponent j): call(*.new(..)) {
 		j.addFocusListener(new VisualFocusListener(j));
 	}
+	
+	after(JPanel j): target(j) && call(* add(..)) {
+		if(j.getComponents().length == 1)
+			j.addFocusListener(new VisualFocusListener(j));
+	}
 }
