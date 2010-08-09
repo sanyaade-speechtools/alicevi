@@ -34,6 +34,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -987,14 +988,23 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 //		orthoZoomOutMode = new edu.cmu.cs.stage3.alice.authoringtool.util.OrthographicZoomMode( edu.cmu.cs.stage3.alice.authoringtool.util.OrthographicZoomMode.ZOOM_OUT, authoringTool, authoringTool.getUndoRedoStack(), authoringTool.getOneShotScheduler() );
 
 		defaultMoveModeButton = new ManipulatorModeButton( defaultMoveMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/defaultMoveMode" ), "Move Objects Freely", "<html><font face=arial size=-1><p>Move Objects Freely</p><b>Hold shift </b>to move up/down<p><b>Hold control </b>to turn left/right<p><b>Hold shift+control </b>to tumble</font></html>" );
+		defaultMoveModeButton.setMnemonic(KeyEvent.VK_D);
 		moveUpDownModeButton = new ManipulatorModeButton( moveUpDownMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/moveUpDownMode" ), "Move Objects Up and Down", "Move Objects Up and Down" );
+		moveUpDownModeButton.setMnemonic(KeyEvent.VK_U);
 		turnLeftRightModeButton = new ManipulatorModeButton( turnLeftRightMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/turnLeftRightMode" ), "Turn Objects Left and Right","Turn Objects Left and Right");
+		turnLeftRightModeButton.setMnemonic(KeyEvent.VK_L);
 		turnForwardBackwardModeButton = new ManipulatorModeButton( turnForwardBackwardMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/turnForwardBackwardMode" ), "Turn Objects Forwards and Backwards", "Turn Objects Forwards and Backwards" );
+		turnForwardBackwardModeButton.setMnemonic(KeyEvent.VK_F);
 		tumbleModeButton = new ManipulatorModeButton( tumbleMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/tumbleMode" ), "Tumble Objects", "Tumble Objects with the Mouse." );
+		tumbleModeButton.setMnemonic(KeyEvent.VK_T);
 		resizeModeButton = new ManipulatorModeButton( resizeMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/resizeMode" ), "Resize Objects", "<html><font face=arial size=-1><p>Resize Objects</p><p><b>Hold shift </b>to resize more slowly</font></html>" );
+		resizeModeButton.setMnemonic(KeyEvent.VK_R);
 		copyModeButton = new ManipulatorModeButton( copyMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/copyMode" ), "Copy Objects", "Copy Objects with the Mouse." );
+		copyModeButton.setMnemonic(KeyEvent.VK_C);
 		orthoScrollModeButton = new ManipulatorModeButton( orthoScrollMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/orthoScrollMode" ), "Scroll View", "<html><font face=arial size=-1>Scroll View<p>&nbsp;<p><b>Hold shift </b>to scroll more slowly<p><b>Hold control </b>to scroll more quickly<p><b>Hold shift+control </b>to scroll much more quickly</font></html>" );
+		orthoScrollModeButton.setMnemonic(KeyEvent.VK_S);
 		orthoZoomInModeButton = new ManipulatorModeButton( orthoZoomInMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/zoomInMode" ), "Zoom View In and Out", "<html><font face=arial size=-1><p><b>Hold shift </b>to zoom more slowly</font></html>" );
+		orthoZoomInModeButton.setMnemonic(KeyEvent.VK_Z);
 //		orthoZoomOutModeButton = new ManipulatorModeButton( orthoZoomOutMode, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue( "manipulatorModes/zoomOutMode" ), "zoom out" );
 
 
