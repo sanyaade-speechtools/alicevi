@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.awt.Point;
+
 /**
  * @author Jason Pratt
  */
@@ -45,28 +47,25 @@ public class ResizeMode extends RenderTargetManipulatorMode {
 		return true;
 	}
 
-	public void mousePressed( java.awt.event.MouseEvent ev, edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable, edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo ) {
+	public void selected( edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable, edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo, Point p ) {
 		this.pickedTransformable = pickedTransformable;
 		if( pickedTransformable != null ) {
 			oldSize = pickedTransformable.getSize();
 		}
 	}
 
-	public void mouseReleased( java.awt.event.MouseEvent ev ) {
+	public void released(Point p ) {
 		if( (pickedTransformable != null) && (undoRedoStack != null)  ) {
-			if( ! ev.isPopupTrigger() ) { // TODO: this is a hack.  this method should never be called if the popup is triggered
-				undoRedoStack.push( new SizeUndoableRedoable( pickedTransformable, oldSize, pickedTransformable.getSize(), scheduler ) );
-			}
-
+			undoRedoStack.push( new SizeUndoableRedoable( pickedTransformable, oldSize, pickedTransformable.getSize(), scheduler ) );
 			if( pickedTransformable.poses.size() > 0 ) {
 				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( "Warning: resizing objects with poses may make those poses unusable.", "Pose warning", javax.swing.JOptionPane.WARNING_MESSAGE );
 			}
 		}
 	}
 
-	public void mouseDragged( java.awt.event.MouseEvent ev, int dx, int dy ) {
+	public void dragged( int dx, int dy, boolean isControlDown, boolean isShiftDown ) {
 		if( (pickedTransformable != null) && (dy != 0) ) {
-			double divisor = ev.isShiftDown() ? 1000.0 : 50.0;
+			double divisor = isShiftDown ? 1000.0 : 50.0;
 			double scaleFactor = 1.0 - ((double)dy)/divisor;
 			pickedTransformable.resizeRightNow( scaleFactor );
 		}

@@ -92,7 +92,7 @@ public class PropertyPanel extends javax.swing.JPanel {
 													undoResponse.element.set( property.getOwner() );
 													undoResponse.propertyName.set( property.getName() );
 													undoResponse.value.set( property.getValue() );
-													AuthoringTool.getHack().performOneShot( response, undoResponse, new edu.cmu.cs.stage3.alice.core.Property[] { property } );
+													AuthoringTool.getInstance().performOneShot( response, undoResponse, new edu.cmu.cs.stage3.alice.core.Property[] { property } );
 												}
 											}
 										};

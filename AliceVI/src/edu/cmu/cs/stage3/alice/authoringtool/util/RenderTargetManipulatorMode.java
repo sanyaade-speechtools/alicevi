@@ -23,6 +23,11 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.awt.Point;
+
+import edu.cmu.cs.stage3.alice.core.Transformable;
+import edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo;
+
 /**
  * @author Jason Pratt
  */
@@ -49,7 +54,7 @@ public abstract class RenderTargetManipulatorMode {
 	public abstract boolean requiresPickedObject();
 	public abstract boolean hideCursorOnDrag();
 
-	public abstract void mousePressed( java.awt.event.MouseEvent ev, edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable, edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo );
-	public abstract void mouseReleased( java.awt.event.MouseEvent ev );
-	public abstract void mouseDragged( java.awt.event.MouseEvent ev, int dx, int dy );
+	public abstract void selected( Transformable pickedTransformable, PickInfo pickInfo, Point p );
+	public abstract void released(Point p);
+	public abstract void dragged( int dx, int dy, boolean isControlDown, boolean isShiftDown );
 }

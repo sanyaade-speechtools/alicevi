@@ -24,6 +24,10 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+
 public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseListener {
 	protected edu.cmu.cs.stage3.alice.core.Transformable ePickedTransformable = null;
 	protected edu.cmu.cs.stage3.alice.core.Transformable lastEPickedTransformable = null;
@@ -64,6 +68,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	public void setRenderTarget( edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget ) {
 		if( this.renderTarget != null ) {
 			this.renderTarget.getAWTComponent().removeMouseListener( this );
+			this.renderTarget.getAWTComponent().removeKeyListener(this);
 			if( popupEnabled ) {
 				this.renderTarget.getAWTComponent().removeMouseListener( popupMouseListener );
 			}
@@ -72,6 +77,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		this.renderTarget = renderTarget;
 		if( renderTarget != null ) {
 			renderTarget.getAWTComponent().addMouseListener( this );
+			renderTarget.getAWTComponent().addKeyListener(this);
 			if( popupEnabled ) {
 				this.renderTarget.getAWTComponent().addMouseListener( popupMouseListener );
 			}
@@ -157,81 +163,79 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		popupEnabled = b;
 	}
 
+	@Override
 	public void mousePressed( java.awt.event.MouseEvent ev ) {
 		if( enabled ) {
 			super.mousePressed( ev );
+		}
+	}
 
-			firePrePick();
-			if( (objectsOfInterest.size() == 1) && pickAllForOneObjectOfInterest ) {
-				ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)objectsOfInterest.iterator().next();
-				sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
-			} else {
-				// implementors are responsible for pushing their own undos onto the stack
-				if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() != null ) {
-					if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack() != null ) {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().setIsListening( false );
-					}
+	public void selected(Component comp, Point p) {
+		super.selected(comp, p);
+		firePrePick();
+		if( (objectsOfInterest.size() == 1) && pickAllForOneObjectOfInterest ) {
+			ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)objectsOfInterest.iterator().next();
+			sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
+		} else {
+			// implementors are responsible for pushing their own undos onto the stack
+			if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() != null ) {
+				if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack() != null ) {
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().setIsListening( false );
 				}
+			}
+			pickInfo = renderTarget.pick( p.x, p.y, edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.SUB_ELEMENT_IS_NOT_REQUIRED, edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.ONLY_FRONT_MOST_VISUAL_IS_REQUIRED );
 
-				pickInfo = renderTarget.pick( ev.getX(), ev.getY(), edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.SUB_ELEMENT_IS_NOT_REQUIRED, edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.ONLY_FRONT_MOST_VISUAL_IS_REQUIRED );
+			if( pickInfo != null ) {
+				edu.cmu.cs.stage3.alice.scenegraph.Visual[] visuals = pickInfo.getVisuals();
+				if( (visuals != null) && (visuals.length >= 1) ) {
 
-				if( pickInfo != null ) {
-					//DEBUG System.out.println( "info not null" );
-					edu.cmu.cs.stage3.alice.scenegraph.Visual[] visuals = pickInfo.getVisuals();
-					//DEBUG System.out.println( "visuals: " + visuals );
-					//DEBUG if( visuals != null ) {
-					//DEBUG 	System.out.println( "visuals.length: " + visuals.length );
-					//DEBUG }
-					if( (visuals != null) && (visuals.length >= 1) ) {
-
-						ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)visuals[0].getBonus();
-						if( ePickedTransformable == null ) {
-							sgPickedTransformable = (edu.cmu.cs.stage3.alice.scenegraph.Transformable)visuals[0].getParent();
-							ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)sgPickedTransformable.getBonus();
-						} else {
-							sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
-						}
-						if( ascendTreeEnabled ) {
-							while( (ePickedTransformable != null) && (ePickedTransformable.getParent() instanceof edu.cmu.cs.stage3.alice.core.Transformable) && (! ePickedTransformable.doEventsStopAscending()) && (! objectsOfInterest.contains( ePickedTransformable )) ) {
-								//DEBUG System.out.println( "moving up from: " + sgPickedTransformable );
-								sgPickedTransformable = ((edu.cmu.cs.stage3.alice.core.Transformable)ePickedTransformable.getParent()).getSceneGraphTransformable();
-								ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)sgPickedTransformable.getBonus();
-							}
-						}
-
-						if( (! objectsOfInterest.isEmpty()) && (! objectsOfInterest.contains( ePickedTransformable )) ) {
-							abortAction();
-						}
+					ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)visuals[0].getBonus();
+					if( ePickedTransformable == null ) {
+						sgPickedTransformable = (edu.cmu.cs.stage3.alice.scenegraph.Transformable)visuals[0].getParent();
+						ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)sgPickedTransformable.getBonus();
 					} else {
-						//DEBUG System.out.println( "visuals null or zero-length: " + visuals );
-						sgPickedTransformable = null;
-						ePickedTransformable = null;
+						sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
+					}
+					if( ascendTreeEnabled ) {
+						while( (ePickedTransformable != null) && (ePickedTransformable.getParent() instanceof edu.cmu.cs.stage3.alice.core.Transformable) && (! ePickedTransformable.doEventsStopAscending()) && (! objectsOfInterest.contains( ePickedTransformable )) ) {
+							sgPickedTransformable = ((edu.cmu.cs.stage3.alice.core.Transformable)ePickedTransformable.getParent()).getSceneGraphTransformable();
+							ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)sgPickedTransformable.getBonus();
+						}
+					}
+
+					if( (! objectsOfInterest.isEmpty()) && (! objectsOfInterest.contains( ePickedTransformable )) ) {
+						abortAction();
 					}
 				} else {
-					//DEBUG System.out.println( "pickInfo null" );
 					sgPickedTransformable = null;
 					ePickedTransformable = null;
 				}
+			} else {
+				sgPickedTransformable = null;
+				ePickedTransformable = null;
 			}
-			firePostPick( pickInfo );
+		}
+		firePostPick( pickInfo );
 
-			originalMousePoint = ev.getPoint();
-			if( (! isActionAborted()) && hideCursorOnDrag && doWrap && (! ev.getComponent().getCursor().equals( invisibleCursor )) ) {
-				savedCursor = ev.getComponent().getCursor();
-				ev.getComponent().setCursor( invisibleCursor );
-			}
+		originalMousePoint = p;
+		if( (! isActionAborted()) && hideCursorOnDrag && doWrap && (! component.getCursor().equals( invisibleCursor )) ) {
+			savedCursor = component.getCursor();
+			component.setCursor( invisibleCursor );
 		}
 	}
 
 	public void mouseReleased( java.awt.event.MouseEvent ev ) {
+		released(ev.getComponent(), ev.getPoint());
+		super.mouseReleased( ev );
+	}
+
+	@Override
+	synchronized public void released(Component c, Point p) {
 		if( (! isActionAborted()) && hideCursorOnDrag && doWrap ) {
-			ev.getComponent().setCursor( savedCursor );
-			//TODO: position mouse based on object of interest's position in the picture plane;  for now, it does a rough approximation
-			java.awt.Point tempPoint = ev.getPoint();
-			javax.swing.SwingUtilities.convertPointToScreen( tempPoint, ev.getComponent() );
-			javax.swing.SwingUtilities.convertPointToScreen( originalMousePoint, ev.getComponent() );
-			edu.cmu.cs.stage3.awt.AWTUtilities.setCursorLocation( tempPoint.x, originalMousePoint.y );
-			//robot.mouseMove( tempPoint.x, originalMousePoint.y );
+			component.setCursor( savedCursor );
+			javax.swing.SwingUtilities.convertPointToScreen( p, component );
+			javax.swing.SwingUtilities.convertPointToScreen( originalMousePoint, component );
+			edu.cmu.cs.stage3.awt.AWTUtilities.setCursorLocation( p.x, originalMousePoint.y );
 		}
 
 		lastEPickedTransformable = ePickedTransformable;
@@ -239,13 +243,11 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		ePickedTransformable = null;
 		sgPickedTransformable = null;
 		pickInfo = null;
-		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() != null ) {
-			if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack() != null ) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().setIsListening( true );
+		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() != null ) {
+			if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack() != null ) {
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().setIsListening( true );
 			}
 		}
-
-		super.mouseReleased( ev );
 	}
 
 	public void abortAction() {

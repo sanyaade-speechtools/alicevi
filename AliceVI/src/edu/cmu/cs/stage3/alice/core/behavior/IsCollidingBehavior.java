@@ -46,12 +46,6 @@ public class IsCollidingBehavior extends AbstractConditionalBehavior {
         if( m_world != world ) {
             throw new Error();
         }
-        for( int i=0; i<m_a.size(); i++ ) {
-            m_world.removeCollisionManagementFor( (Transformable)m_a.elementAt( i ) );
-        }
-        for( int i=0; i<m_b.size(); i++ ) {
-            m_world.removeCollisionManagementFor( (Transformable)m_b.elementAt( i ) );
-        }
         m_world = null;
 	}
 }

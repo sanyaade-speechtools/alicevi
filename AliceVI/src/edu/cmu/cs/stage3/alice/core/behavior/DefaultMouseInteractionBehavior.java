@@ -80,7 +80,6 @@ public class DefaultMouseInteractionBehavior extends InternalResponseBehavior {
 		}
 		for( int i = 0; i < renderTargetsValue.length; i++ ) {
 			edu.cmu.cs.stage3.alice.core.manipulator.RenderTargetModelManipulator rtmm = new edu.cmu.cs.stage3.alice.core.manipulator.RenderTargetModelManipulator( renderTargetsValue[i].getInternal() );
-			//rtmm.setPopupEnabled( false );
 			rtmm.setPickAllForOneObjectOfInterestEnabled( false );
 			manipulators.addElement( rtmm );
 		}

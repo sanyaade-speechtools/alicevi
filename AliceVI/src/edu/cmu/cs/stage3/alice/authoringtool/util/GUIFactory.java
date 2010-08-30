@@ -40,7 +40,7 @@ public class GUIFactory {
 	}
 
 	public static javax.swing.JComponent getGUI( Object o ) {
-		edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack();
+		edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance();
 		javax.swing.JComponent viewController = null;
 
 		if( o instanceof edu.cmu.cs.stage3.alice.core.response.IfElseInOrder ) {
@@ -195,7 +195,7 @@ public class GUIFactory {
 	}
 
 	public static EditObjectButton getEditObjectButton( Object object, javax.swing.JComponent animationSource ) {
-		edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack();
+		edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance();
 		EditObjectButton editObjectButton = (EditObjectButton)getOrCreateGUI( EditObjectButton.class );
 		editObjectButton.setAuthoringTool( authoringTool );
 		editObjectButton.setObject( object );
@@ -243,7 +243,7 @@ public class GUIFactory {
 	public static edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyGUI getPropertyGUI( edu.cmu.cs.stage3.alice.core.Property property, boolean includeDefaults, boolean allowExpressions, PopupItemFactory factory ) {
 		edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyGUI propertyGUI = (edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyGUI)getOrCreateGUI( edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyGUI.class );
 		if( propertyGUI != null ) {
-			propertyGUI.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack(), property, includeDefaults, allowExpressions, factory );
+			propertyGUI.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance(), property, includeDefaults, allowExpressions, factory );
 		}
 		return propertyGUI;
 	}
@@ -311,7 +311,7 @@ public class GUIFactory {
 	public static edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyDnDPanel getPropertyDnDPanel( edu.cmu.cs.stage3.alice.core.Property property ) {
 		edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyDnDPanel propertyDnDPanel = (edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyDnDPanel)getOrCreateGUI( edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyDnDPanel.class );
 		if( propertyDnDPanel != null ) {
-			propertyDnDPanel.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack(), property );
+			propertyDnDPanel.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance(), property );
 		}
 		return propertyDnDPanel;
 	}
@@ -443,7 +443,7 @@ public class GUIFactory {
 	public static edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.VariableGUI getVariableGUI( edu.cmu.cs.stage3.alice.core.Variable variable, boolean includeDefaults, PopupItemFactory factory ) {
 		edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.VariableGUI variableGUI = (edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.VariableGUI)getOrCreateGUI( edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.VariableGUI.class );
 		if( variableGUI != null ) {
-			variableGUI.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack(), variable, includeDefaults, factory );
+			variableGUI.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance(), variable, includeDefaults, factory );
 		}
 		return variableGUI;
 	}
@@ -451,7 +451,7 @@ public class GUIFactory {
 	public static edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.VariableDnDPanel getVariableDnDPanel( edu.cmu.cs.stage3.alice.core.Variable variable ) {
 		edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.VariableDnDPanel variableDnDPanel = (edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.VariableDnDPanel)getOrCreateGUI( edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.VariableDnDPanel.class );
 		if( variableDnDPanel != null ) {
-			variableDnDPanel.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack(), variable );
+			variableDnDPanel.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance(), variable );
 		}
 		return variableDnDPanel;
 	}

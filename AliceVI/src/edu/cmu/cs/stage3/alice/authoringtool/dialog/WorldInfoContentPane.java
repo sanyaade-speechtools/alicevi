@@ -89,7 +89,7 @@ public class WorldInfoContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 			playCountLabel.setText( "Number of times the world has been run: " + playCount );
 			saveCountLabel.setText( "Number of times the world has been saved: " + saveCount );
 			worldOpenTimeLabel.setText( "Amount of time the world has been open: " + worldOpenTime + ((worldOpenTime == 1) ? " minute" : " minutes") );
-			currentRendererLabel.setText("Current renderer: "+edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getCurrentRendererText());
+			currentRendererLabel.setText("Current renderer: "+edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getCurrentRendererText());
 
 			responseUsageGraph.refresh();
 		}

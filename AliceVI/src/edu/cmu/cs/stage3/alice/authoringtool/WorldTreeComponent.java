@@ -23,12 +23,16 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool;
 
-import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  * @author Jason Pratt
@@ -166,6 +170,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 					if( selectedElement == worldTreeModel.HACK_getOriginalRoot() ) {
 					} else {
 						WorldTreeComponent.this.authoringTool.setSelectedElement( selectedElement );
+						System.out.println(selectedElement);
 					}
 				}
 			} else {

@@ -76,7 +76,7 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 			if( (sgPickedTransformable == null) && (objectsOfInterest.size() == 1) ) {
 				ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)objectsOfInterest.iterator().next();
 				sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().setIsListening( false );
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().setIsListening( false );
 				mouseIsDown = true;
 			}
 

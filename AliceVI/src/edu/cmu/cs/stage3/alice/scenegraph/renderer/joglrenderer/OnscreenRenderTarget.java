@@ -25,7 +25,6 @@ package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
 public class OnscreenRenderTarget extends RenderTarget implements edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget {
     private javax.media.opengl.GLCanvas m_glCanvas;
-    //private javax.media.opengl.GLPbuffer m_glPBuffer;
     private RenderContext m_renderContext;
     private PickContext m_pickContext;
 	public OnscreenRenderTarget( Renderer renderer ) {
@@ -53,7 +52,6 @@ public class OnscreenRenderTarget extends RenderTarget implements edu.cmu.cs.sta
 	        glCaps.setBlueBits( 8 );
 	        glCaps.setGreenBits( 8 );
 	        glCaps.setAlphaBits( 8 );
-	        //m_glCanvas = javax.media.opengl.GLDrawableFactory.getFactory().createGLCanvas( glCaps );
 	        m_glCanvas = new javax.media.opengl.GLCanvas();
 	        m_renderContext = new RenderContext( this );
 	        m_glCanvas.addGLEventListener( m_renderContext );
@@ -68,25 +66,5 @@ public class OnscreenRenderTarget extends RenderTarget implements edu.cmu.cs.sta
 	    } else {
 	        return null;
 	    }
-//	    if( m_glCanvas != null ) {
-//	        if( m_glPBuffer == null ) {
-//	            if( m_glCanvas.canCreateOffscreenDrawable() ) {
-//		            m_pickContext = new PickContext( this );
-//		            
-//					javax.media.opengl.GLCapabilities glCaps = new javax.media.opengl.GLCapabilities();
-//					glCaps.setDoubleBuffered( false );
-//					glCaps.setOffscreenRenderToTexture( false );
-//		            //m_glPBuffer = m_glCanvas.createOffscreenDrawable( glCaps, m_glCanvas.getWidth(), m_glCanvas.getHeight() );
-//		            m_glPBuffer = m_glCanvas.createOffscreenDrawable( glCaps, 1, 1 );
-//		            System.err.println( m_glPBuffer );
-//		            m_glPBuffer.addGLEventListener( m_pickContext );
-//	            } else {
-//	                throw new RuntimeException();
-//	            }
-//	        }
-//	        return m_pickContext.pick( m_glPBuffer, x, y, isSubElementRequired, isOnlyFrontMostRequired );
-//	    } else {
-//	        return null;
-//	    }
 	}
 }

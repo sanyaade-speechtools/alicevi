@@ -92,8 +92,8 @@ public class GUIEffects {
 		scaledImage = scaledImage.getSubimage( cropRect.x, cropRect.y, Math.min( cropRect.width, scaledImage.getWidth() - cropRect.x ), Math.min( cropRect.height, scaledImage.getHeight() - cropRect.y ) );
 
 		java.awt.image.BufferedImage outputImage;
-		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() != null ) {
-			outputImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getJAliceFrame().getGraphicsConfiguration().createCompatibleImage( scaledImage.getWidth( sizeObserver ), scaledImage.getHeight( sizeObserver ), java.awt.Transparency.TRANSLUCENT );
+		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() != null ) {
+			outputImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getJAliceFrame().getGraphicsConfiguration().createCompatibleImage( scaledImage.getWidth( sizeObserver ), scaledImage.getHeight( sizeObserver ), java.awt.Transparency.TRANSLUCENT );
 		} else {
 			outputImage = new java.awt.image.BufferedImage( scaledImage.getWidth( sizeObserver ), scaledImage.getHeight( sizeObserver ), java.awt.image.BufferedImage.TYPE_INT_ARGB );
 		}
@@ -126,8 +126,8 @@ public class GUIEffects {
 		java.awt.Rectangle shadowBounds = new java.awt.Rectangle( (xOffset > 0) ? xOffset - shadowSteps: 0, (yOffset > 0) ? yOffset - shadowSteps: 0, width + (shadowSteps*2), height + (shadowSteps*2) );
 
 		java.awt.image.BufferedImage outputImage;
-		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() != null ) {
-			outputImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getJAliceFrame().getGraphicsConfiguration().createCompatibleImage( width + Math.abs( xOffset ) + shadowSteps, height + Math.abs( yOffset ) + shadowSteps, java.awt.Transparency.TRANSLUCENT );
+		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() != null ) {
+			outputImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getJAliceFrame().getGraphicsConfiguration().createCompatibleImage( width + Math.abs( xOffset ) + shadowSteps, height + Math.abs( yOffset ) + shadowSteps, java.awt.Transparency.TRANSLUCENT );
 		} else {
 			outputImage = new java.awt.image.BufferedImage( width + Math.abs( xOffset ) + shadowSteps, height + Math.abs( yOffset ) + shadowSteps, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 		}
@@ -167,8 +167,8 @@ public class GUIEffects {
 		int height = inputImage.getHeight( sizeObserver );
 
 		java.awt.image.BufferedImage outputImage;
-		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() != null ) {
-			outputImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getJAliceFrame().getGraphicsConfiguration().createCompatibleImage( width, height, java.awt.Transparency.TRANSLUCENT );
+		if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() != null ) {
+			outputImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getJAliceFrame().getGraphicsConfiguration().createCompatibleImage( width, height, java.awt.Transparency.TRANSLUCENT );
 		} else {
 			outputImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 		}

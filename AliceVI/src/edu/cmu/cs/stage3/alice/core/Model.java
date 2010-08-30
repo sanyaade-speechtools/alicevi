@@ -250,9 +250,8 @@ public class Model extends Transformable {
 
 	protected void updateBoundingSphere( edu.cmu.cs.stage3.math.Sphere sphere, ReferenceFrame asSeenBy, edu.cmu.cs.stage3.util.HowMuch howMuch, boolean ignoreHidden ) {
 		super.updateBoundingSphere( sphere, asSeenBy, howMuch, ignoreHidden );
-		if( ignoreHidden && !isShowing.booleanValue() ) {
-			//pass
-		} else {
+		System.out.println("updating sphere for " + this);
+		if( !ignoreHidden || isShowing.booleanValue() ) {
 			edu.cmu.cs.stage3.math.Sphere localSphere = m_sgVisual.getBoundingSphere();
 			if( localSphere!=null ) {
 				localSphere.transform( getTransformation( asSeenBy ) );
@@ -262,9 +261,7 @@ public class Model extends Transformable {
 	}
 	protected void updateBoundingBox( edu.cmu.cs.stage3.math.Box box, ReferenceFrame asSeenBy, edu.cmu.cs.stage3.util.HowMuch howMuch, boolean ignoreHidden ) {
 		super.updateBoundingBox( box, asSeenBy, howMuch, ignoreHidden );
-		if( ignoreHidden && !isShowing.booleanValue() ) {
-			//pass
-		} else {
+		if( !ignoreHidden || isShowing.booleanValue() ) {
 			edu.cmu.cs.stage3.math.Box localBox = m_sgVisual.getBoundingBox();
 			if( localBox!=null ) {
 				localBox.transform( getTransformation( asSeenBy ) );

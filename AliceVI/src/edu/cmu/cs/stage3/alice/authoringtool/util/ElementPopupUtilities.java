@@ -130,9 +130,9 @@ public class ElementPopupUtilities {
 					String repr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue( c );
 					Runnable runnable = new Runnable() {
 						public void run() {
-							edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().startCompound();
+							edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().startCompound();
 							element.coerceTo( c );
-							edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().stopCompound();
+							edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().stopCompound();
 						}
 					};
 					subStructure.add( new edu.cmu.cs.stage3.util.StringObjectPair( repr, runnable ) );
@@ -303,7 +303,7 @@ public class ElementPopupUtilities {
 
 		public DeleteRunnable( edu.cmu.cs.stage3.alice.core.Element element ) {
 			super( element );
-			this.authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack();
+			this.authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance();
 		}
 
 		public DeleteRunnable( edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool ) {
@@ -368,7 +368,7 @@ public class ElementPopupUtilities {
 //				Object[] message = new Object[] { text, scrollPane };
 //				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( message, "Cannot delete " + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue( element, true ), javax.swing.JOptionPane.ERROR_MESSAGE );
 			} else {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().startCompound();
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().startCompound();
 
 				if( element instanceof edu.cmu.cs.stage3.alice.core.Transformable ) {
 					if( element instanceof edu.cmu.cs.stage3.alice.core.Model ) {
@@ -406,7 +406,7 @@ public class ElementPopupUtilities {
 					parent.removeChild( element );
 				}
 
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().stopCompound();
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().stopCompound();
 			}
 		}
 
@@ -543,7 +543,7 @@ public class ElementPopupUtilities {
 		}
 
 		public void run() {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().startCompound();
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().startCompound();
 
 			String name = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameForNewChild( element.name.getStringValue(), element.getParent() );
 
@@ -561,7 +561,7 @@ public class ElementPopupUtilities {
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.addElementToAppropriateProperty( copy, copy.getParent() );
 			}
 
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().stopCompound();
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().stopCompound();
 		}
 	}
 
@@ -581,13 +581,13 @@ public class ElementPopupUtilities {
 		}
 
 		public void run() {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().startCompound();
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().startCompound();
 
 			String name = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameForNewChild( element.name.getStringValue(), element.getParent() );
 			edu.cmu.cs.stage3.alice.core.Element copy = element.createCopyNamed( name, classesToShare );
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.addElementToAppropriateProperty( copy, copy.getParent() );
 
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().stopCompound();
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().stopCompound();
 		}
 	}
 
@@ -620,7 +620,7 @@ public class ElementPopupUtilities {
 		protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 
 		public SaveCharacterRunnable( edu.cmu.cs.stage3.alice.core.Element element ) {
-			this( element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() );
+			this( element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() );
 		}
 
 		public SaveCharacterRunnable( edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool ) {
@@ -710,7 +710,7 @@ public class ElementPopupUtilities {
 		protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 
 		public StorePoseRunnable( edu.cmu.cs.stage3.alice.core.Element element ) {
-			this( element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() );
+			this( element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() );
 		}
 
 		public StorePoseRunnable( edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool ) {
@@ -737,7 +737,7 @@ public class ElementPopupUtilities {
 		protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 
 		public EditScriptRunnable( edu.cmu.cs.stage3.alice.core.Element element ) {
-			this( element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() );
+			this( element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() );
 		}
 
 		public EditScriptRunnable( edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool ) {
@@ -815,7 +815,7 @@ public class ElementPopupUtilities {
 		protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 
 		public GetAGoodLookAtRunnable( edu.cmu.cs.stage3.alice.core.Element element ) {
-			this( element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() );
+			this( element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() );
 		}
 
 		public GetAGoodLookAtRunnable( edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool ) {

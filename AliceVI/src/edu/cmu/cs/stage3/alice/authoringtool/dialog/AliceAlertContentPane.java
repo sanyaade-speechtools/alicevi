@@ -238,7 +238,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 
 	protected void copyDetailText() {
 		String detailText = detailTextPane.getText();
-		java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents( new java.awt.datatransfer.StringSelection( detailText ), edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() );
+		java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents( new java.awt.datatransfer.StringSelection( detailText ), edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance() );
 	}
 
 

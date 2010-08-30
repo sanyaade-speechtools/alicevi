@@ -1138,7 +1138,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 						undoResponse.pointOfView.set( ((edu.cmu.cs.stage3.alice.core.Transformable)property.getOwner()).localTransformation.getMatrix4dValue() );
 						undoResponse.asSeenBy.set( ((edu.cmu.cs.stage3.alice.core.Transformable)property.getOwner()).vehicle.getValue() );
 						edu.cmu.cs.stage3.alice.core.Property[] properties = new edu.cmu.cs.stage3.alice.core.Property[] { ((edu.cmu.cs.stage3.alice.core.Transformable)property.getOwner()).localTransformation };
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().performOneShot( povAnim, undoResponse, properties );
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().performOneShot( povAnim, undoResponse, properties );
 						
 					} else{
 						edu.cmu.cs.stage3.alice.core.question.PointOfView POVQuestion = new edu.cmu.cs.stage3.alice.core.question.PointOfView();
@@ -1448,7 +1448,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 									element.setParent(null);
 									edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childChangedEvent = new edu.cmu.cs.stage3.alice.core.event.ChildrenEvent(parent, element, edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_REMOVED, oldIndex, -1 );
 									
-									edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().childrenChanged(  childChangedEvent );
+									edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getUndoRedoStack().childrenChanged(  childChangedEvent );
 									for (int i=0; i<childlisteners.length; i++){
 										question.addChildrenListener(childlisteners[i]);
 									}

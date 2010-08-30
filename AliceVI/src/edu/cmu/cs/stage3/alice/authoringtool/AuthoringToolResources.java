@@ -2268,7 +2268,7 @@ public class AuthoringToolResources {
 				return null;
 			}
 		} else if( cls == ReferenceFrame.class ) {
-			return AuthoringTool.getHack().getWorld();
+			return AuthoringTool.getInstance().getWorld();
 		} else {
 			return null;
 		}

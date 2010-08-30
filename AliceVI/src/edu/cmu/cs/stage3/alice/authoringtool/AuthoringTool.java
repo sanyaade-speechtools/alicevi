@@ -53,6 +53,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -111,6 +112,7 @@ import edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.Behavi
 import edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.SceneEditor;
 import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent;
 import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener;
+import edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener;
 import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject;
 import edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryViewer;
 import edu.cmu.cs.stage3.alice.authoringtool.util.CollectionEditorPanel;
@@ -496,10 +498,10 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 
 	// selected element
 	private Element selectedElement;
-	private HashSet selectionListeners = new HashSet();
+	private HashSet<ElementSelectionListener> selectionListeners = new HashSet<ElementSelectionListener>();
 
 	// AuthoringTool state listening
-	private HashSet stateListeners = new HashSet();
+	private HashSet<AuthoringToolStateListener> stateListeners = new HashSet<AuthoringToolStateListener>();
 
 	public static PyFile getPyStdOut() {
 		return pyStdOut;
@@ -511,12 +513,17 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 
 	private static AuthoringTool hack;
 
-	public static AuthoringTool getHack() {
+	public static AuthoringTool getInstance() {
+		if(hack == null)
+			hack = new AuthoringTool();
 		return hack;
 	}
 
 	// constructor
-	public AuthoringTool(File defaultWorld, File worldToLoad,
+	private AuthoringTool() {
+	}
+
+	public void init(File defaultWorld, File worldToLoad,
 			boolean stdOutToConsole, boolean stdErrToConsole) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -1358,22 +1365,19 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		return selectedElement;
 	}
 
-	public void addElementSelectionListener(
-			edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener listener) {
+	public void addElementSelectionListener(ElementSelectionListener listener) {
 		selectionListeners.add(listener);
 	}
 
-	public void removeElementSelectionListener(
-			edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener listener) {
+	public void removeElementSelectionListener(ElementSelectionListener listener) {
 		selectionListeners.remove(listener);
 	}
 
 	protected void fireElementSelected(Element element) {
-		for (java.util.Iterator iter = selectionListeners.iterator(); iter
+		for (Iterator<ElementSelectionListener> iter = selectionListeners.iterator(); iter
 		.hasNext();) {
 
-			((edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener) iter
-					.next()).elementSelected(element);
+			iter.next().elementSelected(element);
 		}
 	}
 
@@ -3717,7 +3721,7 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 			errorPane.setDetails((String) t);
 		int result = DialogManager.showDialog(errorPane);
 		if (t instanceof Throwable) {
-			if (getHack().isStdErrToConsole() && (t != null)) {
+			if (getInstance().isStdErrToConsole() && (t != null)) {
 				Throwable tt = (Throwable) t;
 				tt.printStackTrace(System.err);
 			}

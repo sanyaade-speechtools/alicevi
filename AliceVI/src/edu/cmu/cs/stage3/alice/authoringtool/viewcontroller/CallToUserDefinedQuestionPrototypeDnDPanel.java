@@ -190,7 +190,7 @@ public class CallToUserDefinedQuestionPrototypeDnDPanel extends edu.cmu.cs.stage
 
 	class MouseListener extends edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter {
 		public void singleClickResponse( java.awt.event.MouseEvent ev ) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().editObject( callToUserDefinedQuestionPrototype.getActualQuestion(), CallToUserDefinedQuestionPrototypeDnDPanel.this );
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().editObject( callToUserDefinedQuestionPrototype.getActualQuestion(), CallToUserDefinedQuestionPrototypeDnDPanel.this );
 		}
 	}
 

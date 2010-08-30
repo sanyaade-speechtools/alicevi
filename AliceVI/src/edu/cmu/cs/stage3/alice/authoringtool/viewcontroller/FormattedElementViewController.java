@@ -478,9 +478,9 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 
 		public void doubleClickResponse( java.awt.event.MouseEvent ev ) {
 			if( element instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse ) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().editObject( ((edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse)element).userDefinedResponse.getUserDefinedResponseValue(), FormattedElementViewController.this );
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().editObject( ((edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse)element).userDefinedResponse.getUserDefinedResponseValue(), FormattedElementViewController.this );
 			} else if( element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion ) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().editObject( ((edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion)element).userDefinedQuestion.getUserDefinedQuestionValue(), FormattedElementViewController.this );
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().editObject( ((edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion)element).userDefinedQuestion.getUserDefinedQuestionValue(), FormattedElementViewController.this );
 			}
 		}
 	}

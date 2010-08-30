@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.awt.Point;
+
 /**
  * @author Jason Pratt
  */
@@ -63,7 +65,7 @@ public class DefaultMoveMode extends RenderTargetManipulatorMode {
 		return true;
 	}
 
-	public void mousePressed( java.awt.event.MouseEvent ev, edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable, edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo ) {
+	public void selected( edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable, edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo, Point p ) {
 		this.pickedTransformable = pickedTransformable;
 		if( pickedTransformable != null ) {
 			camera = (edu.cmu.cs.stage3.alice.core.Camera)pickInfo.getSource().getBonus();
@@ -74,18 +76,16 @@ public class DefaultMoveMode extends RenderTargetManipulatorMode {
 		}
 	}
 
-	public void mouseReleased( java.awt.event.MouseEvent ev ) {
+	public void released(Point p ) {
 		if( (pickedTransformable != null) && (undoRedoStack != null)  ) {
-			if( ! ev.isPopupTrigger() ) { // TODO: this is a hack.  this method should never be called if the popup is triggered
-				undoRedoStack.push( new PointOfViewUndoableRedoable( pickedTransformable, oldTransformation, pickedTransformable.getLocalTransformation(), scheduler ) );
-			}
+			undoRedoStack.push( new PointOfViewUndoableRedoable( pickedTransformable, oldTransformation, pickedTransformable.getLocalTransformation(), scheduler ) );
 		}
 	}
 
-	public void mouseDragged( java.awt.event.MouseEvent ev, int dx, int dy ) {
+	public void dragged( int dx, int dy, boolean isControlDown, boolean isShiftDown ) {
 		if( pickedTransformable != null ) {
-			boolean controlDown = ev.isControlDown();
-			boolean shiftDown = ev.isShiftDown();
+			boolean controlDown = isControlDown;
+			boolean shiftDown = isShiftDown;
 
 			double deltaFactor;
 			if( camera instanceof edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera ) {

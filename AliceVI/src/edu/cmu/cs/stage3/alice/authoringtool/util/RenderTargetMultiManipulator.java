@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.awt.Component;
+import java.awt.Point;
+
 /**
  * @author Jason Pratt
  */
@@ -57,25 +60,32 @@ public class RenderTargetMultiManipulator extends RenderTargetPickManipulator {
 		if( enabled ) {
 			super.mousePressed( ev );
 
-			if( mode != null ) {
-				if( mode.requiresPickedObject() && (ePickedTransformable != null) && (! ePickedTransformable.doEventsStopAscending()) && ascendTreeEnabled ) {
-					abortAction();
-				} else if( mode.requiresPickedObject() && (ePickedTransformable == null) ) {
-					abortAction();
-				} else {
-					mode.setRenderTarget( renderTarget );
-					mode.mousePressed( ev, ePickedTransformable, pickInfo );
-				}
-			} else {
+			
+		}
+	}
+	
+	@Override
+	public void selected(Component c, Point p) {
+		super.selected(c, p);
+		if( mode != null ) {
+			if( mode.requiresPickedObject() && (ePickedTransformable != null) && (! ePickedTransformable.doEventsStopAscending()) && ascendTreeEnabled ) {
 				abortAction();
+			} else if( mode.requiresPickedObject() && (ePickedTransformable == null) ) {
+				abortAction();
+			} else {
+				mode.setRenderTarget( renderTarget );
+				mode.selected( ePickedTransformable, pickInfo, p );
 			}
+		} else {
+			abortAction();
 		}
 	}
 
 	public void mouseReleased( java.awt.event.MouseEvent ev ) {
 		if( enabled && (! isActionAborted()) ) {
 			mode.setRenderTarget( renderTarget );
-			mode.mouseReleased( ev );
+			if( ! ev.isPopupTrigger() ) 
+				mode.released(null );
 		}
 		super.mouseReleased( ev );
 	}
@@ -85,8 +95,13 @@ public class RenderTargetMultiManipulator extends RenderTargetPickManipulator {
 			super.mouseDragged( ev );
 			if( mouseIsDown ) {
 				mode.setRenderTarget( renderTarget );
-				mode.mouseDragged( ev, dx, dy );
+				mode.dragged( dx, dy, ev.isControlDown(), ev.isShiftDown() );
 			}
 		}
+	}
+	
+	public void dragged(Component comp, Point p, boolean isControlDown, boolean isShiftDown) {
+		mode.setRenderTarget( renderTarget );
+		mode.dragged( dx, dy, isControlDown, isShiftDown );
 	}
 }

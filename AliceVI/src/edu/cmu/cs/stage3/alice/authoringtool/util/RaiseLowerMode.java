@@ -31,7 +31,7 @@ public class RaiseLowerMode extends DefaultMoveMode {
 		super( undoRedoStack, scheduler );
 	}
 
-	public void mouseDragged( java.awt.event.MouseEvent ev, int dx, int dy ) {
+	public void dragged( int dx, int dy, boolean isControlDown, boolean isShiftDown ) {
 		if( pickedTransformable != null ) {
 			double deltaFactor;
 			if( camera instanceof edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera ) {

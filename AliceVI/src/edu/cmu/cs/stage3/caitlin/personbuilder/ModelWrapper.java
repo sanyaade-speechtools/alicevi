@@ -244,7 +244,7 @@ public class ModelWrapper {
 	}
 
 	private void renderInit() {
-		authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack();
+		authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance();
 		renderTarget = authoringTool.getRenderTargetFactory().createOnscreenRenderTarget();
 		if (renderTarget != null) {
 			renderTarget.addCamera(camera.getSceneGraphCamera());

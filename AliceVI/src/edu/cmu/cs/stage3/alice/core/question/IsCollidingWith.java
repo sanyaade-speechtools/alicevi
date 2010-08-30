@@ -37,8 +37,6 @@ public class IsCollidingWith extends SubjectObjectQuestion {
         if( m_world != world ) {
             throw new Error();
         }
-        m_world.removeCollisionManagementFor( subject.getTransformableValue() );
-        m_world.removeCollisionManagementFor( object.getTransformableValue() );
         m_world = null;
 	}
 }

@@ -120,7 +120,7 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 
         listOfStuff.addElement(new ElementOrNullWrapper(null,"Build Model from skeleton file"));
 
-        Sandbox[] possibilities = (Sandbox[])AuthoringTool.getHack().getWorld().sandboxes.getArrayValue();
+        Sandbox[] possibilities = (Sandbox[])AuthoringTool.getInstance().getWorld().sandboxes.getArrayValue();
 
         for (int i=0; i<possibilities.length; i++) {
             listOfStuff.addElement(new ElementOrNullWrapper(possibilities[i]));

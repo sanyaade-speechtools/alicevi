@@ -329,7 +329,7 @@ public class DnDGroupingPanel extends GroupingPanel {
 								dragWindow2.show();
 							} else {
 								if( dragWindow == null ) {
-									dragWindow = new edu.cmu.cs.stage3.alice.authoringtool.util.DragWindow( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getJAliceFrame() );
+									dragWindow = new edu.cmu.cs.stage3.alice.authoringtool.util.DragWindow( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getJAliceFrame() );
 								}
 								dragWindow.setLocation( -10000, -10000 ); //hack
 								dragWindow.setVisible( true );

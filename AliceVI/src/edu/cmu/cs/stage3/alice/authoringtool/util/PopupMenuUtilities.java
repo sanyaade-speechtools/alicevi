@@ -49,7 +49,7 @@ public class PopupMenuUtilities {
 						edu.cmu.cs.stage3.alice.core.Response response = ((edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype)o).createNewResponse();
 						edu.cmu.cs.stage3.alice.core.Response undoResponse = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.createUndoResponse( response );
 						edu.cmu.cs.stage3.alice.core.Property[] properties = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getAffectedProperties( response );
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().performOneShot( response, undoResponse, properties );
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().performOneShot( response, undoResponse, properties );
 					}
 				}
 			};
@@ -1064,7 +1064,7 @@ public class PopupMenuUtilities {
 							name = name.substring( 0, name.lastIndexOf( '.' ) );
 							Runnable importSoundRunnable = new Runnable() {
 								public void run() {
-									edu.cmu.cs.stage3.alice.core.Sound sound = (edu.cmu.cs.stage3.alice.core.Sound)edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().importElement( soundFile, context.getSandbox() );
+									edu.cmu.cs.stage3.alice.core.Sound sound = (edu.cmu.cs.stage3.alice.core.Sound)edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().importElement( soundFile, context.getSandbox() );
 									if( sound != null ) {
 										((Runnable)factory.createItem( elementPrototype.createCopy( new edu.cmu.cs.stage3.util.StringObjectPair( desiredProperties[0], sound ) ) )).run();
 									}
@@ -1084,13 +1084,13 @@ public class PopupMenuUtilities {
 					public void run() {
 //						PropertyPopupPostWorker postWorker = new PropertyPopupPostWorker( metaFactory );
 						PropertyPopupPostImportRunnable propertyPopupPostImportRunnable = new PropertyPopupPostImportRunnable( metaFactory );
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().setImportFileFilter( "Sound Files" );
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().importElement( null, context.getSandbox(), propertyPopupPostImportRunnable );
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().setImportFileFilter( "Sound Files" );
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().importElement( null, context.getSandbox(), propertyPopupPostImportRunnable );
 					}
 				};
 				Runnable recordRunnable = new Runnable() {
 					public void run() {
-						edu.cmu.cs.stage3.alice.core.Sound sound = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().promptUserForRecordedSound( context.getSandbox() );
+						edu.cmu.cs.stage3.alice.core.Sound sound = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().promptUserForRecordedSound( context.getSandbox() );
 						if( sound != null ) {
 							((Runnable)factory.createItem( elementPrototype.createCopy( new edu.cmu.cs.stage3.util.StringObjectPair( desiredProperties[0], sound ) ) )).run();
 						}
@@ -1161,7 +1161,7 @@ public class PopupMenuUtilities {
 				}
 				Runnable createNewListRunnable = new Runnable() {
 					public void run() {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack();
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance();
 						edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty variables = context.getSandbox().variables;
 						edu.cmu.cs.stage3.alice.core.Variable variable = authoringTool.showNewVariableDialog( "Create new list", context.getRoot(), true, true );
 						if( variable != null ) {
@@ -1253,7 +1253,7 @@ public class PopupMenuUtilities {
 				}
 				Runnable createNewListRunnable = new Runnable() {
 					public void run() {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack();
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance();
 						edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty variables = property.getOwner().getSandbox().variables;
 						edu.cmu.cs.stage3.alice.core.Variable variable = authoringTool.showNewVariableDialog( "Create new list", property.getOwner().getRoot(), true, true );
 						if( variable != null ) {
@@ -1486,8 +1486,8 @@ public class PopupMenuUtilities {
 							Runnable runnable = new Runnable() {
 								public void run() {
 									PropertyPopupPostImportRunnable propertyPopupPostImportRunnable = new PropertyPopupPostImportRunnable( factory );
-									edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().setImportFileFilter( "Sound Files" );
-									edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().importElement( null, world, propertyPopupPostImportRunnable ); // should probably somehow hook the sound up to the object playing it
+									edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().setImportFileFilter( "Sound Files" );
+									edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().importElement( null, world, propertyPopupPostImportRunnable ); // should probably somehow hook the sound up to the object playing it
 								}
 							};
 							structure.add( new edu.cmu.cs.stage3.util.StringObjectPair( "import sound file...", runnable ) );
@@ -1922,7 +1922,7 @@ public class PopupMenuUtilities {
 		Runnable textStringRunnable = new Runnable() {
 			public void run() {
 				ElementPrototype elementPrototype = new ElementPrototype( edu.cmu.cs.stage3.alice.core.response.Print.class, known, new String[] { "text" } );
-				java.awt.Frame jAliceFrame = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getJAliceFrame();
+				java.awt.Frame jAliceFrame = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getJAliceFrame();
 				String text = edu.cmu.cs.stage3.swing.DialogManager.showInputDialog( "Enter text to print:", "Enter Text String", javax.swing.JOptionPane.PLAIN_MESSAGE );
 				if( text != null ) {
 					((Runnable)factory.createItem( elementPrototype.createCopy( new edu.cmu.cs.stage3.util.StringObjectPair( "text", text ) ) )).run();
@@ -1948,7 +1948,7 @@ public class PopupMenuUtilities {
 		Runnable textStringRunnable = new Runnable() {
 			public void run() {
 				ElementPrototype elementPrototype = new ElementPrototype( edu.cmu.cs.stage3.alice.core.question.userdefined.Print.class, known, new String[] { "text" } );
-				java.awt.Frame jAliceFrame = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getJAliceFrame();
+				java.awt.Frame jAliceFrame = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getJAliceFrame();
 				String text = edu.cmu.cs.stage3.swing.DialogManager.showInputDialog( "Enter text to print:", "Enter Text String", javax.swing.JOptionPane.PLAIN_MESSAGE );
 				if( text != null ) {
 					((Runnable)factory.createItem( elementPrototype.createCopy( new edu.cmu.cs.stage3.util.StringObjectPair( "text", text ) ) )).run();
@@ -2525,7 +2525,7 @@ public class PopupMenuUtilities {
 		//DEBUG System.out.println( "getAvailableExpressionCriterion( " + valueClass + ", " + context + " )" );
 		if( context == null ) { //SERIOUS HACK
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog( "Error: null context while looking for expressions; using World", null );
-			context = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getWorld();
+			context = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getWorld();
 		}
 		edu.cmu.cs.stage3.util.Criterion isAccessible = new edu.cmu.cs.stage3.alice.core.criterion.ExpressionIsAccessibleFromCriterion( context );
 		edu.cmu.cs.stage3.alice.core.criterion.ExpressionIsAssignableToCriterion isAssignable = new edu.cmu.cs.stage3.alice.core.criterion.ExpressionIsAssignableToCriterion( valueClass );

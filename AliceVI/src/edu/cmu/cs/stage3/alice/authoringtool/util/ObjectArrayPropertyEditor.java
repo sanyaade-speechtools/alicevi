@@ -80,7 +80,7 @@ public class ObjectArrayPropertyEditor extends javax.swing.JPanel implements edu
 				for( int i = 0; i < items.length; i++ ) {
 					edu.cmu.cs.stage3.alice.core.Element owner = objectArrayProperty.getOwner();
 					if( (owner == null) || (! (owner.getRoot() instanceof edu.cmu.cs.stage3.alice.core.World)) ) { //SUPER BIG HACK: for accessing Models as list elements before a variable has been put into the world
-						owner = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getWorld();
+						owner = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().getWorld();
 					}
 					ObjectArrayPropertyItem item = new ObjectArrayPropertyItem( owner, objectArrayProperty, i, type );
 					PopupItemFactory factory = new SetPropertyImmediatelyFactory( item );

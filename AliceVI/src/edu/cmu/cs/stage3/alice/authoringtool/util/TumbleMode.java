@@ -31,7 +31,7 @@ public class TumbleMode extends DefaultMoveMode {
 		super( undoRedoStack, scheduler );
 	}
 
-	public void mouseDragged( java.awt.event.MouseEvent ev, int dx, int dy ) {
+	public void dragged( int dx, int dy, boolean isControlDown, boolean isShiftDown ) {
 		if( pickedTransformable != null ) {
 			helper.setTransformationRightNow( edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d(), camera );
 			helper.setPositionRightNow( zeroVec, pickedTransformable );

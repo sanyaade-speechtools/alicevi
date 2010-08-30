@@ -179,7 +179,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
     }
 
     public BehaviorGroupsEditor(){
-        authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack();
+        authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance();
         behaviorMenu = new javax.swing.JPopupMenu();
         Class[] behaviors = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getBehaviorClasses();
         java.util.Vector structure = new java.util.Vector();

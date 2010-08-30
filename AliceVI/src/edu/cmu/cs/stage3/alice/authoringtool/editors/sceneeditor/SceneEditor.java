@@ -191,7 +191,6 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		this.world = world;
 		scriptComboWidget.setSandbox( world );
 		cameraViewPanel.setWorld( world );
-//		layoutViewPanel.setWorld( world );
 		if( world != null ){
 			// set the renderCamera variable to the scene's camera (TODO: handle multiple cameras better)
 			edu.cmu.cs.stage3.alice.core.Camera[] cameras = (edu.cmu.cs.stage3.alice.core.Camera[])world.getDescendants( edu.cmu.cs.stage3.alice.core.Camera.class );
@@ -209,8 +208,6 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		}
 
 		this.authoringTool = authoringTool;
-//		layoutViewPanel.setAuthoringTool( authoringTool );
-//		layoutViewPanel.renderInit( authoringTool.getRenderTargetFactory(), authoringTool.getUndoRedoStack(), authoringTool.getOneShotScheduler() );
 		cameraViewPanel.setAuthoringTool( authoringTool );
 		cameraViewPanel.renderInit( authoringTool );
 		stencilInit();
@@ -302,16 +299,6 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	// GUI Callbacks
 	///////////////////
 
-//	void viewsTabbedPane_stateChanged(ChangeEvent e) {
-//		if(viewsTabbedPane.getSelectedIndex() == 0){
-//			layoutViewPanel.deactivate();
-//			cameraViewPanel.activate();
-//		}else if(viewsTabbedPane.getSelectedIndex() == 1){
-//			cameraViewPanel.deactivate();
-//			layoutViewPanel.activate();
-//		}
-//	}
-
 	void this_componentShown(ComponentEvent e) {
 		cameraViewPanel.setTargetsDirty();
 		cameraViewPanel.activate();
@@ -323,7 +310,6 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel mainPanel = new JPanel();
-//	JPanel viewsPanel = new JPanel();
 	BorderLayout borderLayout4 = new BorderLayout();
 	FlowLayout flowLayout1 = new FlowLayout();
 	BorderLayout borderLayout2 = new BorderLayout();
@@ -335,11 +321,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	FlowLayout flowLayout8 = new FlowLayout();
 	FlowLayout flowLayout9 = new FlowLayout();
 	BorderLayout borderLayout7 = new BorderLayout();
-//	JTabbedPane viewsTabbedPane = new JTabbedPane();
-//	JPanel cameraViewTab = new JPanel();
 	BorderLayout borderLayout8 = new BorderLayout();
-//	JPanel layoutViewTab = new JPanel();
-//	LayoutViewPanel layoutViewPanel = new LayoutViewPanel();
 	BorderLayout borderLayout6 = new BorderLayout();
 	Border border1;
 	Border border2;
@@ -364,20 +346,8 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		mainPanel.setBackground(new Color(126, 159, 197));
 		mainPanel.setMinimumSize(new Dimension(10, 100));
 		mainPanel.setLayout(borderLayout9);
-//		viewsPanel.setBackground(Color.black);
-//		viewsPanel.setMinimumSize(new Dimension(100, 100));
-//		viewsPanel.setPreferredSize(new Dimension(100, 100));
-//		viewsPanel.setLayout(borderLayout2);
 		flowLayout4.setHgap(0);
 		flowLayout4.setVgap(0);
-//		cameraViewTab.setLayout(borderLayout8);
-//		layoutViewTab.setLayout(borderLayout6);
-//		viewsTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
-//			public void stateChanged(ChangeEvent e) {
-//				viewsTabbedPane_stateChanged(e);
-//			}
-//		});
-//		viewsTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 		flowLayout3.setAlignment(FlowLayout.LEFT);
 		flowLayout3.setHgap(0);
 		flowLayout3.setVgap(0);

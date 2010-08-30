@@ -184,14 +184,6 @@ public class World extends ReferenceFrame {
 		}
 	}
 
-	public void removeCollisionManagementFor(Transformable t) {
-		// edu.cmu.cs.stage3.alice.scenegraph.Visual[] sgVisuals =
-		// t.getAllSceneGraphVisuals();
-		// for( int i=0; i<sgVisuals.length; i++ ) {
-		// m_collisionManager.dectivateObject( sgVisuals[ i ] );
-		// }
-	}
-
 	protected void internalRelease(int pass) {
 		switch (pass) {
 		case 1:
@@ -226,10 +218,6 @@ public class World extends ReferenceFrame {
 			break;
 		}
 		super.internalRelease(pass);
-	}
-
-	public edu.cmu.cs.stage3.alice.scenegraph.Scene getSceneGraphScene() {
-		return m_sgScene;
 	}
 
 	public edu.cmu.cs.stage3.alice.scenegraph.Container getSceneGraphContainer() {

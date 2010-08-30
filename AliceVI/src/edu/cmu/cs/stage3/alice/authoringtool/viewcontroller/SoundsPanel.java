@@ -61,7 +61,7 @@ public class SoundsPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.Expa
 		recordSoundButton.addActionListener(
 			new java.awt.event.ActionListener() {
 				public void actionPerformed( java.awt.event.ActionEvent ev ) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().promptUserForRecordedSound( sounds.getOwner().getSandbox() );
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getInstance().promptUserForRecordedSound( sounds.getOwner().getSandbox() );
 //					edu.cmu.cs.stage3.alice.authoringtool.editors.soundeditor.SoundRecorder recorder = new edu.cmu.cs.stage3.alice.authoringtool.editors.soundeditor.SoundRecorder( sounds.getOwner().getSandbox() );
 //					edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.centerComponentOnScreen( recorder );
 //					recorder.setVisible( true );

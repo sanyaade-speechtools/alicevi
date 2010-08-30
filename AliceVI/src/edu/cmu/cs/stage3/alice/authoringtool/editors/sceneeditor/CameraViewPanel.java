@@ -83,11 +83,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 	protected edu.cmu.cs.stage3.alice.core.Transformable blankTransformable = new edu.cmu.cs.stage3.alice.core.Transformable();
 	protected java.util.HashMap resizeTable = new java.util.HashMap();
 	
-	// TODO: Analyze if this is dead or obsolete
-//	protected java.util.HashMap povMap = new java.util.HashMap();
-//	protected edu.cmu.cs.stage3.alice.authoringtool.util.FilteringElementTreeModel povTreeModel = new edu.cmu.cs.stage3.alice.authoringtool.util.FilteringElementTreeModel();
-//	protected edu.cmu.cs.stage3.alice.core.Transformable povTransformable;
-	
 	edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator guiNavigator;
 	edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryViewer galleryViewer;
 	protected double minimumViewingAngle;
@@ -222,13 +217,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 					e.printStackTrace();
 				}
 				
-				// TODO: Analyze if this is dead or obsolete
-//			} else if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, df  )) { //Works in 1.4, but not in 1.3_0_10 or 1.3_0_11
-////				System.out.println("here");
-//				toReturn = true;
-//			}else if( dtde.getDropAction() == java.awt.dnd.DnDConstants.ACTION_NONE ) { // HACK for UniformResourceLocators //Doesn't work in 1.30_10 or 1.3_0_11
-//				dtde.acceptDrag( java.awt.dnd.DnDConstants.ACTION_LINK ); // HACK for UniformResourceLocators
-//				return true;
 			} else {
 				dtde.rejectDrag();
 				return false;
@@ -242,14 +230,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			}
 			return toReturn;
 		}
-		
-		/**
-		 * TODO: Delete dead method.
-		 */
-		/*private void startDraggingFromGallery(){
-			edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject galleryObject = getGalleryObject(edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentDragComponent());
-			startDraggingFromGallery(galleryObject);
-		}*/
 		
 		private void startDraggingFromGallery(edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject galleryObject){
 			if (galleryObject != null){
@@ -305,14 +285,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			originalTileDraggingOption = authoringToolConfig.getValue( "gui.pickUpTiles").equalsIgnoreCase( "true" );
 			
 			if(  authoringToolConfig.getValue( "showObjectLoadFeedback").equalsIgnoreCase("true") && (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, java.awt.datatransfer.DataFlavor.javaFileListFlavor ) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.URLTransferable.urlFlavor )) ) {
-
-				// TODO: Analyze if this is dead or obsolete
-//				try{
-//					startDraggingFromGallery();
-//				} catch (Exception e){
-//					dropFeedbackDecorator.setIsShowing(false);
-//					successFullVisualDrop = false;
-//				}
 			}
 			else{
 				successFullVisualDrop = false;
@@ -358,80 +330,47 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			boolean shiftDown = keyMode >= 2;
 			boolean controlDown = (keyMode == 1 || keyMode == 3);
 
-			// TODO: Figure out what this code was supposed to actually do.
-//			if( mode == GROUND_PLANE_MODE ) {
-			if( true ) {
-				if( controlDown ) {
-					if( shiftDown ) {
-						helper.setTransformation( edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d(), sgCameraTransformable );
-						helper.setPosition( zeroVec, sgPickedTransformable );
-						sgPickedTransformable.rotate( edu.cmu.cs.stage3.math.MathUtilities.getXAxis(), -dy*.01, helper );
-						sgPickedTransformable.rotate( edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), -dx*.01, sgPickedTransformable );
-					} else {
-						helper.setTransformation( edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d(), sgScene );
-						helper.setPosition( zeroVec, sgPickedTransformable );
-						sgPickedTransformable.rotate( edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), -dx*.01, helper );
-					}
-				} else if( shiftDown ) {
+			if( controlDown ) {
+				if( shiftDown ) {
+					helper.setTransformation( edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d(), sgCameraTransformable );
+					helper.setPosition( zeroVec, sgPickedTransformable );
+					sgPickedTransformable.rotate( edu.cmu.cs.stage3.math.MathUtilities.getXAxis(), -dy*.01, helper );
+					sgPickedTransformable.rotate( edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), -dx*.01, sgPickedTransformable );
+				} else {
 					helper.setTransformation( edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d(), sgScene );
 					helper.setPosition( zeroVec, sgPickedTransformable );
-					tempVec.x = 0.0;
-					tempVec.y = -dy*deltaFactor;
-					tempVec.z = 0.0;
-					sgPickedTransformable.translate( tempVec, helper );
-				} else {
-					javax.vecmath.Matrix4d cameraTransformation = sgCameraTransformable.getAbsoluteTransformation();
-					cameraUp.x = cameraTransformation.m10;
-					cameraUp.y = cameraTransformation.m11;
-					cameraUp.z = cameraTransformation.m12;
-					cameraForward.x = cameraTransformation.m20;
-					cameraForward.y = cameraTransformation.m21;
-					cameraForward.z = cameraTransformation.m22;
-
-					helper.setPosition( zeroVec, sgPickedTransformable );
-					if( Math.abs( cameraForward.y ) < Math.abs( cameraUp.y ) ) { // if we're looking mostly level
-						cameraForward.y = 0.0;
-						helper.setOrientation( cameraForward, cameraUp, sgScene );
-					} else { // if we're looking mostly up or down
-						cameraUp.y = 0.0;
-						cameraForward.negate();
-						helper.setOrientation( cameraUp, cameraForward, sgScene );
-					}
-
-					tempVec.x = dx*deltaFactor;
-					tempVec.y = 0.0;
-					tempVec.z = -dy*deltaFactor;
-					sgPickedTransformable.translate( tempVec, helper );
+					sgPickedTransformable.rotate( edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), -dx*.01, helper );
 				}
-//			} else if( mode == CAMERA_PLANE_MODE ) {
-			} else if( false ) {
-				if( controlDown ) {
-					if( shiftDown ) {
-						//TODO?
-					} else {
-						helper.setTransformation( edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d(), sgCameraTransformable );
-						helper.setPosition( zeroVec, sgPickedTransformable );
-						sgPickedTransformable.rotate( edu.cmu.cs.stage3.math.MathUtilities.getZAxis(), -dx*.01, helper );
-					}
-				} else if( shiftDown ) {
-					int bigdx = point.x - originalMousePoint.x;
-					int bigdy = point.y - originalMousePoint.y;
-					sgPickedTransformable.setLocalTransformation( oldTransformation );
-					if( Math.abs( bigdx ) > Math.abs( bigdy ) ) {
-						tempVec.x = bigdx*deltaFactor;
-						tempVec.y = 0.0;
-					} else {
-						tempVec.x = 0.0;
-						tempVec.y = -bigdy*deltaFactor;
-					}
-					tempVec.z = 0.0;
-					sgPickedTransformable.translate( tempVec, sgCameraTransformable );
-				} else {
-					tempVec.x = dx*deltaFactor;
-					tempVec.y = -dy*deltaFactor;
-					tempVec.z = 0.0;
-					sgPickedTransformable.translate( tempVec, sgCameraTransformable );
+			} else if( shiftDown ) {
+				helper.setTransformation( edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d(), sgScene );
+				helper.setPosition( zeroVec, sgPickedTransformable );
+				tempVec.x = 0.0;
+				tempVec.y = -dy*deltaFactor;
+				tempVec.z = 0.0;
+				sgPickedTransformable.translate( tempVec, helper );
+			} else {
+				javax.vecmath.Matrix4d cameraTransformation = sgCameraTransformable.getAbsoluteTransformation();
+				cameraUp.x = cameraTransformation.m10;
+				cameraUp.y = cameraTransformation.m11;
+				cameraUp.z = cameraTransformation.m12;
+				cameraForward.x = cameraTransformation.m20;
+				cameraForward.y = cameraTransformation.m21;
+				cameraForward.z = cameraTransformation.m22;
+
+				helper.setPosition( zeroVec, sgPickedTransformable );
+				if( Math.abs( cameraForward.y ) < Math.abs( cameraUp.y ) ) { // if we're looking mostly level
+					cameraForward.y = 0.0;
+					helper.setOrientation( cameraForward, cameraUp, sgScene );
+				} else { // if we're looking mostly up or down
+					cameraUp.y = 0.0;
+					cameraForward.negate();
+					helper.setOrientation( cameraUp, cameraForward, sgScene );
 				}
+
+				tempVec.x = dx*deltaFactor;
+				tempVec.y = 0.0;
+				tempVec.z = -dy*deltaFactor;
+				sgPickedTransformable.translate( tempVec, helper );
 			}
 		}
 
@@ -837,51 +776,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		setVisibleControls( FEWER_CONTROLS );
 	}
 
-	// TODO: Analyze if this is dead or obsolete
-//	private void povInit() {
-//		java.util.LinkedList inclusionList = new java.util.LinkedList();
-//		inclusionList.add( new edu.cmu.cs.stage3.util.Criterion() {
-//			public boolean accept( Object o ) {
-//				return (o instanceof edu.cmu.cs.stage3.alice.core.Variable) && javax.vecmath.Matrix4d.class.isAssignableFrom( (Class)((edu.cmu.cs.stage3.alice.core.Variable)o).valueClass.getValue() );
-//			}
-//		} );
-//		povTreeModel.setInclusionList( inclusionList );
-//		povTreeModel.setRoot( new edu.cmu.cs.stage3.alice.core.Transformable() ); //HACK
-//
-//		setPovTransformable( new edu.cmu.cs.stage3.alice.core.Transformable() ); //HACK
-//		povTree.setModel( povTreeModel );
-//		povTree.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
-//			public void valueChanged( javax.swing.event.TreeSelectionEvent ev ) {
-//				javax.swing.tree.TreePath path = ev.getNewLeadSelectionPath();
-//				if( (path != null) && (povTransformable != null) ) {
-//					Object o = path.getLastPathComponent();
-//					edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation ani = new edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation();
-//					edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation inverseAni = new edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation();
-//					ani.pointOfView.set( (edu.cmu.cs.stage3.math.Matrix44)((edu.cmu.cs.stage3.alice.core.Variable)o).getValue() );
-//					ani.subject.set( povTransformable );
-//					inverseAni.pointOfView.set( povTransformable.getLocalTransformation() );
-//					inverseAni.subject.set( povTransformable );
-//					authoringTool.performOneShot( ani, inverseAni, new edu.cmu.cs.stage3.alice.core.Property[]{povTransformable.localTransformation} );
-//				}
-//			}
-//		} );
-//		povTree.addMouseListener( povTreeMouseListener );
-//		povTree.setCellRenderer( new edu.cmu.cs.stage3.alice.authoringtool.util.DefaultElementTreeCellRenderer() );
-//		((javax.swing.tree.DefaultTreeCellRenderer)povTree.getCellRenderer()).setLeafIcon( null );
-//		javax.swing.JTextField textField = new javax.swing.JTextField();
-//		textField.setFont( povTree.getFont() );
-//		//povTree.setCellEditor( new javax.swing.tree.DefaultTreeCellEditor( povTree, (javax.swing.tree.DefaultTreeCellRenderer)povTree.getCellRenderer() ) {
-//		povTree.setCellEditor( new javax.swing.DefaultCellEditor( textField ) {
-//			public java.awt.Component getTreeCellEditorComponent( javax.swing.JTree jtree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row ) {
-//				return super.getTreeCellEditorComponent( jtree, ((edu.cmu.cs.stage3.alice.core.Element)value).name.getStringValue(), isSelected, expanded, leaf, row );
-//			}
-//			public boolean shouldSelectCell( java.util.EventObject ev ) {
-//				return false;
-//			}
-//		} );
-//		povTree.setEditable( true );
-//	}
-
 	public void renderInit( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool ) {
 		this.authoringTool = authoringTool;
 		renderTarget = authoringTool.getRenderTargetFactory().createOnscreenRenderTarget();
@@ -896,7 +790,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			renderTargetDropTarget = new java.awt.dnd.DropTarget( renderTarget.getAWTComponent(), renderTargetDropTargetListener );
 			renderTarget.getAWTComponent().setDropTarget( renderTargetDropTarget );
 			renderTarget.getAWTComponent().addMouseListener( renderTargetMouseListener );
-			
 			
 			// quad view
 			renderTargetFromTheRight = authoringTool.getRenderTargetFactory().createOnscreenRenderTarget();
@@ -1321,30 +1214,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		}
 	}
 
-	// TODO: Analyze if this is dead or obsolete
-//	public void setPovTransformable( edu.cmu.cs.stage3.alice.core.Transformable trans ) {
-//		povTransformable = trans;
-//
-//		if( povTransformable != null ) {
-//			povTreeModel.setRoot( povTransformable );
-//			titledBorder3.setTitle( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue( povTransformable, true ) + "'s Point Of Views" );
-//		} else {
-//			povTreeModel.setRoot( new edu.cmu.cs.stage3.alice.core.Transformable() ); // HACK
-//			titledBorder3.setTitle( "Point Of Views" );
-//		}
-//	}
-//
-//	protected void addCurrentPOVToVariables() {
-//		if( povTransformable != null ) {
-//			edu.cmu.cs.stage3.alice.core.Variable newPov = new edu.cmu.cs.stage3.alice.core.Variable();
-//			newPov.valueClass.set( edu.cmu.cs.stage3.math.Matrix44.class );
-//			newPov.value.set( povTransformable.getLocalTransformation() );
-//			newPov.name.set( edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameForNewChild( "PointOfView", povTransformable ) );
-//			povTransformable.addChild( newPov );
-//			povTransformable.variables.add( newPov );
-//		}
-//	}
-
 	/////////////////////////////////////////
 	// Mouse event handling
 	/////////////////////////////////////////
@@ -1461,46 +1330,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			pickedTransformable = null;
 		}
 	}
-
-	// TODO: Analyze if this is dead or obsolete
-	/*
-	public void postPick( edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorEvent ev ) {
-		edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo = ev.getPickInfo();
-		if( (pickInfo != null) && (pickInfo.getCount() > 0) && (pickInfo.getVisual( 0 ) != null) && (pickInfo.getVisual( 0 ).getBonus() != null) ) {
-			Object o = pickInfo.getVisual( 0 ).getBonus();
-			if( o instanceof edu.cmu.cs.stage3.alice.core.Transformable ) {
-				edu.cmu.cs.stage3.alice.core.Transformable bonus = (edu.cmu.cs.stage3.alice.core.Transformable)o;
-				edu.cmu.cs.stage3.alice.core.Element selectedElement = authoringTool.getSelectedElement();
-				if( selectedElement == bonus ) {
-					// do nothing
-				} else if( affectSubpartsCheckBox.isSelected() ) {
-					authoringTool.setSelectedElement( bonus );
-				} else if( (selectedElement != null) && selectedElement.isDescendantOf( bonus ) ) {
-					authoringTool.setSelectedElement( bonus );
-				} else {
-					while( (bonus != null) && (! bonus.doEventsStopAscending()) && (bonus.getParent() != selectedElement) ) {
-						edu.cmu.cs.stage3.alice.core.Element parent = bonus.getParent();
-						if( parent instanceof edu.cmu.cs.stage3.alice.core.Transformable ) {
-							bonus = (edu.cmu.cs.stage3.alice.core.Transformable)parent;
-						} else {
-							bonus = null;
-							authoringTool.setSelectedElement( parent );
-						}
-					}
-					pickedTransformable = bonus;
-					if( bonus != null ) {
-						authoringTool.setSelectedElement( bonus );
-					}
-				}
-			} else {
-				pickedTransformable = null;
-			}
-		} else {
-			pickedTransformable = null;
-		}
-	}
-	*/
-
 
 	//////////////////////////
 	// GUI Classes
@@ -1702,42 +1531,6 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 			setVisibleControls( MORE_CONTROLS );
 		}
 	}
-
-	// TODO: Analyze if this is dead or obsolete
-//	void btnStandUp_actionPerformed(ActionEvent e) {
-//		edu.cmu.cs.stage3.alice.core.response.StandUpAnimation ani = new edu.cmu.cs.stage3.alice.core.response.StandUpAnimation();
-//		edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation inverseAni = new edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation();
-//		ani.asSeenBy.set(world);
-//		ani.transformable.set( renderCamera );
-//		inverseAni.transformable.set( renderCamera );
-//		inverseAni.asSeenBy.set(world);
-//		inverseAni.pointOfView.set( renderCamera.localTransformation.get() );
-//		authoringTool.performOneShot( ani, inverseAni, new edu.cmu.cs.stage3.alice.core.Property[]{renderCamera.localTransformation} );
-//	}
-//
-//	void btnEyeHeight_actionPerformed(ActionEvent e) {
-//		double xPos = renderCamera.getPosition(world).x;
-//		double zPos = renderCamera.getPosition(world).z;
-//		edu.cmu.cs.stage3.alice.core.response.PositionAnimation ani = new edu.cmu.cs.stage3.alice.core.response.PositionAnimation();
-//		edu.cmu.cs.stage3.alice.core.response.PositionAnimation inverseAni = new edu.cmu.cs.stage3.alice.core.response.PositionAnimation();
-//		ani.asSeenBy.set(world);
-//		ani.transformable.set( renderCamera );
-//		ani.position.set( new javax.vecmath.Vector3d( xPos, 1.6, zPos ) );
-//		inverseAni.transformable.set( renderCamera );
-//		inverseAni.asSeenBy.set( world );
-//		inverseAni.position.set( renderCamera.getPosition( world ) );
-//		authoringTool.performOneShot( ani, inverseAni, new edu.cmu.cs.stage3.alice.core.Property[] { renderCamera.localTransformation } );
-//	}
-//
-//	void btnResetCamera_actionPerformed(ActionEvent e) {
-//		edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation ani = new edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation();
-//		edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation inverseAni = new edu.cmu.cs.stage3.alice.core.response.PointOfViewAnimation();
-//		ani.pointOfView.set( originalCameraPOV );
-//		ani.transformable.set( renderCamera );
-//		inverseAni.pointOfView.set( renderCamera.getLocalTransformation() );
-//		inverseAni.transformable.set( renderCamera );
-//		authoringTool.performOneShot( ani, inverseAni, new edu.cmu.cs.stage3.alice.core.Property[]{renderCamera.localTransformation} );
-//	}
 
 	void singleViewButton_actionPerformed(ActionEvent e) {
 		 setViewMode( SINGLE_VIEW_MODE );
@@ -1952,7 +1745,7 @@ public class CameraViewPanel extends JPanel implements edu.cmu.cs.stage3.alice.s
 		titledBorder1 = new TitledBorder("");
 		renderAndNavPanel.add(renderPanel, BorderLayout.CENTER);
 		renderAndNavPanel.add(navPanel, BorderLayout.SOUTH);
-		this.add(controlScrollPane,  BorderLayout.EAST);
+		//this.add(controlScrollPane,  BorderLayout.EAST);
 		controlScrollPane.getViewport().add(controlPanel, null);
 		markerPanel.add(cameraDummyButton, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0
 			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 4, 0), 0, 0));

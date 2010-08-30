@@ -31,6 +31,9 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -582,6 +585,8 @@ public class JAliceFrame extends javax.swing.JFrame {
 	JMenuItem showStdErrItem = new JMenuItem();
 	JMenuItem printItem = new JMenuItem();
 
+	//private void
+	
 	private void jbInit() {
 		glue = Box.createGlue();
 		border1 = BorderFactory.createEmptyBorder(10, 10, 0, 10);

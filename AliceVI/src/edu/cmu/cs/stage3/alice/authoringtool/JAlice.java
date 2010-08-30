@@ -223,7 +223,8 @@ public class JAlice {
 					.forName("edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources");
 			Class
 					.forName("edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities");
-			authoringTool = new AuthoringTool(defaultWorld, worldToLoad,
+			authoringTool = AuthoringTool.getInstance();
+			authoringTool.init(defaultWorld, worldToLoad,
 					stdOutToConsole, stdErrToConsole);
 			if (useJavaBasedSplashScreen) {
 				splashScreen.hideSplash();

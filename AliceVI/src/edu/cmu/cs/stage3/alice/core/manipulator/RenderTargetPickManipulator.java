@@ -38,13 +38,10 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	protected edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget = null;
 	protected java.util.HashSet objectsOfInterest = new java.util.HashSet();
 	protected java.util.HashSet listeners = new java.util.HashSet();
-	//protected java.awt.Cursor invisibleCursor = java.awt.Toolkit.getDefaultToolkit().createCustomCursor( java.awt.Toolkit.getDefaultToolkit().getImage(""), new java.awt.Point( 0, 0 ), "invisible cursor" );
 	protected java.awt.Cursor invisibleCursor = s_invisibleCursor;
 	protected java.awt.Cursor savedCursor = java.awt.Cursor.getDefaultCursor();
 	protected java.awt.Point originalMousePoint;
 	protected boolean hideCursorOnDrag = true;
-	//commented out by dennisc
-	//protected boolean popupEnabled = false;
 	protected boolean enabled = true;
 	protected boolean pickAllForOneObjectOfInterest = true;
 	protected boolean ascendTreeEnabled = true;
@@ -178,13 +175,6 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 				ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable)objectsOfInterest.iterator().next();
 				sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
 			} else {
-				// implementors are responsible for pushing their own undos onto the stack
-				// commented out by dennisc
-				//if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() != null ) {
-				//	if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack() != null ) {
-				//		edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().setIsListening( false );
-				//	}
-				//}
 
 				pickInfo = renderTarget.pick( ev.getX(), ev.getY(), edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.SUB_ELEMENT_IS_NOT_REQUIRED, edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.ONLY_FRONT_MOST_VISUAL_IS_REQUIRED );
 
@@ -244,12 +234,6 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		ePickedTransformable = null;
 		sgPickedTransformable = null;
 		pickInfo = null;
-		// commented out by dennisc
-		//if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack() != null ) {
-		//	if( edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack() != null ) {
-		//		edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().setIsListening( true );
-		//	}
-		//}
 
 		super.mouseReleased( ev );
 	}
@@ -272,27 +256,4 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 			((edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorListener)iter.next()).postPick( ev );
 		}
 	}
-
-	//commented out by dennisc
-	/*
-	//TODO: this should be handled elsewhere
-	protected final java.awt.event.MouseListener popupMouseListener = new edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter() {
-		Runnable emptyRunnable = new Runnable() {
-			public void run() {}
-		};
-
-		protected void popupResponse( java.awt.event.MouseEvent e ) {
-			if( lastEPickedTransformable != null ) {
-				javax.swing.JPopupMenu popup = createPopup( lastEPickedTransformable );
-				popup.show( e.getComponent(), e.getX(), e.getY() );
-				PopupMenuUtilities.ensurePopupIsOnScreen( popup );
-			}
-		}
-
-		private javax.swing.JPopupMenu createPopup( edu.cmu.cs.stage3.alice.core.Element element ) {
-			java.util.Vector popupStructure = ElementPopupUtilities.getDefaultStructure( element );
-			return edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.makeElementPopupMenu( element, popupStructure );
-		}
-	};
-	*/
 }
