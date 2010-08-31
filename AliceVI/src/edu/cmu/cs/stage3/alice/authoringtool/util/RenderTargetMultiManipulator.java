@@ -94,13 +94,14 @@ public class RenderTargetMultiManipulator extends RenderTargetPickManipulator {
 		if( enabled && (! isActionAborted()) ) {
 			super.mouseDragged( ev );
 			if( mouseIsDown ) {
-				mode.setRenderTarget( renderTarget );
-				mode.dragged( dx, dy, ev.isControlDown(), ev.isShiftDown() );
+				dragged( ev.getComponent(), ev.getPoint(), ev.isControlDown(), ev.isShiftDown() );
 			}
 		}
 	}
 	
 	public void dragged(Component comp, Point p, boolean isControlDown, boolean isShiftDown) {
+		System.out.println(dx + " " + dy);
+		super.dragged(comp, p, isControlDown, isShiftDown);
 		mode.setRenderTarget( renderTarget );
 		mode.dragged( dx, dy, isControlDown, isShiftDown );
 	}

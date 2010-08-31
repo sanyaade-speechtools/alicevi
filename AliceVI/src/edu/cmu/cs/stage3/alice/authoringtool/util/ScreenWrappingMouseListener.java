@@ -140,14 +140,15 @@ public class ScreenWrappingMouseListener implements MouseListener, MouseMotionLi
 	}
 	
 	public void dragged(Component comp, Point p, boolean isControlDown, boolean isShiftDown) {
+		System.out.println(p);
 		moveTo(comp, p);
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			Object o = e.getSource();
 			selected(e.getComponent(), new Point(0,0));
-			initForDrag(0, 0);
 			return;
 		}
 		int dx, dy = 0;
@@ -171,13 +172,9 @@ public class ScreenWrappingMouseListener implements MouseListener, MouseMotionLi
 		default:
 			dx = dy = 0;
 		}
-		moveDelta(e.getComponent(), dx, dy);
+		dragged(e.getComponent(), new Point(lastx + dx, lasty + dy), e.isControlDown(), e.isShiftDown());
 	}
 	
-	public void moveDelta(Component  c, int howMuchX, int howMuchY) {
-		moveTo(c, new Point(lastx + howMuchX, lasty + howMuchY));
-	}
-
 	public void moveTo(Component c, Point p) {
 		offsetx = p.x - pressedx;
 		offsety = p.y - pressedy;
@@ -194,7 +191,6 @@ public class ScreenWrappingMouseListener implements MouseListener, MouseMotionLi
 		javax.swing.SwingUtilities.convertPointToScreen( tempPoint, c );
 		moveX();
 		moveY();
-		System.out.println(tempPoint);
 	}
 
 	private void moveY() {
