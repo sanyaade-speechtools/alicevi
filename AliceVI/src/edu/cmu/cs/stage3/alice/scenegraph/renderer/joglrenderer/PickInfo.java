@@ -54,6 +54,9 @@ public class PickInfo implements  edu.cmu.cs.stage3.alice.scenegraph.renderer.Pi
 				zFront = pickBuffer.get( offset + 1 );
 				int zBack = pickBuffer.get( offset + 2 );
 				if( nameCount == 3 ) {
+					//pickBuffer.get( offset + 3 ) returns 1 when clicking the redcone
+					//and it returns 6 when the enter key is pressed
+					//idk y
 				    VisualProxy visualProxy = context.getPickVisualProxyForName( pickBuffer.get( offset + 3 ) );
 				    if( visualProxy != null ) {
 					    visual = visualProxy.getSceneGraphVisual();

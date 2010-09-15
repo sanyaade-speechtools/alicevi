@@ -40,11 +40,6 @@ public class WorldTree extends javax.swing.JTree {
 		init();
 	}
 
-	public WorldTree( javax.swing.tree.TreeModel model ) {
-		super( model );
-		init();
-	}
-
 	private void init() {
 		cursorLocation = new java.awt.Point( 0, 0 );
 		javax.swing.plaf.basic.BasicTreeUI ui = (javax.swing.plaf.basic.BasicTreeUI)getUI();
@@ -112,14 +107,11 @@ public class WorldTree extends javax.swing.JTree {
 	// calculates the drop position as a side-effect
 	synchronized protected boolean needChange() {
 		if( dropLinesActive && (cursorLocation != null) ) {
-			//int lastRow = getRowCount() - 1 - (isRootVisible() ? 0 : 1);
-			//int lastRow = getRowCount() - 1;
 
 			// The following method for determining the lastRow is just plain wrong.
 			// However, getRowCount does not act consistently for me.
 			int lastRow = 0;
 			while( getPathForRow( lastRow ) != null ) {
-				//DEBUG System.out.println( lastRow + ": " + getPathForRow( lastRow ) );
 				lastRow++;
 			}
 			lastRow--;
@@ -141,9 +133,7 @@ public class WorldTree extends javax.swing.JTree {
 				pathToDrawFrom = new javax.swing.tree.TreePath( getModel().getRoot() );
 			} else {
 				int cursorLocationRow = getClosestRowForLocation( cursorLocation.x, cursorLocation.y );
-				//DEBUG System.out.println( "cursorLocation.y: " + cursorLocation.y );
 				pathToDrawTo = getPathForRow( cursorLocationRow ); // always add below the node the cursor is over
-				//DEBUG System.out.println( "pathToDrawTo: " + pathToDrawTo );
 
 				Object toNode = pathToDrawTo.getLastPathComponent();
 				if( (getModel().getChildCount( toNode ) != 0) && isExpanded( pathToDrawTo ) ) { // if the node we're over has visible children, then we can't allow a higher level parent
