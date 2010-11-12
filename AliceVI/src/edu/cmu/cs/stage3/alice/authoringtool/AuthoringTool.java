@@ -511,12 +511,12 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		return pyStdErr;
 	}
 
-	private static AuthoringTool hack;
+	private static AuthoringTool instance = null;
 
 	public static AuthoringTool getInstance() {
-		if(hack == null)
-			hack = new AuthoringTool();
-		return hack;
+		if(instance == null)
+			instance = new AuthoringTool();
+		return instance;
 	}
 
 	// constructor
@@ -589,7 +589,7 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 			showErrorDialog("Error configuring Look and Feel.", e);
 		}
 
-		AuthoringTool.hack = this;
+		AuthoringTool.instance = this;
 		this.defaultWorld = defaultWorld;
 		if (!(defaultWorld.exists() && defaultWorld.canRead())) {
 			this.defaultWorld = null;
@@ -749,6 +749,13 @@ public class AuthoringTool implements ClipboardOwner, StencilApplication {
 		}
 	}
 
+	public void setFocusOnRenderTargetAWTComponent() {
+		System.out.println(renderTarget.getAWTComponent());
+		System.out.println("  " + renderTarget.getAWTComponent().getParent());
+		renderTarget.getAWTComponent().setFocusable(true);
+		renderTarget.getAWTComponent().requestFocusInWindow();
+	}
+	
 	private void importDirectoryChanged() {
 		String importDirPath = authoringToolConfig
 		.getValue("directories.importDirectory");

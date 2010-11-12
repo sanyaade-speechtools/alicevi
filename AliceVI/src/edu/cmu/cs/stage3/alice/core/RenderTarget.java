@@ -23,9 +23,12 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 import edu.cmu.cs.stage3.alice.core.property.ObjectProperty;
 
-public class RenderTarget extends Element {
+public class RenderTarget extends Element implements FocusListener {
 	/** @deprecated */
 	public final ObjectProperty requiredCapabilities = new ObjectProperty( this, "requiredCapabilities", null, Long.class );
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget m_onscreenRenderTarget = null;
@@ -249,6 +252,7 @@ public class RenderTarget extends Element {
 	public void addMouseListener( java.awt.event.MouseListener mouseListener ) {
 		if( m_awtComponent!=null ) {
 			m_awtComponent.addMouseListener( mouseListener );
+			m_awtComponent.addFocusListener(this);
 		} else {
 			throw new NullPointerException( "internal m_awtComponent is null" );
 		}
@@ -286,5 +290,15 @@ public class RenderTarget extends Element {
 	protected void stopped( World world, double time ) {
 		super.stopped( world, time );
 		m_onscreenRenderTarget.removeRenderTargetListener( world.getBubbleManager() );
+	}
+	@Override
+	public void focusGained(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		System.out.println(" * gained!");
+	}
+	@Override
+	public void focusLost(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		System.out.println(" * lost!");
 	}
 }
