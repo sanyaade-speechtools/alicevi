@@ -28,6 +28,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -85,8 +87,19 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 				public void treeWillExpand( javax.swing.event.TreeExpansionEvent ev ) {}
 			}
 		);
+		worldTree.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				handleKeyEvent(e);
+			}
+		});
 
 		treeScrollPane.setBorder( null );
+	}
+	
+	private void handleKeyEvent(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			authoringTool.setFocusOnRenderTargetAWTComponent();
+		}
 	}
 
 	private void dndInit() {
