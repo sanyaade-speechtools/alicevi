@@ -198,7 +198,6 @@ public class AuthoringToolResources {
 		
 		//initialize Python stuff , URL, and key-board mapping
 		loadResourcesPy();
-
 	}
 
 	

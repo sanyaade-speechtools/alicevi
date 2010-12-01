@@ -219,10 +219,8 @@ public class JAlice {
 				writer.close();
 			} catch (Exception e) {
 			}
-			Class
-					.forName("edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources");
-			Class
-					.forName("edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities");
+			Class.forName("edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources");
+			Class.forName("edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities");
 			authoringTool = AuthoringTool.getInstance();
 			authoringTool.init(defaultWorld, worldToLoad,
 					stdOutToConsole, stdErrToConsole);
@@ -231,7 +229,7 @@ public class JAlice {
 			}
 		} catch (Throwable t) {
 			t.printStackTrace();
-			// System.exit( 1 );
+			System.exit( 1 );
 		}
 
 		mainHasFinished = true;
