@@ -27,7 +27,6 @@ public class PanelSwitcher extends KeyAdapter {
 		if(getInstance().actionMap.containsKey(actionKey)) return null;
 		else {
 			comp.setFocusable(true);
-			comp.addKeyListener(getInstance());
 			return getInstance().actionMap.put(actionKey, comp);
 		}
 	}
