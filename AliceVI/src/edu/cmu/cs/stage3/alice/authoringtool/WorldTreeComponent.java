@@ -36,6 +36,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.TitledBorder;
 
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PanelSwitcher;
+
 /**
  * @author Jason Pratt
  */
@@ -59,6 +61,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 		treeInit();
 		dndInit();
 		selectionInit();
+		PanelSwitcher.register('w', this);
 	}
 
 	private void modelInit() {

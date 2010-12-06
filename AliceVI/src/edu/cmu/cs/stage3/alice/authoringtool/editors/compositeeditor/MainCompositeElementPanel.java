@@ -25,6 +25,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
 import javax.swing.JButton;
 
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PanelSwitcher;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 /**
@@ -73,7 +74,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel implements 
         this.setDragEnabled(false);
         this.setBorder(null);
         elementMouseListener = null;
-
+        PanelSwitcher.register('c', this);
     }
 
     public void set(edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
