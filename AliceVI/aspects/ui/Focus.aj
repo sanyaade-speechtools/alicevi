@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PanelSwitcher;
+
 public aspect Focus {
 	
 	private class VisualFocusListener implements FocusListener {
@@ -59,6 +61,7 @@ public aspect Focus {
 
 	after() returning(JComponent j): call(JComponent+.new(..)) {
 		j.addFocusListener(new VisualFocusListener(j));
+		j.addKeyListener(PanelSwitcher.getInstance());
 	}
 	
 	after(JPanel j): target(j) && call(* add(..)) {
