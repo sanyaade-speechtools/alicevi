@@ -71,6 +71,7 @@ import edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype;
 import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.CallToUserDefinedResponsePrototypeDnDPanel;
 import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ElementDnDPanel;
 import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ObjectArrayPropertyPanel;
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PanelSwitcher;
 import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.SoundsPanel;
 import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.TextureMapsPanel;
 import edu.cmu.cs.stage3.alice.core.Element;
@@ -1471,5 +1472,6 @@ public class DragFromComponent extends JPanel implements
 		otherScrollPane.getViewport().add(otherPanel, null);
 		questionsScrollPane.getViewport().add(questionsPanel, null);
 		animationsScrollPane.getViewport().add(animationsPanel, null);
+		PanelSwitcher.register('d', tabbedPane); //this should be made an aspect somehow
 	}
 }

@@ -57,12 +57,16 @@ public aspect Focus {
 		public void focusLost(FocusEvent evt) {}
 	}
 
-	after() returning(JComponent j): call(*.new(..)) {
+	after() returning(JComponent j): call(JComponent+.new(..)) {
 		j.addFocusListener(new VisualFocusListener(j));
 	}
 	
 	after(JPanel j): target(j) && call(* add(..)) {
-		if(j.getComponents().length == 1)
+		if(j.getComponents().length == 1) {
+			for(FocusListener fl : j.getFocusListeners()) {
+				if(fl instanceof VisualFocusListener) return;
+			}
 			j.addFocusListener(new VisualFocusListener(j));
+		}
 	}
 }

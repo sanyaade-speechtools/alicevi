@@ -25,6 +25,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
 import javax.swing.JButton;
 
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PanelSwitcher;
 import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 
@@ -39,7 +40,8 @@ import edu.cmu.cs.stage3.alice.scenegraph.Color;
 
 public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel implements edu.cmu.cs.stage3.alice.authoringtool.Editor, edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener {
 
-    //protected java.util.Vector behaviorGroups = new java.util.Vector();
+	private static final long serialVersionUID = -984625709692090779L;
+	//protected java.util.Vector behaviorGroups = new java.util.Vector();
     protected edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel m_containingPanel;
     protected BehaviorGroupEditor worldEditor;
     protected java.awt.GridBagLayout containingPanelLayout;
@@ -202,6 +204,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
         behaviorMenu.add(menuLabel, 0);
         initGUI();
         refreshGUI();
+        PanelSwitcher.register('e', this);
     }
 
     public BehaviorGroupsEditor(edu.cmu.cs.stage3.alice.core.World theWorld) {
